@@ -27,11 +27,15 @@ function Home() {
     <div className="">
       <ul>
         {data.artists.items.map((item: ArtistItems, index: number) => (
-          <li className="inline-block">
+          <li className="inline-block" key={index}>
             <div className="h-100 flex flex-col">
               <img
                 className="m-10 mb-5 w-70 h-70 shadow-xl shadow-gray-600 rounded-xl"
-                src={item.images[1].url}
+                src={
+                  item.images.length >= 2
+                    ? item.images[1].url
+                    : item.images[0]?.url || "/fallback.jpg"
+                }
                 alt=""
               />
             </div>

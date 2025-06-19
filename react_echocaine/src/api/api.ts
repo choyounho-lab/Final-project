@@ -50,19 +50,19 @@ export const apiCreditInfo = async (id: string) => {
 // 입력한 장르의 아티스트 정보
 export const apiGetGenreArtist = async (genre: string) => {
   return await instance
-    .get(`search?q=*&genre:${genre}&type=artist&limit=50`)
+    .get(`search?q=*&genre:${genre}&type=artist`)
     .then((res) => res.data);
 };
 
 // 입력한 장르의 트랙 정보
 export const apiGetGenreTrack = async (genre: string) => {
   return await instance
-    .get(`search?q=genre:${genre}&type=track&limit=50`)
+    .get(`search?q=genre:${genre}&type=track`)
     .then((res) => res.data);
 };
 
 export const apiGetMusicList = async () => {
   return await instance
-    .get(`search?offset=0&limit=50&query=Eminem&type=artist`)
+    .get(`search?offset=0&limit=20&query=BTS&type=artist`)
     .then((res) => res.data);
 };
