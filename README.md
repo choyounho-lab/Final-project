@@ -1,5 +1,18 @@
 # Final-project
+
 파이널 프로젝트
 
+인스톨
+yarn install
 
-asd
+타입스크립트
+yarn add --dev typescript
+
+의존성 설치
+yarn add react-router-dom axios styled-components
+
+movie db의 원형 점수 막대 수업내용이 포함되어 있는 경우
+yarn add react-circular-progressbar
+
+새로 파일 생성하면서 설치하는 경우
+yarn create react-app final_project --template typescript
