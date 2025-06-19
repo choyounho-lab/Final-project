@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import AlbumDetail from "./pages/AlbumDetail";
 import SpotifyPlayer from "./pages/SpotifyPlayer";
 import Test2 from "./pages/Test2";
+import GenreList from "./pages/GenreList";
 
 const Radio = () => <h1 className="p-4 text-2xl font-bold">추천음악</h1>;
 const PlayList = () => <h1 className="p-4 text-2xl font-bold">Playlist</h1>;
@@ -31,6 +32,7 @@ const App = () => {
         <TopBar />
 
         <Routes>
+          <Route path="/genreList" element={<GenreList />} />
           <Route path="/" element={<Home />} />
           <Route path="/new" element={<New />} />
           <Route path="/genre" element={<Genre />} />

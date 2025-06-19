@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Logo from "../assets/image/logo4.png";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const playListCss =
     "py-2 px-4 bg-white hover:bg-gray-700 rounded h-10 flex items-center justify-start text-black w-9/10 m-1 mx-auto ";
   const myPlayListCss =
@@ -46,6 +47,7 @@ const Sidebar = () => {
             type="text"
             className="py-2 px-4 hover:bg-gray-700 rounded h-10 flex items-center justify-center border rounded-sm mt-20 text-white w-9/10 mx-auto"
             placeholder="검색"
+            onClick={() => navigate("/genreList")}
           />
           <Link to="/" className={sideBtnCss}>
             Home
