@@ -24,7 +24,7 @@ const Sidebar = () => {
   return (
     <div className="fixed">
       <div
-        className="w-48 h-screen bg-black text-white flex flex-col  relative "
+        className="w-70 h-screen bg-black text-white flex flex-col relative "
         style={{
           overflow: "hidden",
         }}
@@ -39,7 +39,7 @@ const Sidebar = () => {
             transform: "rotate(-10deg) translate(-10%, -50%)",
           }}
         />
-        <div className="w-48 " style={{ position: "absolute" }}>
+        <div className="w-70 " style={{ position: "absolute" }}>
           <Link to="/" className={logoCss}>
             Echocaine
           </Link>

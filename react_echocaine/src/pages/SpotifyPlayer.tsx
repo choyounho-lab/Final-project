@@ -6,12 +6,12 @@ interface SpotifyPlayerProps {
   accessToken: string;
 }
 
-declare global {
-  interface Window {
-    onSpotifyWebPlaybackSDKReady: () => void;
-    Spotify: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     onSpotifyWebPlaybackSDKReady: () => void;
+//     Spotify: any;
+//   }
+// }
 
 const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ accessToken }) => {
   const deviceIdRef = useRef<string | null>(null);
@@ -65,7 +65,7 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ accessToken }) => {
     );
 
     player.connect();
-    console.log(player._messageHandlers);
+    // console.log(player._messageHandlers);
   };
 
   useEffect(() => {

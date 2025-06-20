@@ -28,7 +28,7 @@ const App = () => {
   return (
     <div className="1ww11">
       <Sidebar />
-      <div className="ml-48 bg-gray-100">
+      <div className="ml-70 bg-gray-100">
         <TopBar />
 
         <Routes>
