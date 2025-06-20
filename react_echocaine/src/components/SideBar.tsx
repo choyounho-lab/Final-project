@@ -4,9 +4,13 @@ import Logo from "../assets/image/logo4.png";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const playListCss =
+  const logoCss: string =
+    "py-2  hover:bg-gray-700 rounded  flex items-center justify-center text-white m-2 text-3xl w-9/10 mx-auto font-bold";
+  const sideBtnCss: string =
+    "py-2 px-4 hover:bg-gray-700 rounded h-10 flex items-center justify-start text-white w-9/10 mx-auto";
+  const playListCss: string =
     "py-2 px-4 bg-white hover:bg-gray-700 rounded h-10 flex items-center justify-start text-black w-9/10 m-1 mx-auto ";
-  const myPlayListCss =
+  const myPlayListCss: string =
     "py-2 px-4 bg-white hover:bg-gray-700 rounded h-10 flex items-center justify-start text-black w-9/10 m-1 mx-auto ";
 
   const [openPlayList, setOpenPlayList] = useState<boolean>(false);
@@ -17,10 +21,7 @@ const Sidebar = () => {
   const myPlayList = () => {
     setOpenMyPlayList(!openMyPlayList);
   };
-  const logoCss: string =
-    "py-2  hover:bg-gray-700 rounded  flex items-center justify-center text-white m-2 text-3xl w-9/10 mx-auto font-bold";
-  const sideBtnCss: string =
-    "py-2 px-4 hover:bg-gray-700 rounded h-10 flex items-center justify-start text-white w-9/10 mx-auto";
+
   return (
     <div className="fixed">
       <div
@@ -45,7 +46,7 @@ const Sidebar = () => {
           </Link>
           <input
             type="text"
-            className="py-2 px-4 hover:bg-gray-700 rounded h-10 flex items-center justify-center border rounded-sm mt-20 text-white w-9/10 mx-auto"
+            className="py-2 px-4 hover:bg-gray-700 rounded h-10 flex items-center justify-center border rounded-sm text-white w-9/10 mx-auto"
             placeholder="검색"
             onClick={() => navigate("/genreList")}
           />

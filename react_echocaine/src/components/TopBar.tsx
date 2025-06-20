@@ -8,6 +8,8 @@ const TopBar = () => {
     setLoginStatus(!loginStatus);
   };
 
+  const [progressBar, setProgressBar] = useState(0);
+
   const [volume, setVolume] = useState(50);
   const getVolumImage = (value: number) => {
     if (value === 0) return "🔇";
@@ -47,7 +49,12 @@ const TopBar = () => {
               {/* 반복 */}
             </div>
           </div>
-          <input type="range" className="w-1/4 mx-10" value="0" />
+          <input
+            type="range"
+            className="w-1/4 mx-10"
+            value={progressBar}
+            onChange={(e) => setProgressBar(Number(e.target.value))}
+          />
 
           <div className="flex items-center w-50">
             <span className="text-2xl">
