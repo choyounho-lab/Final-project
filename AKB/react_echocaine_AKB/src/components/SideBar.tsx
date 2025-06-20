@@ -52,21 +52,6 @@ const Sidebar = () => {
           <Link to="/" className={sideBtnCss}>
             Home
           </Link>
-          <Link to="/new" className={sideBtnCss}>
-            NewSic
-          </Link>
-          <Link to="/genre" className={sideBtnCss}>
-            장르별 음악
-          </Link>
-          <Link to="/genre" className={sideBtnCss}>
-            추천 음악
-          </Link>
-          <Link to="/test" className={`${sideBtnCss} mb-5`}>
-            장르 검색결과
-          </Link>
-          <Link to="/callback" className={sideBtnCss}>
-            test
-          </Link>
 
           <div className="border border-white mb-3"></div>
           <button onClick={playList} className={sideBtnCss}>

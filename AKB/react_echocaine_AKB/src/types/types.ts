@@ -85,7 +85,7 @@ export interface SpokenLanguageType {
   name: string;
 }
 
-type CreditCastType = {
+export type CreditCastType = {
   adult: boolean;
   gender: number;
   id: number;
@@ -99,7 +99,8 @@ type CreditCastType = {
   credit_id: string;
   order: number;
 };
-type CreditCrewType = {
+
+export type CreditCrewType = {
   adult: boolean;
   gender: number;
   id: number;
@@ -112,6 +113,7 @@ type CreditCrewType = {
   department: string;
   job: string;
 };
+
 export interface CreditsType {
   id: number;
   cast: CreditCastType[];
@@ -154,7 +156,6 @@ export interface SpotifyImage {
   height: number;
   width: number;
 }
-// 아티스트 검색 결과 타입 여기까지
 
 // 장르 검색 시 트랙 타입
 export interface Artist {
@@ -166,7 +167,7 @@ export interface Album {
   id: string;
   name: string;
   release_date: string;
-  images: { url: string; height: number; width: number }[];
+  images: SpotifyImage[];
   href: string;
 }
 
@@ -189,4 +190,51 @@ export interface SearchGenreTrackType {
     items: Track[];
   };
 }
-// 장르 검색 시 트랙 타입 여기까지
+
+// -------------- 추가된 타입 --------------
+
+// 최신 앨범 목록 응답 타입
+export interface NewReleasesResponse {
+  albums: {
+    href: string;
+    items: AlbumItem[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+
+// 앨범 아이템 타입
+export interface AlbumItem {
+  id: string;
+  name: string;
+  release_date?: string;
+  images: SpotifyImage[];
+  href: string;
+  // 추가 필드 필요시 선언
+}
+
+// 장르별 플레이리스트 응답 타입
+export interface GenrePlaylistsResponse {
+  playlists: {
+    href: string;
+    items: PlaylistItem[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+
+// 플레이리스트 아이템 타입
+export interface PlaylistItem {
+  id: string;
+  name: string;
+  description?: string;
+  images: SpotifyImage[];
+  href: string;
+  // 추가 필드 필요시 선언
+}
