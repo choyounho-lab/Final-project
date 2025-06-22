@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { apiGetGenreTrack } from "../api/api";
-import { SearchGenreTrackType, Track } from "../types/types";
+import { apiGetTrackList } from "../../api/api";
+import { SearchGenreTrackType, Track } from "../../types/types";
 import { Link } from "react-router-dom";
 
-function SearchGenreTrack() {
+function ApiGetTrackSample() {
   const [data, setData] = useState<SearchGenreTrackType>({
     tracks: {
       items: [],
@@ -12,7 +12,7 @@ function SearchGenreTrack() {
   });
 
   useEffect(() => {
-    apiGetGenreTrack("k-pop").then((res) => {
+    apiGetTrackList("붉은노을").then((res) => {
       console.log(res);
       setData(res);
     });
@@ -43,4 +43,4 @@ function SearchGenreTrack() {
   );
 }
 
-export default SearchGenreTrack;
+export default ApiGetTrackSample;

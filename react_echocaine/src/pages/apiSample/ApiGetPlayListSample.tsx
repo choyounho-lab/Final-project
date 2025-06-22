@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { apiGetGenreTrack } from "../api/api";
-import { SearchGenreTrackType, Track } from "../types/types";
+import { apiGetGenreTrack, apiGetPlayList } from "../../api/api";
+import { SearchGenreTrackType, Track } from "../../types/types";
 import { Link } from "react-router-dom";
 
-function SearchGenreTrack() {
+function ApiGetPlayListSample() {
   const [data, setData] = useState<SearchGenreTrackType>({
     tracks: {
       items: [],
@@ -12,7 +12,7 @@ function SearchGenreTrack() {
   });
 
   useEffect(() => {
-    apiGetGenreTrack("k-pop").then((res) => {
+    apiGetPlayList("k-pop").then((res) => {
       console.log(res);
       setData(res);
     });
@@ -43,4 +43,4 @@ function SearchGenreTrack() {
   );
 }
 
-export default SearchGenreTrack;
+export default ApiGetPlayListSample;

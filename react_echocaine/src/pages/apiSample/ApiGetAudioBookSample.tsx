@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { apiGetGenreTrack } from "../api/api";
-import { SearchGenreTrackType, Track } from "../types/types";
+import { apiGetAudioBookList } from "../../api/api";
+import { SearchGenreTrackType } from "../../types/types";
 import { Link } from "react-router-dom";
 
-function SearchGenreTrack() {
+function ApiGetAudioBookSample() {
   const [data, setData] = useState<SearchGenreTrackType>({
     tracks: {
       items: [],
@@ -12,7 +12,7 @@ function SearchGenreTrack() {
   });
 
   useEffect(() => {
-    apiGetGenreTrack("k-pop").then((res) => {
+    apiGetAudioBookList("audio").then((res) => {
       console.log(res);
       setData(res);
     });
@@ -21,14 +21,14 @@ function SearchGenreTrack() {
   return (
     <div className="">
       <ul>
-        {data.tracks.items.map((item: Track, index: number) => (
+        {data.tracks.items.map((item: any, index: number) => (
           <li className="inline-block " key={item.id}>
             {
               <div className="h-100 flex flex-col">
                 <Link to={`/albumDetail/${item.id}`}>
                   <img
                     className="m-10 mb-5 w-70 h-70 shadow-xl shadow-gray-600 rounded-xl"
-                    src={item.album.images[1].url}
+                    src={item.images[1].url}
                     alt=""
                   />
                 </Link>
@@ -43,4 +43,4 @@ function SearchGenreTrack() {
   );
 }
 
-export default SearchGenreTrack;
+export default ApiGetAudioBookSample;

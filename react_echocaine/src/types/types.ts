@@ -4,64 +4,6 @@ export interface ItemType {
   content: string;
 }
 
-export interface MovieType {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
-
-export interface MovieResultType {
-  page: number;
-  results: MovieType[];
-  total_pages: number;
-  total_results: number;
-}
-
-export interface SearchMovieType {
-  query: string;
-  page: number;
-}
-
-export interface MovieDetailType {
-  adult: boolean;
-  backdrop_path: string;
-  belongs_to_collection: string | number;
-  budget: number;
-  genres: GenreType[];
-  homepage: string;
-  id: number;
-  imbd_id: string;
-  origin_country: string[];
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  production_companies: ProductionCompanyType[];
-  production_countries: ProductionCountryType[];
-  release_date: string;
-  revenue: number;
-  runtime: number;
-  spoken_languages: SpokenLanguageType[];
-  status: string;
-  tagline: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
-}
-
 export interface GenreType {
   id: number;
   name: string;
@@ -190,3 +132,194 @@ export interface SearchGenreTrackType {
   };
 }
 // 장르 검색 시 트랙 타입 여기까지
+
+// ApiGetAlbum 타입
+export interface ApiGetAlbumType {
+  albums: {
+    href: string | null;
+    items: ApiGetAlbumItemsType[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+export interface ApiGetAlbumItemsType {
+  album_type: "album" | "single" | "compilation";
+  artists: {
+    external_urls: { [key: string]: string };
+    href: string;
+    id: string;
+    name: string;
+    type: "artist";
+    uri: string;
+  }[];
+  external_urls: {
+    spotify: string;
+  };
+  href: string;
+  id: string;
+  images: {
+    url: string;
+    height: number;
+    width: number;
+  }[];
+  is_playable: boolean;
+  name: string;
+  release_date: string;
+  release_date_precision: "year" | "month" | "day";
+  total_tracks: number;
+  type: "album";
+  uri: string;
+}
+// ApiGetAlbum 타입 여기까지
+
+// ApiGetArtist 타입
+export interface ApiGetArtistType {
+  artists: {
+    href: string | null;
+    items: ApiGetArtisItemsType[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+export interface ApiGetArtisItemsType {
+  external_urls: {
+    spotify: string;
+  };
+  followers: {
+    href: string | null;
+    total: number;
+  };
+  genres: string[];
+  href: string;
+  id: string;
+  images: {
+    url: string;
+    height: number;
+    width: number;
+  }[];
+  name: string;
+  popularity: number;
+  type: "artist";
+  uri: string;
+}
+// ApiGetAlbum 타입 여기까지
+
+// ApiGetShow 타입
+export interface ApiGetShowType {
+  shows: {
+    href: string | null;
+    items: ApiGetShowItemsType[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+export interface ApiGetShowItemsType {
+  copyrights: string[];
+  description: string;
+  explicit: boolean;
+  external_urls: {
+    spotify: string;
+  };
+  href: string;
+  html_description: string;
+  id: string;
+  images: {
+    url: string;
+    height: number;
+    width: number;
+  }[];
+  is_externally_hosted: boolean;
+  languages: string[];
+  media_type: string;
+  name: string;
+  publisher: string;
+  total_episodes: number;
+  type: string;
+  uri: string;
+}
+// ApiGetShow 타입 여기까지
+
+// ApiGetAudioBook 타입
+export interface ApiGetAudioBookType {
+  audiobooks: {
+    href: string | null;
+    items: ApiGetShowItemsType[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+export interface ApiGetAudioBookItemsType {
+  copyrights: string[];
+  description: string;
+  explicit: boolean;
+  external_urls: {
+    spotify: string;
+  };
+  href: string;
+  html_description: string;
+  id: string;
+  images: {
+    url: string;
+    height: number;
+    width: number;
+  }[];
+  is_externally_hosted: boolean;
+  languages: string[];
+  media_type: string;
+  name: string;
+  publisher: string;
+  total_episodes: number;
+  type: string;
+  uri: string;
+}
+// ApiGetShow 타입 여기까지
+
+// ApiGetEpisode 타입
+export interface ApiGetEpisodeType {
+  episodes: {
+    href: string | null;
+    items: ApiGetShowItemsType[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+export interface ApiGetEpisodeItemsType {
+  copyrights: string[];
+  description: string;
+  explicit: boolean;
+  external_urls: {
+    spotify: string;
+  };
+  href: string;
+  html_description: string;
+  id: string;
+  images: {
+    url: string;
+    height: number;
+    width: number;
+  }[];
+  is_externally_hosted: boolean;
+  languages: string[];
+  media_type: string;
+  name: string;
+  publisher: string;
+  total_episodes: number;
+  type: string;
+  uri: string;
+}
+// ApiGetShow 타입 여기까지

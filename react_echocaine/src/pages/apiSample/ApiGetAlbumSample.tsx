@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from "react";
 
-import { apiGetGenreTrack } from "../api/api";
-import { SearchGenreTrackType, Track } from "../types/types";
+import { apiGetAlbumList } from "../../api/api";
+import { ApiGetAlbumType, ApiGetAlbumItemsType } from "../../types/types";
 import { Link } from "react-router-dom";
 
-function SearchGenreTrack() {
-  const [data, setData] = useState<SearchGenreTrackType>({
-    tracks: {
+function ApiGetAlbumSample() {
+  const [data, setData] = useState<ApiGetAlbumType>({
+    albums: {
+      href: "",
       items: [],
+      limit: 0,
+      next: "",
+      offset: 0,
+      previous: "",
+      total: 0,
     },
   });
 
   useEffect(() => {
-    apiGetGenreTrack("k-pop").then((res) => {
+    // 파라미터(앨범명 검색, 페이지 번호)
+    apiGetAlbumList("BTS", 0).then((res) => {
       console.log(res);
       setData(res);
     });
@@ -21,14 +28,14 @@ function SearchGenreTrack() {
   return (
     <div className="">
       <ul>
-        {data.tracks.items.map((item: Track, index: number) => (
+        {data.albums.items.map((item: ApiGetAlbumItemsType, index: number) => (
           <li className="inline-block " key={item.id}>
             {
               <div className="h-100 flex flex-col">
                 <Link to={`/albumDetail/${item.id}`}>
                   <img
                     className="m-10 mb-5 w-70 h-70 shadow-xl shadow-gray-600 rounded-xl"
-                    src={item.album.images[1].url}
+                    src={item.images[1].url}
                     alt=""
                   />
                 </Link>
@@ -43,4 +50,4 @@ function SearchGenreTrack() {
   );
 }
 
-export default SearchGenreTrack;
+export default ApiGetAlbumSample;

@@ -1,45 +1,4 @@
-import { SearchMovieType } from "../types/types";
 import { instance } from "./instance";
-
-/**
- * 인기 영화 목록
- * @param page
- * @returns
- */
-export const apiGetMovieList = async (page: number) => {
-  return await instance
-    .get(`movie/popular?page=${page}`)
-    .then((res) => res.data);
-};
-
-/**
- * 키워드로 영화 검색 (페이지번호 포함)
- * @param search
- * @returns
- */
-export const apiSearchMovieByKeyword = async (search: SearchMovieType) => {
-  return await instance
-    .get(`search/movie`, { params: { ...search } })
-    .then((res) => res.data);
-};
-
-/**
- * 영화 정보
- * @param id
- * @returns
- */
-export const apiMovieDetailInfo = async (id: string) => {
-  return await instance.get(`movie/${id}`).then((res) => res.data);
-};
-
-/**
- * 영화 제작 정보
- * @param id
- * @returns
- */
-export const apiCreditInfo = async (id: string) => {
-  return await instance.get(`/movie/${id}/credits`).then((res) => res.data);
-};
 
 // export const apiGetMusicList = async () => {
 //   return await instance
@@ -57,7 +16,7 @@ export const apiGetGenreArtist = async (genre: string) => {
 // 입력한 장르의 트랙 정보
 export const apiGetGenreTrack = async (genre: string) => {
   return await instance
-    .get(`search?q=genre:${genre}&type=track&market=KR`)
+    .get(`search?q=genre:${genre}&type=track`)
     .then((res) => res.data);
 };
 
@@ -67,10 +26,24 @@ export const apiGetMusicList = async () => {
     .then((res) => res.data);
 };
 
-// 앨범 검색
-export const apiGetAlbumList = async (search: string) => {
+// 아티스트 검색
+export const apiGetArtistList = async (search: string) => {
   return await instance
-    .get(`search?offset=0&limit=20&q=${search}&type=album&market=KR`)
+    .get(`search?offset=0&limit=20&q=${search}&type=artist&market=KR`)
+    .then((res) => res.data);
+};
+
+// 트랙 검색
+export const apiGetTrackList = async (search: string) => {
+  return await instance
+    .get(`search?offset=0&limit=20&q=${search}&type=track&market=KR`)
+    .then((res) => res.data);
+};
+
+// 앨범 검색
+export const apiGetAlbumList = async (search: string, offset: number) => {
+  return await instance
+    .get(`search?offset=${offset}&limit=20&q=${search}&type=album&market=KR`)
     .then((res) => res.data);
 };
 
@@ -102,6 +75,7 @@ export const apiGetEpisodeList = async (search: string) => {
     .then((res) => res.data);
 };
 
+// 장르 리스트 검색 - xxxxxxxxx안 됨xxxxxxxxxx
 export const apiGetGenreList = async () => {
   return await instance
     .get(`recommendations/available-genre-seeds`, {

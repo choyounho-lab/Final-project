@@ -56,16 +56,17 @@ const Sidebar = () => {
           <Link to="/new" className={sideBtnCss}>
             NewSic
           </Link>
-          <Link to="/genre" className={sideBtnCss}>
-            장르별 음악
-          </Link>
+
           <Link to="/genre" className={sideBtnCss}>
             추천 음악
           </Link>
-          <Link to="/test" className={`${sideBtnCss} mb-5`}>
+          <Link to="/callback" className={sideBtnCss}>
+            음원재생
+          </Link>
+          <Link to="/list" className={`${sideBtnCss} mb-5`}>
             장르 검색결과
           </Link>
-          <Link to="/callback" className={sideBtnCss}>
+          <Link to="/test" className={sideBtnCss}>
             test
           </Link>
 
