@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
@@ -14,12 +15,18 @@
     "axios": "^1.10.0",
     "react": "^19.1.0",
     "react-circular-progressbar": "^2.2.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^19.1.0",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
     "react-scripts": "5.0.1",
+    "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
     "styled-components": "^6.1.19",
     "typescript": "^5.8.3",
-    "web-vitals": "^2.1.0"
+    "uuid": "^11.1.0",
+    "web-vitals": "^2.1.0",
+    "zod": "^3.25.67"
   },
   "scripts": {
     "start": "set PORT=8000 && react-scripts start",
@@ -44,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/spotify-web-playback-sdk": "^0.1.19"
   }
 }

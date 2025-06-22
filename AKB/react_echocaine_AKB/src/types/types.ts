@@ -191,8 +191,6 @@ export interface SearchGenreTrackType {
   };
 }
 
-// -------------- 추가된 타입 --------------
-
 // 최신 앨범 목록 응답 타입
 export interface NewReleasesResponse {
   albums: {
@@ -213,6 +211,7 @@ export interface AlbumItem {
   release_date?: string;
   images: SpotifyImage[];
   href: string;
+  artists: Artist[];
   // 추가 필드 필요시 선언
 }
 

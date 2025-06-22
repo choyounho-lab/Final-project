@@ -9,7 +9,8 @@ interface SpotifyPlayerProps {
 declare global {
   interface Window {
     onSpotifyWebPlaybackSDKReady: () => void;
-    Spotify: any;
+    //any 에서 typeof Spotify 로 변경
+    Spotify: typeof Spotify;
   }
 }
 
