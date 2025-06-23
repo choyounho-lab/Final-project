@@ -36,7 +36,7 @@ const AlbumDetail = () => {
                 <p className="mx-10 w-70 text-lg font-bold text-gray-400 mx-auto line-clamp-1">{`${item.artists[0].name}`}</p>
                 <p className="mx-10 w-70 text-lg font-bold mx-auto">{`${item.album.release_date}`}</p>
                 <p className="mx-10 w-70 text-lg font-bold mx-auto">{`재생시간(ms) : ${item.duration_ms}`}</p>
-                <p className="mx-10 w-70 text-lg font-bold mx-auto">{`미리듣기 url : ${item.preview_url}`}</p>
+
                 <p className="mx-10 w-70 text-lg font-bold mx-auto">
                   <a
                     href={item.external_urls.spotify}
