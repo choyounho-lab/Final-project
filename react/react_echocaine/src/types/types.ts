@@ -323,3 +323,27 @@ export interface ApiGetEpisodeItemsType {
   uri: string;
 }
 // ApiGetShow 타입 여기까지
+
+// 최신 앨범 목록 응답 타입
+export interface NewReleasesResponse {
+  albums: {
+    href: string;
+    items: AlbumItem[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+
+// 앨범 아이템 타입
+export interface AlbumItem {
+  id: string;
+  name: string;
+  release_date?: string;
+  images: SpotifyImage[];
+  href: string;
+  artists: Artist[];
+  // 추가 필드 필요시 선언
+}

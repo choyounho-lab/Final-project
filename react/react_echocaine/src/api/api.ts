@@ -85,3 +85,19 @@ export const apiGetGenreList = async () => {
     })
     .then((res) => res.data);
 };
+
+/**
+ *최신 앨범 목록 가져오기
+ */
+export const apiGetNewReleases = async () => {
+  return await instance
+    .get(`browse/new-releases?limit=50`)
+    .then((res) => res.data);
+};
+
+/**
+ * 특정 앨범의 트랙 목록 가져오기
+ */
+export const apiGetTracksByAlbumId = async (albumId: string) => {
+  return await instance.get(`albums/${albumId}/tracks`).then((res) => res.data);
+};
