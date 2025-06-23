@@ -26,6 +26,7 @@ import { osName } from "react-device-detect";
 import ApiGetAudioBookSample from "./pages/apiSample/ApiGetAudioBookSample";
 import ApiGetEpisodeSample from "./pages/apiSample/ApiGetEpisodeSample";
 import YouTubePlayer from "./YouTubePlayer";
+import YoutubeAudioPlayer from "./pages/YoutubeAudioPlayer";
 
 const Radio = () => <h1 className="p-4 text-2xl font-bold">추천음악</h1>;
 const PlayList = () => <h1 className="p-4 text-2xl font-bold">Playlist</h1>;
@@ -51,6 +52,10 @@ const App = () => {
             path="/genre"
             element={<YouTubePlayer title={"STAY"} artist={"BLACKPINK"} />}
           />
+          {/* <Route
+            path="/genre"
+            element={<YoutubeAudioPlayer videoId="FzVR_fymZw4" />}
+          /> */}
           <Route path="/playlist" element={<PlayList />} />
           <Route path="/list" element={<SearchGenreTrack />} />
           <Route path="/login" element={<Login />} />
