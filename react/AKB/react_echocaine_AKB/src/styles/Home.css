@@ -207,8 +207,8 @@
 
 .play-button {
   position: absolute;
-  top: 50%;
-  left: 3.5rem; /* 이미지 정중앙에 위치 */
+  top: 25%;
+  left: 1.3rem; /* 이미지 정중앙에 위치 */
   transform: translateY(10%);
   transform: translateX(-10%);
   background-color: rgba(0, 0, 0, 0.6);
