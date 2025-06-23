@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { apiGetNewReleases, apiGetTracksByAlbumId } from "../api/api";
 import { NewReleasesResponse, AlbumItem, Track } from "../types/types";
-import "../styles/Home.css";
+import "../assets/css/Home.css";
 
 function Home() {
   const [newReleasesData, setNewReleasesData] =
