@@ -89,7 +89,7 @@ function Home() {
   return (
     <div className="home-container">
       <section className="home-section">
-        <h2 className="home-title">최신 발매 ➤</h2>
+        <h2 className="home-title">최신 발매</h2>
 
         {/* 썸네일 이미지 섹션 */}
         <div className="carousel-wrapper">
@@ -121,7 +121,7 @@ function Home() {
         <hr style={{ margin: "2rem 0", border: "0.5px solid #797979" }} />
 
         {/* 최신곡 섹션 */}
-        <h3 className="home-title">최신곡 ➤</h3>
+        <h3 className="home-title">최신곡</h3>
         <div className="carousel-wrapper">
           <button className="arrow left" onClick={() => scrollList(-1)}>
             &#10094;
@@ -136,6 +136,12 @@ function Home() {
                   alt={album.name}
                   loading="lazy"
                 />
+                <div
+                  className="play-button"
+                  onClick={() => console.log("▶ 앨범 클릭:", album.id)}
+                >
+                  ▶
+                </div>
                 <div className="album-info">
                   <div className="scroll-text-container album-name">
                     <span className="scroll-text">{album.name}</span>

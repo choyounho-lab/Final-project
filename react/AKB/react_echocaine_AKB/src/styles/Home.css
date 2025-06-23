@@ -92,6 +92,7 @@
 }
 
 .album-card {
+  position: relative; /* play-button의 기준 */
   background-color: #ffffff;
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
@@ -202,4 +203,24 @@
 
 .arrow.right {
   right: 0.25rem;
+}
+
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 3.5rem; /* 이미지 정중앙에 위치 */
+  transform: translateY(10%);
+  transform: translateX(-10%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 50%;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  pointer-events: auto;
+}
+.album-card:hover .play-button {
+  opacity: 1;
 }

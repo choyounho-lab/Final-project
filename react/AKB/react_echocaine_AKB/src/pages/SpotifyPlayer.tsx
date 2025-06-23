@@ -10,7 +10,7 @@ declare global {
   interface Window {
     onSpotifyWebPlaybackSDKReady: () => void;
     //any 에서 typeof Spotify 로 변경
-    Spotify: typeof Spotify;
+    Spotify: any;
   }
 }
 
