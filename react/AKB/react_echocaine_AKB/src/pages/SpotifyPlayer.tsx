@@ -10,7 +10,7 @@ declare global {
   interface Window {
     onSpotifyWebPlaybackSDKReady: () => void;
     //any 에서 typeof Spotify 로 변경
-    Spotify: any;
+    Spotify: typeof Spotify;
   }
 }
 
@@ -66,7 +66,7 @@ const SpotifyPlayer: React.FC<SpotifyPlayerProps> = ({ accessToken }) => {
     );
 
     player.connect();
-    console.log(player._messageHandlers);
+    // console.log(player._messageHandlers);
   };
 
   useEffect(() => {

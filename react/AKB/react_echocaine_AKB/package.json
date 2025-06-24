@@ -13,6 +13,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "axios": "^1.10.0",
+    "gsap": "^3.13.0",
     "react": "^19.1.0",
     "react-circular-progressbar": "^2.2.0",
     "react-device-detect": "^2.2.3",

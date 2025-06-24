@@ -10,7 +10,7 @@ interface SpotifyPlayerProps {
 declare global {
   interface Window {
     onSpotifyWebPlaybackSDKReady: () => void;
-    Spotify: any;
+    Spotify: typeof Spotify;
   }
 }
 
