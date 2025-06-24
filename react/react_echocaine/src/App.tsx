@@ -25,10 +25,13 @@ import { getCurrentUser } from "./helper/storage";
 import { osName } from "react-device-detect";
 import ApiGetAudioBookSample from "./pages/apiSample/ApiGetAudioBookSample";
 import ApiGetEpisodeSample from "./pages/apiSample/ApiGetEpisodeSample";
-import YouTubePlayer from "./YouTubePlayer";
-import YoutubeAudioPlayer from "./pages/YoutubeAudioPlayer";
+import YouTubePlayer from "./pages/player/YouTubePlayer";
 
-const Radio = () => <h1 className="p-4 text-2xl font-bold">추천음악</h1>;
+import SearchResult from "./pages/SearchResult";
+import ApiGetPlayListSample from "./pages/apiSample/ApiGetPlayListSample";
+import { PlayerProvider } from "./pages/player/PlayerContext";
+import TrackDetail from "./pages/TrackDetail";
+
 const PlayList = () => <h1 className="p-4 text-2xl font-bold">Playlist</h1>;
 
 const reducer = () => {};
@@ -39,34 +42,39 @@ const App = () => {
 
   return (
     <div className="1ww11">
-      <Sidebar />
-      <div className="ml-70 bg-gray-100">
-        <TopBar />
+      <PlayerProvider>
+        <Sidebar />
 
-        <Routes>
-          <Route path="/genreList" element={<GenreList />} />
-          <Route path="/genreListDetail/:genre" element={<GenreListDetail />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/new" element={<New />} />
-          <Route
-            path="/genre"
-            element={<YouTubePlayer title={"STAY"} artist={"BLACKPINK"} />}
-          />
-          {/* <Route
-            path="/genre"
-            element={<YoutubeAudioPlayer videoId="FzVR_fymZw4" />}
-          /> */}
-          <Route path="/playlist" element={<PlayList />} />
-          <Route path="/list" element={<SearchGenreTrack />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/albumDetail/:id" element={<AlbumDetail />} />
-          <Route
-            path="/callback"
-            element={<Test2 accessToken={accessToken} />}
-          />
-          <Route path="/test" element={<ApiGetEpisodeSample />} />
-        </Routes>
-      </div>
+        <div className="ml-70 bg-gray-100">
+          <TopBar />
+
+          <Routes>
+            <Route path="/genreList" element={<GenreList />} />
+            <Route
+              path="/genreListDetail/:genre"
+              element={<GenreListDetail />}
+            />
+            <Route path="/" element={<Home />} />
+            <Route path="/new" element={<New />} />
+            <Route
+              path="/genre"
+              element={<YouTubePlayer title={"STAY"} artist={"BLACKPINK"} />}
+            />
+
+            <Route path="/playlist" element={<PlayList />} />
+            <Route path="/list" element={<SearchGenreTrack />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/albumDetail/:id" element={<AlbumDetail />} />
+            <Route path="/search/:search" element={<SearchResult />} />
+            <Route
+              path="/callback"
+              element={<Test2 accessToken={accessToken} />}
+            />
+            <Route path="/test" element={<ApiGetPlayListSample />} />
+            <Route path="/trackDetail" element={<TrackDetail />} />
+          </Routes>
+        </div>
+      </PlayerProvider>
     </div>
   );
 };

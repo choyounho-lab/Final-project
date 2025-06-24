@@ -27,6 +27,10 @@ const Sidebar = () => {
     setSearch(e.target.value);
   };
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    navigate(`/search/${search}`);
+  };
+
   return (
     <div className="fixed">
       <div
@@ -47,17 +51,18 @@ const Sidebar = () => {
         />
         <div className="w-70 " style={{ position: "absolute" }}>
           <Link to="/" className={logoCss}>
-            <img src={Logo} className="mr-3" />
             Echocaine
           </Link>
-          <input
-            type="text"
-            className="py-2 px-4 hover:bg-gray-700 rounded h-10 flex items-center justify-center border rounded-sm text-white w-9/10 mx-auto"
-            placeholder="검색"
-            onClick={() => navigate("/genreList")}
-            onChange={onChange}
-            value={search}
-          />
+          <form onSubmit={onSubmit}>
+            <input
+              type="text"
+              className="py-2 px-4  rounded h-10 flex items-center justify-center border rounded-sm text-white w-9/10 mx-auto"
+              placeholder="검색"
+              onClick={() => navigate("/genreList")}
+              onChange={onChange}
+              value={search}
+            />
+          </form>
           <Link to="/" className={sideBtnCss}>
             Home
           </Link>

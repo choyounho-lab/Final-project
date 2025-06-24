@@ -324,6 +324,54 @@ export interface ApiGetEpisodeItemsType {
 }
 // ApiGetShow 타입 여기까지
 
+// ApiGetPlayList 타입
+export interface ApiGetPlayListType {
+  playlists: {
+    href: string | null;
+    items: ApiGetPlayListItemsType[];
+    limit: number;
+    next: string | null;
+    offset: number;
+    previous: string | null;
+    total: number;
+  };
+}
+export interface ApiGetPlayListItemsType {
+  collaborative: boolean;
+  description: string;
+  external_urls: {
+    spotify: string;
+  };
+  href: string;
+  id: string;
+  images: Array<{
+    url: string;
+    height?: number;
+    width?: number;
+  }>;
+  name: string;
+  owner: {
+    display_name: string;
+    external_urls: {
+      spotify: string;
+    };
+    href: string;
+    id: string;
+    type: string;
+    uri: string;
+  };
+  primary_color: string | null;
+  public: boolean;
+  snapshot_id: string;
+  tracks: {
+    href: string;
+    total: number;
+  };
+  type: string;
+  uri: string;
+}
+// ApiGetPlayList 타입 여기까지
+
 // 최신 앨범 목록 응답 타입
 export interface NewReleasesResponse {
   albums: {

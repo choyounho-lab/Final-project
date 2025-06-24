@@ -81,3 +81,6 @@ yarn add uuid
 
 접속 장치 확인
 yarn add react-device-detect
+
+유튜브 음원 플레이어 컨트롤 하기위해 필요
+yarn add react-player
