@@ -31,7 +31,6 @@ const Sidebar = () => {
       >
         <div
           style={{
-            background: `url(${Logo})`,
             position: "absolute",
             width: "2000%",
             height: "2000%",

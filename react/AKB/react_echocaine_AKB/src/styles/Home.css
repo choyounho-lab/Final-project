@@ -1,17 +1,19 @@
-/* 공통 */
+/* ===== 공통 설정 ===== */
 body {
   margin: 0;
-  background-color: #1a1721;
-  color: white;
-  overscroll-behavior: none;
-  overflow-x: hidden;
+  background-color: #1a1721; /* 전체 배경 어두운 보라빛 */
+  color: white; /* 기본 텍스트 색상 */
+  overscroll-behavior: none; /* 스크롤 튐 방지 */
+  overflow-x: hidden; /* 가로 스크롤 제거 */
+  padding: 0;
 }
 
+/* ===== 홈 컨테이너 및 섹션 ===== */
 .home-container {
   padding: 1rem;
   background-color: #000000;
   min-height: 100vh;
-  color: black;
+  color: black; /* 내부 카드나 요소 대비용 */
 }
 
 .home-section {
@@ -24,19 +26,19 @@ body {
   margin-bottom: 1rem;
 }
 
-/* 썸네일 리스트 */
+/* ===== 썸네일 캐러셀 리스트 ===== */
 .thumbnail-list {
   display: flex;
   overflow-x: auto;
   gap: 1rem;
   padding: 0.5rem 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE */
   scroll-behavior: smooth;
 }
 
 .thumbnail-list::-webkit-scrollbar {
-  display: none;
+  display: none; /* Chrome, Safari */
 }
 
 .thumbnail-wrapper {
@@ -56,6 +58,7 @@ body {
   transition: transform 0.3s ease, filter 0.3s ease;
 }
 
+/* 썸네일 위 오버레이 */
 .thumbnail-overlay {
   position: absolute;
   bottom: 0;
@@ -72,6 +75,7 @@ body {
   gap: 0.25rem;
 }
 
+/* 썸네일 hover 효과 */
 .thumbnail-wrapper:hover .thumbnail-image {
   transform: scale(1.05);
   filter: brightness(0.6);
@@ -81,13 +85,13 @@ body {
   opacity: 1;
 }
 
-/* 앨범 리스트 */
+/* ===== 앨범 카드 리스트 (가로 스크롤 + 3줄) ===== */
 .album-list {
   display: grid;
   grid-auto-flow: column;
   grid-template-rows: repeat(3, 5rem);
   gap: 1rem;
-  height: calc(5rem * 3 + 1rem * 2);
+  height: calc(5rem * 3 + 1rem * 2); /* 3줄 높이 계산 */
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
@@ -101,7 +105,7 @@ body {
 
 .album-card {
   position: relative;
-  background-color: #ffffff;
+  background-color: #726d77; /* 기본 색상 (fallback) */
   border-radius: 0.75rem;
   box-shadow: 0 4px 6px rgba(255, 255, 255, 0.1);
   padding: 0.75rem;
@@ -122,6 +126,7 @@ body {
   cursor: pointer;
 }
 
+/* 앨범 이미지 */
 .album-image {
   width: 3rem;
   height: 3rem;
@@ -130,6 +135,7 @@ body {
   flex-shrink: 0;
 }
 
+/* 앨범 텍스트 영역 */
 .album-info {
   flex: 1;
   display: flex;
@@ -143,6 +149,7 @@ body {
   margin-bottom: 0.5rem;
 }
 
+/* 텍스트 스크롤 애니메이션 */
 .scroll-text-container {
   width: 100%;
   overflow: hidden;
@@ -158,6 +165,7 @@ body {
   text-overflow: ellipsis;
 }
 
+/* 트랙 목록 */
 .track-list {
   max-height: 12.5rem;
   overflow-y: auto;
@@ -177,7 +185,7 @@ body {
   color: #9ca3af;
 }
 
-/* 화살표 */
+/* ===== 캐러셀 화살표 버튼 ===== */
 .carousel-wrapper {
   position: relative;
 }
@@ -213,6 +221,7 @@ body {
   right: 0.25rem;
 }
 
+/* 앨범 hover 시 재생 버튼 표시 */
 .play-button {
   position: absolute;
   top: 25%;
@@ -233,10 +242,16 @@ body {
   opacity: 1;
 }
 
-/* Scrolly 이미지 영역 */
+/* ===== ScrollSmoother 관련 ===== */
 #wrapper {
-  overflow: visible;
-  position: relative;
+  overflow: hidden;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 #content {
@@ -244,16 +259,18 @@ body {
   width: 100%;
 }
 
+/* ===== 텍스트 애니메이션 (Echocaine 타이틀) ===== */
 .text {
   position: fixed;
   top: 50vh;
   font-family: termina, sans-serif;
   font-weight: 900;
+  font-style: normal;
   font-size: 8vw;
   text-align: center;
   width: 100%;
   transform: translateY(-100%);
-  z-index: 2;
+  z-index: -2;
   color: white;
   -webkit-text-stroke-width: 1.5px;
   -webkit-text-stroke-color: white;
@@ -272,13 +289,15 @@ body {
   z-index: 2;
 }
 
+/* ===== Scrolly 이미지 그리드 배치 ===== */
 .images {
   padding-top: 60vh;
   position: relative;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  min-height: 120vh;
+  min-height: 150vh;
+  height: 100%;
   display: grid;
   grid-template-columns: repeat(20, 2%);
   grid-template-rows: repeat(30, 3%);
@@ -289,12 +308,7 @@ body {
   object-fit: cover;
 }
 
-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
+/* 이미지 배치 위치 */
 img:nth-child(1) {
   grid-area: 1/1/6/8;
 }

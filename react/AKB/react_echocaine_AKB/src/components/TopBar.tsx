@@ -24,7 +24,6 @@ const TopBar = () => {
     >
       <div
         style={{
-          background: `url(${Logo})`,
           position: "absolute",
           width: "250%",
           height: "500%",
