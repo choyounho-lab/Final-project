@@ -83,7 +83,7 @@ const TopBar = () => {
             </button>
           </div>
 
-          <div className="w-1/2 mx-5">
+          <div className="w-1/3 min-[1024px]:w-1/2 mx-5">
             <input
               type="range"
               min={0}
@@ -98,7 +98,7 @@ const TopBar = () => {
             </div>
           </div>
 
-          <div className="flex items-center w-50">
+          <div className="flex items-center max-[1023px]:hidden min-[1024px]:w-50 ">
             <span className="text-2xl">
               {getVolumeIcon(volume)}
               <input
@@ -111,7 +111,7 @@ const TopBar = () => {
             </span>
           </div>
 
-          <div className="flex items-center justify-center w-40">
+          <div className="flex items-center justify-center w-33">
             {loginStatus ? (
               <Link
                 to="/Login"
