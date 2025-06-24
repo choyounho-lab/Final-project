@@ -65,7 +65,7 @@ export const apiGetGenreTrack = async (genre: string) => {
  */
 export const apiGetNewReleases = async () => {
   return await instance
-    .get(`browse/new-releases?limit=50`)
+    .get(`browse/new-releases?limit=30`)
     .then((res) => res.data);
 };
 
