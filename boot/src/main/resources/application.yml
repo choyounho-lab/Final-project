@@ -24,9 +24,9 @@ spring:
       enabled: always
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: ENC(FCR3yISnvFr/eBRJcJfOxs0QSO8wfM0bBa5fdTDenWFdF7G3mvRkxE0hlCNjIf2xHNyTiDnPhv4=)
-    username: ENC(STFPDdUiqrRSG1/i6ca4dA==)
-    password: ENC(g99N73++PW9Y+iwdfAQ02w==)
+    url: jdbc:log4jdbc:oracle:thin:@200.200.200.122:1521:xe
+    username: ECHO
+    password: ECHO
     type: com.zaxxer.hikari.HikariDataSource
   servlet:
     multipart:

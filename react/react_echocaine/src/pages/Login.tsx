@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-
 import { useDispatch } from 'react-redux';
 import { v4 } from 'uuid';
 import { getCurrentUser, setCurrentUser } from '../helper/storage';
@@ -27,17 +26,21 @@ const Login = () => {
         },
     });
 
+    const [agreeTerms, setAgreeTerms] = useState(false);
+    const [agreePrivacy, setAgreePrivacy] = useState(false);
+    const [agreeMarketing, setAgreeMarketing] = useState(false);
+
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setLoginData({ ...loginData, [e.target.id]: e.target.value });
     };
+
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        setIsLoading(true);
         e.preventDefault();
-        console.log(loginData);
-        const data = axios
+        setIsLoading(true);
+
+        axios
             .post('http://localhost:8000/api/auth/login', loginData)
             .then((res) => {
-                console.log(res.data);
                 if (res.data) {
                     axios
                         .get('http://localhost:8000/api/user/me', {
@@ -46,27 +49,22 @@ const Login = () => {
                             },
                         })
                         .then((result) => {
-                            console.log(result.data);
-                            console.log(res.data);
-                            // 토큰을 로컬스토리지에 저장
                             setCurrentUser(res.data);
-                            // 사용자 정보는 store에 저장
                             dispatch(setUserInfo(result.data));
                         })
                         .finally(() => setIsLoading(false));
                 }
             });
     };
+
     useEffect(() => {
         getCurrentUser();
-        console.log(v4());
-        console.log(osName);
         let device = '';
         switch (osName) {
             case 'Windows':
                 device = 'DEVICE_TYPE_WINDOWS';
                 break;
-            case 'Max Os':
+            case 'Mac OS':
                 device = 'DEVICE_TYPE_MACOS';
                 break;
             case 'Android':
@@ -101,18 +99,11 @@ const Login = () => {
                         top: 0,
                     }}
                 >
-                    <a
-                        href="https://front.codes/"
-                        className="logo"
-                        target="_blank"
-                        rel="noreferrer"
-                    ></a>
                     <div className="section">
-                        <div className="container">
+                        <div className="container mx-auto">
                             <div className="row full-height justify-content-center">
                                 <div className="col-12 text-center align-self-center py-5">
                                     <div className="section pb-5 pt-5 pt-sm-2 text-center">
-                                        <h6 className="mb-0 pb-3"></h6>
                                         <input
                                             className="checkbox"
                                             type="checkbox"
@@ -120,57 +111,70 @@ const Login = () => {
                                             name="reg-log"
                                         />
                                         <label htmlFor="reg-log"></label>
+
                                         <div className="card-3d-wrap mx-auto">
                                             <div className="card-3d-wrapper">
-                                                <div className="card-front">
+                                                {/* 로그인 카드 */}
+                                                <div
+                                                    className="card-front"
+                                                    style={{
+                                                        position: 'relative',
+                                                    }}
+                                                >
+                                                    <button
+                                                        className="close-btn"
+                                                        onClick={closeLoginPage}
+                                                    >
+                                                        ✖
+                                                    </button>
                                                     <div className="center-wrap">
                                                         <div className="section text-center">
-                                                            <button
-                                                                type="button"
-                                                                onClick={
-                                                                    closeLoginPage
-                                                                }
-                                                                style={{
-                                                                    position:
-                                                                        'absolute',
-                                                                    top: 10,
-                                                                    right: 20,
-                                                                    cursor: 'pointer',
-                                                                }}
-                                                            >
-                                                                ✖
-                                                            </button>
                                                             <h4 className="mb-4 pb-3">
-                                                                로그인
+                                                                EchoCaine
                                                             </h4>
-                                                            <div className="form-group">
-                                                                <input
-                                                                    type="email"
-                                                                    name="logemail"
-                                                                    className="form-style"
-                                                                    placeholder="이메일을 입력하세요"
-                                                                    id="logemail"
-                                                                    autoComplete="off"
-                                                                />
-                                                                <i className="input-icon uil uil-at"></i>
-                                                            </div>
-                                                            <div className="form-group mt-2">
-                                                                <input
-                                                                    type="password"
-                                                                    name="logpass"
-                                                                    className="form-style"
-                                                                    placeholder="비밀번호를 입력하세요"
-                                                                    id="logpass"
-                                                                    autoComplete="off"
-                                                                />
-                                                                <i className="input-icon uil uil-lock-alt"></i>
-                                                            </div>
-                                                            <a
-                                                                href="#"
-                                                                className="btn mt-4"
+                                                            <form
+                                                                onSubmit={
+                                                                    onSubmit
+                                                                }
                                                             >
-                                                                로그인
-                                                            </a>
+                                                                <div className="form-group">
+                                                                    <input
+                                                                        type="email"
+                                                                        id="username"
+                                                                        className="form-style"
+                                                                        placeholder="이메일"
+                                                                        autoComplete="off"
+                                                                        onChange={
+                                                                            onChange
+                                                                        }
+                                                                        required
+                                                                    />
+                                                                    <i className="input-icon uil uil-at"></i>
+                                                                </div>
+                                                                <div className="form-group mt-2">
+                                                                    <input
+                                                                        type="password"
+                                                                        id="password"
+                                                                        className="form-style"
+                                                                        placeholder="비밀번호"
+                                                                        autoComplete="off"
+                                                                        onChange={
+                                                                            onChange
+                                                                        }
+                                                                        required
+                                                                    />
+                                                                    <i className="input-icon uil uil-lock-alt"></i>
+                                                                </div>
+                                                                <button
+                                                                    type="submit"
+                                                                    className="btn mt-4"
+                                                                    disabled={
+                                                                        isLoading
+                                                                    }
+                                                                >
+                                                                    로그인
+                                                                </button>
+                                                            </form>
                                                             <p className="mb-0 mt-4 text-center">
                                                                 <a
                                                                     href="#0"
@@ -183,18 +187,19 @@ const Login = () => {
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                {/* 회원가입 카드 */}
                                                 <div className="card-back">
                                                     <div className="center-wrap">
                                                         <div className="section text-center">
                                                             <h4 className="mb-4 pb-3">
-                                                                회원가입
+                                                                EchoCaine
                                                             </h4>
                                                             <div className="form-group">
                                                                 <input
                                                                     type="text"
-                                                                    name="logname"
                                                                     className="form-style"
-                                                                    placeholder="Your Full Name"
+                                                                    placeholder="이름"
                                                                     id="logname"
                                                                     autoComplete="off"
                                                                 />
@@ -203,10 +208,9 @@ const Login = () => {
                                                             <div className="form-group mt-2">
                                                                 <input
                                                                     type="email"
-                                                                    name="logemail"
                                                                     className="form-style"
-                                                                    placeholder="Your Email"
-                                                                    id="logemail"
+                                                                    placeholder="이메일"
+                                                                    id="signupEmail"
                                                                     autoComplete="off"
                                                                 />
                                                                 <i className="input-icon uil uil-at"></i>
@@ -214,18 +218,128 @@ const Login = () => {
                                                             <div className="form-group mt-2">
                                                                 <input
                                                                     type="password"
-                                                                    name="logpass"
                                                                     className="form-style"
-                                                                    placeholder="Your Password"
-                                                                    id="logpass"
+                                                                    placeholder="비밀번호"
+                                                                    id="signupPass"
                                                                     autoComplete="off"
                                                                 />
                                                                 <i className="input-icon uil uil-lock-alt"></i>
+                                                                <div className="form-group mt-2">
+                                                                    <input
+                                                                        type="password"
+                                                                        className="form-style"
+                                                                        placeholder="비밀번호 확인"
+                                                                        id="signupPass"
+                                                                        autoComplete="off"
+                                                                    />
+                                                                    <i className="input-icon uil uil-lock-alt"></i>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* 약관 동의 */}
+                                                            <div
+                                                                className="form-group mt-2"
+                                                                style={{
+                                                                    textAlign:
+                                                                        'left',
+                                                                }}
+                                                            >
+                                                                <label>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={
+                                                                            agreeTerms
+                                                                        }
+                                                                        onChange={() =>
+                                                                            setAgreeTerms(
+                                                                                !agreeTerms
+                                                                            )
+                                                                        }
+                                                                    />{' '}
+                                                                    [필수]{' '}
+                                                                    <a
+                                                                        href="/terms"
+                                                                        target="_blank"
+                                                                    >
+                                                                        이용약관
+                                                                    </a>
+                                                                    에
+                                                                    동의합니다
+                                                                </label>
+                                                                <br />
+                                                                <label>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={
+                                                                            agreePrivacy
+                                                                        }
+                                                                        onChange={() =>
+                                                                            setAgreePrivacy(
+                                                                                !agreePrivacy
+                                                                            )
+                                                                        }
+                                                                    />{' '}
+                                                                    [필수]{' '}
+                                                                    <a
+                                                                        href="/privacy"
+                                                                        target="_blank"
+                                                                    >
+                                                                        개인정보처리방침
+                                                                    </a>
+                                                                    에
+                                                                    동의합니다
+                                                                </label>
+                                                                <br />
+                                                                <label>
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={
+                                                                            agreeMarketing
+                                                                        }
+                                                                        onChange={() =>
+                                                                            setAgreeMarketing(
+                                                                                !agreeMarketing
+                                                                            )
+                                                                        }
+                                                                    />{' '}
+                                                                    [선택]
+                                                                    마케팅
+                                                                    수신에
+                                                                    동의합니다
+                                                                </label>
                                                             </div>
 
                                                             <a
                                                                 href="#"
                                                                 className="btn mt-4"
+                                                                onClick={() => {
+                                                                    if (
+                                                                        !agreeTerms ||
+                                                                        !agreePrivacy
+                                                                    ) {
+                                                                        alert(
+                                                                            '필수 약관에 모두 동의해야 회원가입이 가능합니다.'
+                                                                        );
+                                                                        return;
+                                                                    }
+
+                                                                    const signupPayload =
+                                                                        {
+                                                                            name: '',
+                                                                            email: '',
+                                                                            password:
+                                                                                '',
+                                                                            agreeTerms,
+                                                                            agreePrivacy,
+                                                                            agreeMarketing,
+                                                                        };
+
+                                                                    console.log(
+                                                                        '회원가입 데이터:',
+                                                                        signupPayload
+                                                                    );
+                                                                    // axios.post("/api/auth/signup", signupPayload) 하면 됨
+                                                                }}
                                                             >
                                                                 회원가입
                                                             </a>
@@ -234,6 +348,7 @@ const Login = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                        {/* 끝 */}
                                     </div>
                                 </div>
                             </div>
@@ -244,4 +359,5 @@ const Login = () => {
         </div>
     );
 };
+
 export default Login;
