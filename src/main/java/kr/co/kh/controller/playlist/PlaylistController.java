@@ -23,9 +23,6 @@ public class PlaylistController {
     private final PlaylistService playlistService;
 
 
-
-
-
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 생성")
@@ -34,9 +31,10 @@ public class PlaylistController {
             @ApiImplicitParam(name = "playlist", value = "플레이리스트", dataType = "PlaylistVO", dataTypeClass = PlaylistVO.class, required = true)
     })
     public ResponseEntity<?> getUserProfile(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistVO playlistVO) {
-        UserResponse userResponse = new UserResponse(currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles());
+//        UserResponse userResponse = new UserResponse(currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles());
 
         playlistVO.setUserId(currentUser.getId());
+        log.info(playlistVO.toString());
         playlistService.insertPlaylist(playlistVO);
         return ResponseEntity.ok().build();
     }
