@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.kh.mapper.PlaylistMapper">
-
+    <insert id="insertPlaylist" statementType="CALLABLE" parameterType="PlaylistVO" >
+        {
+            CALL INSERT_PLAYLIST(
+                #{userId, mode=IN, jdbcType=NUMERIC},
+                #{playlistTitle, mode=IN, jdbcType=VARCHAR},
+                #{playlistIsPublic, mode=IN, jdbcType=NUMERIC},
+                #{resultMsg, mode=OUT, jdbcType=VARCHAR},
+                #{playlistId, mode=OUT, jdbcType=NUMERIC}
+            )
+        }
+    </insert>
 </mapper>
