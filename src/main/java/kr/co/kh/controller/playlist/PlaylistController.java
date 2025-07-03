@@ -22,6 +22,16 @@ public class PlaylistController {
 
     private final PlaylistService playlistService;
 
+    @GetMapping("/list")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "개인 플레이리스트 목록")
+    @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true)
+    public ResponseEntity<?> selectPlaylist(@CurrentUser CustomUserDetails currentUser){
+        PlaylistVO playlistVO = new PlaylistVO();
+        playlistVO.setUserId(currentUser.getId());
+        log.info(playlistVO.toString());
+        return ResponseEntity.ok(playlistService.selectPlaylist(playlistVO));
+    }
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
@@ -30,9 +40,7 @@ public class PlaylistController {
             @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true),
             @ApiImplicitParam(name = "playlist", value = "플레이리스트", dataType = "PlaylistVO", dataTypeClass = PlaylistVO.class, required = true)
     })
-    public ResponseEntity<?> getUserProfile(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistVO playlistVO) {
-//        UserResponse userResponse = new UserResponse(currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles());
-
+    public ResponseEntity<?> createPlaylist(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistVO playlistVO) {
         playlistVO.setUserId(currentUser.getId());
         log.info(playlistVO.toString());
         playlistService.insertPlaylist(playlistVO);

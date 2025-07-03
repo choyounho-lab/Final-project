@@ -3,6 +3,7 @@ package kr.co.kh.model.vo;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.ResultSet;
 import java.time.LocalDate;
 
 @Getter
@@ -17,4 +18,5 @@ public class PlaylistVO {
     private String playlistTitle;
     private Long playlistIsPublic;
     private LocalDate playlistCreateDate;
+    private String resultMsg;
 }
