@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kh.mapper.NoticeMapper">
+
+    <!-- 공지사항 목록 -->
+    <select id="selectNotices" parameterType="SearchHelper" resultType="kr.co.kh.model.vo.NoticeVO"> SELECT
+        N.NOTICE_ID
+        , N.NOTICE_CODE_ID
+        , N.NOTICE_TITLE
+        , N.NOTICE_CONTENT
+        , N.NOTICE_CREATE_ID
+        , N.NOTICE_CREATE_DATE
+        , N.NOTICE_UPDATE_ID
+        , N.NOTICE_UPDATE_DATE FROM ADMIN_NOTICE N
+        <where>
+            <if test="searchCode != null and searchCode != ''">
+                AND N.code = #{searchCode}
+            </if>
+            <if test="searchType != null and searchType.equals('title')"> AND N.NOTICE_TITLE LIKE '%' || #{searchKeyword} || '%'
+            </if>
+            <if test="searchType != null and searchType.equals('content')"> AND N.NOTICE_CONTENT LIKE '%' || #{searchKeyword} || '%'
+            </if>
+        </where>
+        ORDER BY N.NOTICE_ID DESC
+        OFFSET #{page} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <select id="countNotice" parameterType="SearchHelper" resultType="int">
+        SELECT COUNT(N.NOTICE_ID)
+        FROM ADMIN_NOTICE N
+        <where>
+            <if test="searchCode != null and searchCode != ''">
+                AND N.code = #{searchCode}
+            </if>
+            <if test="searchType != null and searchType.equals('title')">
+                AND N.NOTICE_TITLE LIKE '%' || #{searchKeyword} || '%'
+            </if>
+            <if test="searchType != null and searchType.equals('content')">
+                AND N.NOTICE_CONTENT LIKE '%' || #{searchKeyword} || '%'
+            </if>
+        </where>
+    </select>
+
+</mapper>
