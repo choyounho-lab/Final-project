@@ -37,4 +37,13 @@
         }
     </insert>
 
+
+    <delete id="deletePlaylist" statementType="CALLABLE" parameterType="PlaylistVO" >
+        {
+            CALL DELETE_PLAYLIST(
+                #{playlistId, mode=IN, jdbcType=NUMERIC},
+                #{resultMsg, mode=OUT, jdbcType=VARCHAR}
+            )
+        }
+    </delete>
 </mapper>
