@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kh.mapper.EventMapper">
+
+    <!-- 이벤트 리스트 -->
+    <select id="selectEventWithPrizes" parameterType="kr.co.kh.model.vo.SearchHelper" resultType="kr.co.kh.model.vo.EventPrizeDetailVO">
+        SELECT
+        AE.EVENT_ID,
+        AE.EVENT_CODE,
+        AE.EVENT_TITLE,
+        AE.EVENT_CONTENT,
+        AE.EVENT_CREATE_ID,
+        AE.EVENT_CREATE_DATE,
+        AE.EVENT_UPDATE_ID,
+        AE.EVENT_UPDATE_DATE,
+        AE.EVENT_START_DATE,
+        AE.EVENT_END_DATE,
+        EP.PRIZE_ID,
+        EP.PRIZE_NAME,
+        EP.QUANTITY,
+        EP.PRIZE_DESC
+        FROM ADMIN_EVENT AE
+        LEFT JOIN EVENT_PRIZE EP ON AE.EVENT_ID = EP.EVENT_ID
+        <where>
+            <!-- 이벤트 코드 검색 -->
+            <if test="searchCode != null and searchCode != ''">
+                AND AE.EVENT_CODE = #{searchCode}
+            </if>
+            <!-- 제목 또는 내용 검색 -->
+            <if test="searchType != null">
+                <choose>
+                    <when test="searchType.equals('title')">
+                        AND AE.EVENT_TITLE LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <when test="searchType.equals('content')">
+                        AND AE.EVENT_CONTENT LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <!-- 추가적으로 경품 이름으로도 검색하고 싶다면 -->
+                    <when test="searchType.equals('prizeName')">
+                        AND EP.PRIZE_NAME LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <!-- 모든 텍스트 필드에서 검색하고 싶다면 -->
+                    <when test="searchType.equals('all')">
+                        AND (
+                        AE.EVENT_TITLE LIKE '%' || #{searchKeyword} || '%'
+                        OR AE.EVENT_CONTENT LIKE '%' || #{searchKeyword} || '%'
+                        OR EP.PRIZE_NAME LIKE '%' || #{searchKeyword} || '%'
+                        OR EP.PRIZE_DESC LIKE '%' || #{searchKeyword} || '%'
+                        )
+                    </when>
+                </choose>
+            </if>
+            <!-- 특정 기간 내의 이벤트 검색 (예: 현재 진행 중인 이벤트) -->
+            <!-- SearchHelper에 currentOnly, startDate, endDate 등의 필드를 추가하여 활용 가능 -->
+            <!--
+            <if test="currentOnly != null and currentOnly == true">
+                AND SYSTIMESTAMP BETWEEN AE.EVENT_START_DATE AND AE.EVENT_END_DATE
+            </if>
+            <if test="searchStartDate != null">
+                AND AE.EVENT_END_DATE >= #{searchStartDate}
+            </if>
+            <if test="searchEndDate != null">
+                AND AE.EVENT_START_DATE <= #{searchEndDate}
+            </if>
+            -->
+        </where>
+        ORDER BY AE.EVENT_ID DESC
+        OFFSET #{page} ROWS FETCH NEXT #{size} ROWS ONLY
+    </select>
+
+    <!-- 총 이벤트 개수를 세는 쿼리 추가 -->
+    <select id="countEvent" parameterType="kr.co.kh.model.vo.SearchHelper" resultType="long">
+        SELECT
+        COUNT(DISTINCT AE.EVENT_ID) -- 중복 이벤트 방지를 위해 DISTINCT 사용
+        FROM ADMIN_EVENT AE
+        LEFT JOIN EVENT_PRIZE EP ON AE.EVENT_ID = EP.EVENT_ID
+        <where>
+            <!-- selectEventWithPrizes와 동일한 검색 조건 사용 -->
+            <if test="searchCode != null and searchCode != ''">
+                AND AE.EVENT_CODE = #{searchCode}
+            </if>
+            <if test="searchType != null">
+                <choose>
+                    <when test="searchType.equals('title')">
+                        AND AE.EVENT_TITLE LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <when test="searchType.equals('content')">
+                        AND AE.EVENT_CONTENT LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <when test="searchType.equals('prizeName')">
+                        AND EP.PRIZE_NAME LIKE '%' || #{searchKeyword} || '%'
+                    </when>
+                    <when test="searchType.equals('all')">
+                        AND (
+                        AE.EVENT_TITLE LIKE '%' || #{searchKeyword} || '%'
+                        OR AE.EVENT_CONTENT LIKE '%' || #{searchKeyword} || '%'
+                        OR EP.PRIZE_NAME LIKE '%' || #{searchKeyword} || '%'
+                        OR EP.PRIZE_DESC LIKE '%' || #{searchKeyword} || '%'
+                        )
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectEventDetail" parameterType="Long" resultType="kr.co.kh.model.EventDetailResponse">
+        SELECT
+        AE.EVENT_ID,
+        AE.EVENT_CODE,
+        AE.EVENT_TITLE,
+        AE.EVENT_CONTENT,
+        AE.EVENT_CREATE_ID,
+        AE.EVENT_CREATE_DATE,
+        AE.EVENT_UPDATE_ID,
+        AE.EVENT_UPDATE_DATE,
+        AE.EVENT_START_DATE,
+        AE.EVENT_END_DATE,
+        EP.PRIZE_ID,
+        EP.PRIZE_NAME,
+        EP.QUANTITY,
+        EP.PRIZE_DESC
+        FROM ADMIN_EVENT AE
+        LEFT JOIN EVENT_PRIZE EP ON AE.EVENT_ID = EP.EVENT_ID
+        WHERE AE.EVENT_ID = #{eventId}
+    </select>
+
+
+
+</mapper>

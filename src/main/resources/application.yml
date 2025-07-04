@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 8080
   compression:
     enabled: true
   tomcat:
@@ -24,9 +24,9 @@ spring:
       enabled: always
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: ENC(spEufmv94y0Qmj9kBioI9kbN09aotzWhfO8IyTW9FEWkBfyrM+Gf6vaGI1yey13GX/e7KZ8+SRfVNM7F3k+aKg==)
-    username: ENC(CHTwtkVSH86ldQD9qEU0mg==)
-    password: ENC(y7nWeUONPKgfifVS2PgwJA==)
+    url: ENC(pCFbVC7GBQD90SV1u9cBnEWvz2imO5BLePJoaxu+xPVhl4i2OGov/PAyNmi/K3oq3Bix95S1ZoX+AylV/1jxiw==)
+    username: ENC(nb2QIfx6yiKHXTNLkp4fYA==)
+    password: ENC(L9jfTVqn5leL5XF2BhW3gA==)
     type: com.zaxxer.hikari.HikariDataSource
   servlet:
     multipart:
@@ -35,41 +35,30 @@ spring:
       max-request-size: 10MB
       location: C:\\WAS_DATA\\multipart\\temp
       file-size-threshold: 1MB
-  #  sql:
-  #    init:
-  #      mode: always
   jpa:
-    .hibernate:
+    hibernate:
       ddl-auto: none
-    .generate-ddl: false
-    .show-sql: true
-    .database-platform: org.hibernate.dialect.Oracle12cDialect
-    .properties.hibernate.format_sql: true
+    generate-ddl: false
+    show-sql: true
+    database-platform: org.hibernate.dialect.Oracle12cDialect
+    properties:
+      hibernate:
+        format_sql: true
   jackson:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
     time-zone: Asia/Seoul
     date-format: yyyy-MM-dd
     jpa-date-time-format: yyyy-MM-dd HH:mm:ss
+
 mybatis:
   mapper-locations: classpath:mappers/*.xml
   type-aliases-package: kr.co.kh.model.vo
   configuration:
     map-underscore-to-camel-case: true
-  # config-location: classpath:mybatis-config.xml
-
-  #logging:
-  #  level:
-  #    root: info
-  #    org:
-  #      hibernate:
-  #        SQL: DEBUG
   file:
     path: C:\\WAS_DATA\\mybatis\\mybatis-log.txt
 
-
-
-#JWT properties
 app:
   jwt:
     header: Authorization
@@ -84,13 +73,14 @@ app:
       reset:
         duration: 5184000000
     refresh:
-      duration: 5184000000 # 1달
+      duration: 5184000000
   velocity:
     templates:
       location: C:\\WAS_DATA\\velocity\\templates
-  cache: #Logged out token cache
+  cache:
     logoutToken:
       maxSize: 1000
+
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
