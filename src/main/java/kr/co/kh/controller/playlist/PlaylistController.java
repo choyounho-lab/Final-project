@@ -26,9 +26,10 @@ public class PlaylistController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 목록")
     @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true)
-    public ResponseEntity<?> selectPlaylist(@CurrentUser CustomUserDetails currentUser){
+    public ResponseEntity<?> selectPlaylist(@CurrentUser CustomUserDetails currentUser, @RequestParam(required = false) Long playlistId){
         PlaylistVO playlistVO = new PlaylistVO();
         playlistVO.setUserId(currentUser.getId());
+        playlistVO.setPlaylistId(playlistId);
         log.info(playlistVO.toString());
         return ResponseEntity.ok(playlistService.selectPlaylist(playlistVO));
     }

@@ -19,7 +19,18 @@
 <!--    </select>-->
 
     <select id="selectPlaylist" resultType="PlaylistVO" parameterType="PlaylistVO">
-        SELECT * FROM PLAYLIST WHERE USER_ID = #{userId} ORDER BY USER_ID DESC
+        SELECT ROW_NUMBER() OVER (ORDER BY PLAYLIST_CREATE_DATE DESC) AS ROW_NUM,
+            PLAYLIST_ID,USER_ID, PLAYLIST_TITLE, PLAYLIST_IS_PUBLIC
+        FROM PLAYLIST
+        <where>
+            <if test="userId != null and userId != 0">
+                AND USER_ID = #{userId}
+            </if>
+            <if test="playlistId != null and playlistId != 0">
+                and PLAYLIST_ID = #{playlistId}
+            </if>
+        </where>
+        ORDER BY PLAYLIST_CREATE_DATE DESC
     </select>
 
 
@@ -36,6 +47,7 @@
             )
         }
     </insert>
+
 
 
     <delete id="deletePlaylist" statementType="CALLABLE" parameterType="PlaylistVO" >
