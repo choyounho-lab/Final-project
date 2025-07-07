@@ -110,6 +110,8 @@ public class UserService {
         newUser.setActive(false);
         newUser.setEmailVerified(true);
         newUser.setName(registerRequest.getName());
+        //2025-07-07 조윤호
+        newUser.setRoleNo(1L);
         return newUser;
     }
 

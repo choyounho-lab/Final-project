@@ -27,8 +27,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Page<User> findByUserEmail(@Param("searchKeyword") String searchKeyword, Pageable pageable);
 
     List<User> findAll();
+
     List<User> findByEmailIsContaining(String searchKeyword);
+
     List<User> findByUsernameIsContaining(String searchKeyword);
+
     List<User> findByNameIsContaining(String searchKeyword);
 
+    //2025.07.03 조윤호
+    @Query(value = "SELECT * FROM USERS WHERE email = :str OR username = :str", nativeQuery = true)
+    Optional<User> findByUsernameOrEmail(String str);
 }

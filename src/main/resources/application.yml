@@ -1,5 +1,5 @@
 server:
-  port: 8001
+  port: 8080
   compression:
     enabled: true
   tomcat:
@@ -24,9 +24,9 @@ spring:
       enabled: always
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: ENC(spEufmv94y0Qmj9kBioI9kbN09aotzWhfO8IyTW9FEWkBfyrM+Gf6vaGI1yey13GX/e7KZ8+SRfVNM7F3k+aKg==)
-    username: ENC(CHTwtkVSH86ldQD9qEU0mg==)
-    password: ENC(y7nWeUONPKgfifVS2PgwJA==)
+    url: ENC(eF+QPZ5ekvTWHOT8YE0rGZpF7ACLrG0rY2E130GkLvSk1jx7uMVsj2qmbxNVmutvY9Ttub4xZtY2OLFZbm2Pcg==)
+    username: ENC(mfZc7rmodkcowwR7up2FeQ==)
+    password: ENC(5iS5N44PlovLQZBAp3aAqw==)
     type: com.zaxxer.hikari.HikariDataSource
   servlet:
     multipart:

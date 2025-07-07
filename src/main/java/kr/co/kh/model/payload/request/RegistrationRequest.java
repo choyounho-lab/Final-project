@@ -24,5 +24,6 @@ public class RegistrationRequest {
     private String name;
 
     private int roleNum;
-
+    //2025 07-07 조윤호
+    private Long roleNo;
 }

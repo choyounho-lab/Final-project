@@ -50,6 +50,11 @@ public class AuthService {
         }
         log.info("신규 사용자 등록 [이메일={}], [아이디={}]", newRegistrationRequestEmail, newRegistrationUsername);
         log.info(newRegistrationRequest.toString());
+        //롤아이디 관련 2025-07-07
+        newRegistrationRequest.setRoleNo(1L);
+        log.info(newRegistrationRequest.toString());
+
+
         User newUser = userService.createUser(newRegistrationRequest);
 
         // 신규 사용자 저장

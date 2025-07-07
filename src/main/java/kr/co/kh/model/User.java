@@ -18,6 +18,7 @@ public class User extends DateAudit {
     @Id
     @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    // vo에서쓰는 변수명은 id , DB에서 쓰는 column명은 USER_NUMBER
     private Long id;
 
     @NaturalId
@@ -39,6 +40,9 @@ public class User extends DateAudit {
 
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean active;
+
+    @Column(name = "ROLE_NO")
+    private Long roleNo;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_AUTHORITY", joinColumns = {
@@ -62,6 +66,16 @@ public class User extends DateAudit {
         active = user.getActive();
         roles = user.getRoles();
         isEmailVerified = user.getEmailVerified();
+        //2025-07-07 조윤호
+        roleNo = user.getRoleNo();
+    }
+    //2025-07-07 조윤호
+    public Long getRoleNo() {
+        return roleNo;
+    }
+    //2025-07-07 조윤호
+    public void setRoleNo(Long roleNo) {
+        this.roleNo = roleNo;
     }
 
     public void addRole(Role role) {
