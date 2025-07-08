@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
-import kr.co.kh.model.payload.response.UserResponse;
 import kr.co.kh.model.vo.PlaylistVO;
 import kr.co.kh.service.PlaylistService;
 import lombok.AllArgsConstructor;
