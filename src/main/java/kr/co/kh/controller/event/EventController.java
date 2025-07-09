@@ -42,4 +42,24 @@ public class EventController {
         return ResponseEntity.ok(eventService.selectEventDetail(eventId));  // 서비스에 eventId 전달
     }
 
+
+    @PostMapping("/apply")
+    public ResponseEntity<String> applyForEvent()
+//            @RequestBody EventApplicationRequest request
+            {
+        // 요청 바디에서 userId와 eventId를 받음
+//        Long userId = request.getUserId();
+
+        // 이벤트 신청 처리 로직 (예: DB에 신청 정보 저장)
+//        boolean isSuccess = eventService.applyForEvent(userId, eventId);
+
+//        if (isSuccess) {
+//            return ResponseEntity.ok("신청 성공");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("신청 실패");
+//        }
+                return null;
+    }
+
+
 }
