@@ -1,0 +1,56 @@
+-- 플레이리스트 생성 Procedure
+CREATE OR REPLACE PROCEDURE INSERT_PLAYLIST(
+	p_userId IN PLAYLIST.USER_ID%TYPE,
+	p_playlistTitle IN PLAYLIST.PLAYLIST_TITLE%TYPE,
+	p_playlistIsPublic IN PLAYLIST.PLAYLIST_IS_PUBLIC%TYPE,
+	p_resultMsg OUT VARCHAR2,
+	p_playlistId OUT PLAYLIST.PLAYLIST_ID%TYPE
+)
+IS
+	v_cnt NUMBER;
+BEGIN
+	SELECT COUNT(*) INTO v_cnt FROM PLAYLIST
+		WHERE USER_ID = p_userId;
+	IF v_cnt > 10 THEN
+		RAISE_APPLICATION_ERROR(-20000, 'PLAYLIST_TITLE이 중복됩니다.');
+	END IF;
+
+	INSERT INTO PLAYLIST(
+		USER_ID,
+		PLAYLIST_TITLE,
+		PLAYLIST_IS_PUBLIC
+	)
+	VALUES (
+		p_userId,
+		p_playlistTitle,
+		p_playlistIsPublic
+	) RETURNING PLAYLIST_ID INTO p_playlistId;
+	p_resultMsg := 'SUCCESS';
+	EXCEPTION
+		WHEN OTHERS THEN
+			p_resultMsg := 'ERROR: ' || SQLERRM;
+			p_playlistId := NULL;
+END;
+
+
+-- 플레이리스트 삭제 Procedure
+CREATE OR REPLACE PROCEDURE DELETE_PLAYLIST(
+	playlistId IN PLAYLIST.PLAYLIST_ID%TYPE,
+	resultMsg OUT VARCHAR2
+)
+IS
+	v_exists NUMBER := 0;
+BEGIN
+	SELECT COUNT(*) INTO v_exists FROM PLAYLIST WHERE PLAYLIST_ID = playlistId;
+	IF v_exists = 0 THEN
+		resultMsg := '데이터가 없습니다.';
+		RETURN;
+	END IF;
+	DELETE FROM PLAYLIST WHERE PLAYLIST_ID  = playlistId;
+	resultMsg := 'SUCCESS';
+	COMMIT;
+	EXCEPTION
+		WHEN OTHERS THEN
+			ROLLBACK;
+END;
+

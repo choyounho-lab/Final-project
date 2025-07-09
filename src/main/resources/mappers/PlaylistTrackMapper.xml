@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kh.mapper.PlaylistTrackMapper">
+
+<!--    <insert id="insertPlaylistTrack" parameterType="PlaylistTrackVO" statementType="CALLABLE" >-->
+<!--        {-->
+<!--            CALL INSERT_PLAYLIST_TRACK(-->
+<!--                #{playlistId, mode=IN, jdbcType=NUMERIC},-->
+<!--                #{trackId, mode=IN, jdbcType=VARCHAR},-->
+<!--                #{trackOrder, mode=IN, jdbcType=NUMERIC},-->
+<!--                #{resultMsg, mode=OUT, jdbcType=VARCHAR},-->
+<!--            )-->
+<!--        }-->
+<!--    </insert>-->
+    <insert id="insertPlaylistTrack" parameterType="PlaylistTrackVO" useGeneratedKeys="false">
+        INSERT INTO PLAYLIST_TRACK (
+            PLAYLIST_ID,
+            TRACK_ID,
+            TRACK_ORDER
+        )
+        VALUES (
+            #{playlistId},
+            #{trackId},
+            #{trackOrder}
+        )
+    </insert>
+
+    <select id="selectPlaylistTrack" parameterType="PlaylistTrackVO" resultType="PlaylistTrackVO">
+        SELECT
+            PLAYLIST_ID,
+            TRACK_ID,
+            TRACK_ORDER
+        FROM PLAYLIST_TRACK
+        <where>
+            <if test="playlistId != null and playlistId != 0">
+                AND PLAYLIST_ID = #{playlistId}
+            </if>
+            <if test="trackId != null and trackId != 0">
+                AND TRACK_ID = #{trackId}
+            </if>
+        </where>
+    </select>
+
+
+
+</mapper>

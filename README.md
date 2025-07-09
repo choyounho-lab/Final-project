@@ -36,3 +36,5 @@ yarn add uuid
 
 접속 장치 확인
 yarn add react-device-detect
+
+yarn add react-icons
