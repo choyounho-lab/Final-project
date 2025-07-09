@@ -53,6 +53,8 @@ public class AuthService {
         //롤아이디 관련 2025-07-07
         newRegistrationRequest.setRoleNo(1L);
         log.info(newRegistrationRequest.toString());
+        //롤아이디 관련 2025-07-08
+        newRegistrationRequest.setRoleNum(1); // 없으면 for문 안 돎
 
 
         User newUser = userService.createUser(newRegistrationRequest);

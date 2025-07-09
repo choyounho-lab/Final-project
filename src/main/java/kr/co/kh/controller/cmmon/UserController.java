@@ -36,7 +36,7 @@ public class UserController {
      */
     @GetMapping("/me")
     //2025-07-03
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+   @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "사용자 정보 확인")
     @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true)
     public ResponseEntity<?> getUserProfile(@CurrentUser CustomUserDetails currentUser) {

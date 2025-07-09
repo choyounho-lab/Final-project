@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.kh.exception.TokenRefreshException;
 import kr.co.kh.exception.UserLoginException;
 import kr.co.kh.exception.UserRegistrationException;
+import kr.co.kh.model.payload.request.EmailRequest;
 import kr.co.kh.model.payload.request.LoginRequest;
 import kr.co.kh.model.payload.request.RegistrationRequest;
 import kr.co.kh.model.payload.request.TokenRefreshRequest;
@@ -15,6 +16,7 @@ import kr.co.kh.model.payload.response.JwtAuthenticationResponse;
 import kr.co.kh.model.token.RefreshToken;
 import kr.co.kh.security.JwtTokenProvider;
 import kr.co.kh.service.AuthService;
+import kr.co.kh.service.MailService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,8 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtTokenProvider tokenProvider;
+
+    private final MailService mailService;
 
     /**
      * 이메일 사용여부 확인
@@ -71,7 +75,7 @@ public class AuthController {
 
         Authentication authentication = authService.authenticateUser(loginRequest)
                 .orElseThrow(() -> new UserLoginException("Couldn't login user [" + loginRequest + "]"));
-
+log.info(authentication.toString());
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         log.info("사용자 정보: {}", customUserDetails.getUsername());
 
@@ -123,6 +127,18 @@ public class AuthController {
         return authService.registerUser(request).map(user -> {
             return ResponseEntity.ok(new ApiResponse(true, "등록되었습니다."));
         }).orElseThrow(() -> new UserRegistrationException(request.getUsername(), "가입오류"));
+    }
+
+
+
+    @GetMapping("/mail")
+    public ResponseEntity<?> mail(@ModelAttribute EmailRequest emailRequest) {
+        log.info(emailRequest.toString());
+
+        // 인증번호 포함한 메일 전송 후 인증코드 리턴
+        String authCode = mailService.sendMimeMessage(emailRequest);
+
+        return ResponseEntity.ok(new ApiResponse(true, "인증번호가 전송되었습니다. 인증코드: " + authCode));
     }
 
 }
