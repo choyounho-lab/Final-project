@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.vo.PlaylistTrackVO;
+import kr.co.kh.model.vo.PlaylistVO;
 import kr.co.kh.service.PlaylistTrackService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,17 @@ public class PlaylistTrackController {
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 목록")
-    public ResponseEntity<?> selectPlaylistTrack(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistTrackVO playlistTrackVO) {
+    public ResponseEntity<?> selectPlaylistTrack(
+            @CurrentUser CustomUserDetails currentUser,
+            @RequestParam Long playlistId
+    ) {
+
+        PlaylistTrackVO playlistTrackVO = new PlaylistTrackVO();
+        playlistTrackVO.setPlaylistId(playlistId);
+
         log.info(playlistTrackVO.toString());
 
-        return ResponseEntity.ok(playlistTrackService.selectPlaylist(playlistTrackVO));
+        return ResponseEntity.ok(playlistTrackService.selectPlaylistTrack(playlistTrackVO));
     }
 
 
@@ -34,7 +42,16 @@ public class PlaylistTrackController {
     @ApiOperation(value = "개인 플레이리스트 트랙 추가")
     public ResponseEntity<?> addPlaylistTrack(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistTrackVO playlistTrackVO) {
         log.info(playlistTrackVO.toString());
-        playlistTrackService.insertPlaylist(playlistTrackVO);
+        playlistTrackService.insertPlaylistTrack(playlistTrackVO);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @DeleteMapping("/delete/{trackId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "개인 플레이리스트 트랙 삭제")
+    public ResponseEntity<?> deletePlaylistTrack(@PathVariable String trackId){
+        playlistTrackService.deletePlaylistTrack(trackId);
         return ResponseEntity.ok().build();
     }
 }

@@ -27,20 +27,33 @@
 
     <select id="selectPlaylistTrack" parameterType="PlaylistTrackVO" resultType="PlaylistTrackVO">
         SELECT
-            PLAYLIST_ID,
-            TRACK_ID,
-            TRACK_ORDER
-        FROM PLAYLIST_TRACK
+            pt.PLAYLIST_ID,
+            pt.TRACK_ID,
+            pt.TRACK_ORDER,
+            t.TRACK_NAME,
+            t.TRACK_ARTIST,
+            t.TRACK_DURATION,
+            t.RELEASE_DATE,
+            t.TRACK_IMAGE_URL
+        FROM PLAYLIST_TRACK pt
+        JOIN TRACK t ON pt.TRACK_ID = t.TRACK_ID
         <where>
             <if test="playlistId != null and playlistId != 0">
                 AND PLAYLIST_ID = #{playlistId}
             </if>
-            <if test="trackId != null and trackId != 0">
-                AND TRACK_ID = #{trackId}
+            <if test="trackId != null and trackId != ''">
+                AND pt.TRACK_ID = #{trackId}
             </if>
         </where>
     </select>
 
-
+    <delete id="deletePlaylistTrack" parameterType="PlaylistTrackVO" statementType="CALLABLE">
+        {
+            CALL DELETE_PLAYLIST_TRACK(
+                #{playlistId, mode=IN, jdbcType=NUMERIC},
+                #{trackId, mode=IN, jdbcType=VARCHAR}
+            )
+        }
+    </delete>
 
 </mapper>

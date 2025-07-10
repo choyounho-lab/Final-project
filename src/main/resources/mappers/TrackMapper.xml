@@ -2,19 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.kh.mapper.TrackMapper">
 
-<!--    <insert id="insertTrack" parameterType="TrackVO" statementType="CALLABLE" >-->
-<!--        {-->
-<!--            CALL INSERT_TRACK(-->
-<!--                #{userId, mode=IN, jdbcType=NUMERIC},-->
-<!--                #{, mode=IN, jdbcType=VARCHAR},-->
-<!--                #{, mode=IN, jdbcType=NUMERIC},-->
-<!--                #{resultMsg, mode=OUT, jdbcType=VARCHAR},-->
-<!--                #{trackId, mode=OUT, jdbcType=NUMERIC}-->
-<!--            )-->
-<!--        }-->
-<!--    </insert>-->
 
+    <select id="selectTrack" resultType="TrackVO" parameterType="TrackVO">
+        SELECT
+            TRACK_ID,
+            TRACK_NAME,
+            TRACK_ARTIST,
+            TRACK_DURATION,
+            RELEASE_DATE,
+            TRACK_IMAGE_URL
+        FROM TRACK
+            <where>
+                <if test="trackId != null and trackId != ''">
+                    TRACK_ID = #{trackId}
+                </if>
+            </where>
+        ;
+    </select>
 
-
+    <insert id="insertTrack" parameterType="TrackVO" statementType="CALLABLE">
+        {
+            CALL INSERT_TRACK(
+                #{trackId, mode=IN, jdbcType=VARCHAR},
+                #{trackName, mode=IN, jdbcType=VARCHAR},
+                #{artists, mode=IN, jdbcType=VARCHAR},
+                #{trackDuration, mode=IN, jdbcType=NUMERIC},
+                #{releaseDate, mode=IN, jdbcType=TIMESTAMP},
+                #{trackImageUrl, mode=IN, jdbcType=VARCHAR},
+                #{resultMsg, mode=OUT, jdbcType=VARCHAR}
+            )
+        }
+    </insert>
 
 </mapper>
