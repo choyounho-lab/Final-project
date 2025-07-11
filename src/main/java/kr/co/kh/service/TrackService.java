@@ -22,4 +22,12 @@ public class TrackService {
     public void insertTrack(TrackVO trackVO) {
         trackMapper.insertTrack(trackVO);
     }
+
+    public List<TrackVO> selectTrackPlayDate(TrackVO trackVO) {
+        return trackMapper.selectTrackPlayDate(trackVO);
+    };
+
+    public void insertTrackPlayDate(TrackVO trackVO) {
+        trackMapper.insertTrackPlayDate(trackVO);
+    }
 }

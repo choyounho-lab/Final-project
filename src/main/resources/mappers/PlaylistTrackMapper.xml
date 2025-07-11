@@ -24,8 +24,19 @@
 <!--            #{trackOrder}-->
 <!--        )-->
 <!--    </insert>-->
+    <resultMap id="playlistTrackMap" type="PlaylistTrackVO">
+        <result property="playlistId" column="PLAYLIST_ID" />
+        <result property="trackId" column="TRACK_ID" />
+        <result property="trackOrder" column="TRACK_ORDER" />
+        <result property="playlistTrackCreateDate" column="PLAYLIST_TRACK_CREATE_DATE" />
+        <result property="trackName" column="TRACK_NAME" />
+        <result property="artists" column="TRACK_ARTIST" />
+        <result property="trackDuration" column="TRACK_DURATION" />
+        <result property="releaseDate" column="RELEASE_DATE" />
+        <result property="trackImageUrl" column="TRACK_IMAGE_URL" />
+    </resultMap>
 
-    <select id="selectPlaylistTrack" parameterType="PlaylistTrackVO" resultType="PlaylistTrackVO">
+    <select id="selectPlaylistTrack" parameterType="PlaylistTrackVO" resultMap="playlistTrackMap">
         SELECT
             pt.PLAYLIST_ID,
             pt.TRACK_ID,
@@ -40,11 +51,12 @@
         JOIN TRACK t ON pt.TRACK_ID = t.TRACK_ID
         <where>
             <if test="playlistId != null and playlistId != 0">
-                AND PLAYLIST_ID = #{playlistId}
+                pt.PLAYLIST_ID = #{playlistId}
             </if>
             <if test="trackId != null and trackId != ''">
-                AND pt.TRACK_ID = #{trackId}
+                pt.TRACK_ID = #{trackId}
             </if>
+
         </where>
     </select>
 

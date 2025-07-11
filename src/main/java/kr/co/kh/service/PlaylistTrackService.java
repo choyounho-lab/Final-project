@@ -17,7 +17,7 @@ public class PlaylistTrackService {
 
     private final PlaylistTrackMapper playlistTrackMapper;
 
-    public List<PlaylistVO> selectPlaylistTrack(PlaylistTrackVO playlistTrackVO){
+    public List<PlaylistTrackVO> selectPlaylistTrack(PlaylistTrackVO playlistTrackVO){
         return playlistTrackMapper.selectPlaylistTrack(playlistTrackVO);
     }
     public void insertPlaylistTrack(PlaylistTrackVO playlistTrackVO) {

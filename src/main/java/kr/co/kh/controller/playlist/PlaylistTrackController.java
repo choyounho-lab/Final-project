@@ -22,16 +22,13 @@ public class PlaylistTrackController {
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 목록")
-    public ResponseEntity<?> selectPlaylistTrack(
+    public ResponseEntity<?> PlaylistTrackList(
             @CurrentUser CustomUserDetails currentUser,
             @RequestParam Long playlistId
     ) {
-
         PlaylistTrackVO playlistTrackVO = new PlaylistTrackVO();
         playlistTrackVO.setPlaylistId(playlistId);
-
         log.info(playlistTrackVO.toString());
-
         return ResponseEntity.ok(playlistTrackService.selectPlaylistTrack(playlistTrackVO));
     }
 

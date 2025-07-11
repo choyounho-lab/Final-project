@@ -9,4 +9,6 @@ import java.util.List;
 public interface TrackMapper {
     List<TrackVO> selectTrack(TrackVO trackVO);
     void insertTrack(TrackVO trackVO);
+    List<TrackVO> selectTrackPlayDate(TrackVO trackVO);
+    void insertTrackPlayDate(TrackVO trackVO);
 }

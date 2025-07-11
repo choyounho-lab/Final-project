@@ -33,4 +33,26 @@
         }
     </insert>
 
+    <select id="selectTrackPlayDate" parameterType="TrackVO" resultType="TrackVO">
+        SELECT
+            USER_ID,
+            TRACK_ID,
+            PLAY_DATE
+        FROM TRACK_PLAY_DATE tpd
+        JOIN TRACK t ON tpd.TRACK_ID = t.TRACK_ID
+        JOIN USERS u ON u.USER_ID = tpd.USER_ID
+        WHERE tpd.USER_ID = #{userId} AND dpt.TRACK_ID = #{trackId}
+        ORDER BY PLAY_DATE DESC
+    </select>
+    <insert id="insertTrackPlayDate" parameterType="TrackVO">
+        INSERT INTO TRACK_PLAY_DATE (
+            USER_ID,
+            TRACK_ID
+        )
+        VALUES (
+            #{userId},
+            #{trackId}
+        )
+    </insert>
+
 </mapper>

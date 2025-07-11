@@ -19,4 +19,6 @@ public class TrackVO {
     private LocalDate releaseDate;
     private String trackImageUrl;
     private String resultMsg;
+    private Long userId;
+    private LocalDate playDate;
 }

@@ -3,6 +3,8 @@ package kr.co.kh.controller.playlist;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
+import kr.co.kh.annotation.CurrentUser;
+import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.vo.TrackVO;
 import kr.co.kh.service.TrackService;
 import lombok.AllArgsConstructor;
@@ -35,4 +37,16 @@ public class TrackController {
         trackService.insertTrack(trackVO);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/save/date")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "재생한 트랙날짜 DB에 추가")
+    public ResponseEntity<?> insertTrackPlayDate(
+            @CurrentUser CustomUserDetails currentUser,
+            @RequestBody TrackVO trackVO) {
+        trackVO.setUserId(currentUser.getId());
+        trackService.insertTrackPlayDate(trackVO);
+        return ResponseEntity.ok().build();
+    }
+
 }
