@@ -3,18 +3,23 @@ package kr.co.kh.controller.admin;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.payload.request.BoardDeleteRequest;
 import kr.co.kh.model.payload.request.BoardRequest;
 import kr.co.kh.model.payload.response.ApiResponse;
+import kr.co.kh.model.vo.CommentsVO;
 import kr.co.kh.model.vo.SearchHelper;
 import kr.co.kh.service.BoardService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/board")
@@ -34,7 +39,7 @@ public class BoardController {
     @ApiOperation(value = "게시물 목록 조회")
     @ApiImplicitParam(name = "request", value = "검색 객체", dataType = "SearchHelper", dataTypeClass = SearchHelper.class, required = true)
     public ResponseEntity<?> boardList(
-        @ModelAttribute SearchHelper request
+            @ModelAttribute SearchHelper request
     ) {
         log.info(request.toString());
         return ResponseEntity.ok(boardService.selectBoard(request));
@@ -87,4 +92,120 @@ public class BoardController {
         return ResponseEntity.ok(new ApiResponse(true, "삭제 되었습니다."));
     }
 
+//    ==============================================================================
+//    메인화면단 EventController
+    /**
+     * 현재 사용자의 프로필 리턴
+     * @param request
+     * @return
+     */
+    // 이벤트 리스트 페이지
+    @GetMapping("/eventList")
+    @ApiOperation(value = "이벤트 목록 조회")
+    @ApiImplicitParam(name = "request", value = "검색 객체", dataType = "SearchHelper", dataTypeClass = SearchHelper.class, required = true)
+    public ResponseEntity<?> EventList(@ModelAttribute SearchHelper request) {
+        // 예: 이벤트 서비스에서 목록 조회
+
+        return ResponseEntity.ok(boardService.selectEvent(request));  // JSON으로 반환
+//        return ResponseEntity.ok(boardService.selectEvent(request));  // JSON으로 반환
+    }
+
+    @GetMapping("/eventDetail/{eventId}")
+    @ApiOperation(value = "이벤트 세부정보 조회")
+    public ResponseEntity<?> getEventDetail(@ApiParam(value = "이벤트 ID", required = true)@PathVariable Long eventId) {
+        log.info("이벤트 ID: {}", eventId);
+
+        return ResponseEntity.ok(boardService.selectEventDetail(eventId));  // 서비스에 eventId 전달
+    }
+
+
+    @PostMapping("/apply")
+    public ResponseEntity<String> applyForEvent()
+//            @RequestBody EventApplicationRequest request
+    {
+        // 요청 바디에서 userId와 eventId를 받음
+//        Long userId = request.getUserId();
+
+        // 이벤트 신청 처리 로직 (예: DB에 신청 정보 저장)
+//        boolean isSuccess = eventService.applyForEvent(userId, eventId);
+
+//        if (isSuccess) {
+//            return ResponseEntity.ok("신청 성공");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("신청 실패");
+//        }
+        return null;
+    }
+
+
+    //    ==============================================================================
+    //    메인화면단 NoticeController
+
+    /**
+     * 현재 사용자의 프로필 리턴
+     * @param request
+     * @return
+     */
+    // 공지사항 리스트 페이지
+    @GetMapping("/noticeList")
+    @ApiOperation(value = "공지사항 목록 조회")
+    @ApiImplicitParam(name = "request", value = "검색 객체", dataType = "SearchHelper", dataTypeClass = SearchHelper.class, required = true)
+    public ResponseEntity<?> NoticeList(@ModelAttribute SearchHelper request) {
+        // 예: 공지사항 서비스에서 목록 조회
+
+        log.info("테스트중");
+//        List<NoticeVO> noticeList =
+        return ResponseEntity.ok(boardService.selectNotices(request));  // JSON으로 반환
+    }
+
+
+    //    ==============================================================================
+    //    메인화면단 CommentsController
+
+    // 댓글 추가
+    @PostMapping("/comment")
+    @ApiOperation(value = "댓글 등록", notes = "새로운 댓글을 생성하여 데이터베이스에 저장합니다.")
+    public ResponseEntity<?> addComment(
+            @ApiParam(value = "등록할 댓글 정보", required = true) @RequestBody CommentsVO commentsVO) {
+        try {
+            log.info("새 댓글 등록 요청: {}", commentsVO);
+            CommentsVO savedComment = boardService.addComment(commentsVO);
+            return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
+        } catch (Exception e) {
+            log.error("댓글 등록 중 오류 발생", e);
+            return new ResponseEntity<>("댓글 등록에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // 댓글 목록 조회
+    @GetMapping("/comments/list")
+    @ApiOperation(value = "댓글 목록 조회", notes = "특정 대상에 달린 댓글 목록을 조회합니다.")
+    public ResponseEntity<?> getComments(
+            @ApiParam(value = "대상 유형 (예: ALBUM, NOTICE)", required = true) @RequestParam String targetType,
+            @ApiParam(value = "대상 ID", required = true) @RequestParam String targetId) {
+        try {
+            log.info("댓글 목록 조회 요청: targetType={}, targetId={}", targetType, targetId);
+            List<CommentsVO> comments = boardService.getCommentsByTarget(targetType, targetId);
+            return ResponseEntity.ok(comments);
+//            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            log.error("댓글 목록 조회 중 오류 발생", e);
+            return new ResponseEntity<>("댓글 목록을 불러오는 데 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    // 댓글 삭제
+    @DeleteMapping("/comment/{commentId}")
+    @ApiOperation(value = "댓글 삭제", notes = "특정 댓글을 삭제합니다.")
+    public ResponseEntity<?> deleteComment(
+            @ApiParam(value = "삭제할 댓글 ID", required = true) @PathVariable Long commentId) {
+        try {
+            log.info("댓글 삭제 요청: commentId={}", commentId);
+            boardService.deleteComment(commentId);
+            return ResponseEntity.ok("댓글이 삭제되었습니다.");
+        } catch (Exception e) {
+            log.error("댓글 삭제 중 오류 발생", e);
+            return new ResponseEntity<>("댓글 삭제에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

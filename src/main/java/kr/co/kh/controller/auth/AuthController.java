@@ -129,8 +129,6 @@ log.info(authentication.toString());
         }).orElseThrow(() -> new UserRegistrationException(request.getUsername(), "가입오류"));
     }
 
-
-
     @GetMapping("/mail")
     public ResponseEntity<?> mail(@ModelAttribute EmailRequest emailRequest) {
         log.info(emailRequest.toString());

@@ -4,13 +4,12 @@ import kr.co.kh.exception.BadRequestException;
 import kr.co.kh.exception.NotFoundException;
 import kr.co.kh.mapper.BoardMapper;
 import kr.co.kh.model.CustomUserDetails;
+import kr.co.kh.model.EventDetailResponse;
 import kr.co.kh.model.payload.request.BoardDeleteRequest;
 import kr.co.kh.model.payload.request.BoardRequest;
 import kr.co.kh.model.payload.request.FileDeleteRequest;
-import kr.co.kh.model.vo.BoardVO;
-import kr.co.kh.model.vo.FileMap;
-import kr.co.kh.model.vo.SearchHelper;
-import kr.co.kh.model.vo.UploadFile;
+import kr.co.kh.model.vo.*;
+import kr.co.kh.repository.CommentRepository;
 import kr.co.kh.service.BoardService;
 import kr.co.kh.service.FileMapService;
 import kr.co.kh.service.UploadFileService;
@@ -29,6 +28,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardMapper boardMapper;
     private final UploadFileService uploadFileService;
     private final FileMapService fileMapService;
+    private final CommentRepository commentRepository;
 
     /**
      * 게시물 목록 + 카운트
@@ -157,6 +157,95 @@ public class BoardServiceImpl implements BoardService {
                 }
             }
         }
+    }
+
+//    ==============================================================================
+//    메인화면단 EventService
+
+    /**
+     * 게시물 목록 + 카운트
+     * @param searchHelper
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> selectEvent(SearchHelper searchHelper) {
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        float totalElements = (float) boardMapper.countEvent(searchHelper);
+
+        resultMap.put("list", boardMapper.selectEventWithPrizes(searchHelper));
+        resultMap.put("totalElements", totalElements);
+        resultMap.put("size", searchHelper.getSize());
+        resultMap.put("currentPage", Math.ceil((double) searchHelper.getPage() / searchHelper.getSize()) + 1);
+        resultMap.put("totalPages", Math.ceil(totalElements / searchHelper.getSize()));
+        resultMap.put("last", searchHelper.getPage() >= searchHelper.getSize());
+
+        return resultMap;
+    }
+
+    @Override
+    public EventDetailResponse selectEventDetail(Long eventId) {
+        // Mapper에서 VO로 받아오기
+        EventDetailResponse response = boardMapper.selectEventDetail(eventId);
+        // 결과 없을 경우 예외 처리 (선택사항)
+        if (response == null) {
+            throw new IllegalArgumentException("해당 이벤트가 존재하지 않습니다.");
+        }
+
+        // VO → DTO 수동 매핑 (필요한 필드만 전달)
+        return response;
+    }
+
+
+//    ==============================================================================
+//    메인화면단 NoticeService
+
+
+    /**
+     * 게시물 목록 + 카운트
+     * @param searchHelper
+     * @return
+     */
+    @Override
+    public HashMap<String, Object> selectNotices(SearchHelper searchHelper) {
+        HashMap<String, Object> resultMap = new HashMap<>();
+
+        float totalElements = (float) boardMapper.countBoard(searchHelper);
+
+        resultMap.put("list", boardMapper.selectNotices(searchHelper));
+        resultMap.put("totalElements", totalElements);
+        resultMap.put("size", searchHelper.getSize());
+        resultMap.put("currentPage", Math.ceil((double) searchHelper.getPage() / searchHelper.getSize()) + 1);
+        resultMap.put("totalPages", Math.ceil(totalElements / searchHelper.getSize()));
+        resultMap.put("last", searchHelper.getPage() >= searchHelper.getSize());
+
+        return resultMap;
+    }
+
+
+
+
+    //    ==============================================================================
+//    메인화면단 CommentService
+
+
+    // 댓글 추가
+    @Override
+    public CommentsVO addComment(CommentsVO commentsVO) {
+        boardMapper.insertComment(commentsVO);  // Mapper를 통해 댓글 추가
+        return commentsVO;  // 저장된 댓글 객체를 반환
+    }
+
+    // 댓글 목록 조회
+    @Override
+    public List<CommentsVO> getCommentsByTarget(String targetType, String targetId) {
+        return boardMapper.selectCommentsByTarget(targetType, targetId);  // Mapper를 통해 댓글 목록 조회
+    }
+
+    // 댓글 삭제
+    @Override
+    public void deleteComment(Long commentId) {
+        boardMapper.deleteComment(commentId);  // Mapper를 통해 댓글 삭제
     }
 
 }

@@ -1,4 +1,4 @@
-package kr.co.kh.controller.event;
+package kr.co.kh.controller.Board;
 
 
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,7 +30,6 @@ public class EventController {
     public ResponseEntity<?> EventList(@ModelAttribute SearchHelper request) {
         // 예: 이벤트 서비스에서 목록 조회
 
-        log.info("테스트중");
         return ResponseEntity.ok(eventService.selectEvent(request));  // JSON으로 반환
     }
 
