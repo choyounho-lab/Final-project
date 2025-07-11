@@ -22,7 +22,7 @@ public class TrackController {
 
     private final TrackService trackService;
 
-    @GetMapping
+    @GetMapping("list")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "트랙 목록")
     public ResponseEntity<?> selectTrack(@RequestBody TrackVO trackVO){
@@ -38,6 +38,17 @@ public class TrackController {
         return ResponseEntity.ok().build();
     }
 
+
+
+    @GetMapping("/list/date")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "트랙 날짜 목록")
+    public ResponseEntity<?> selectTrackListDate(@RequestBody TrackVO trackVO){
+        log.info(trackService.selectTrackPlayDate(trackVO).toString());
+        return ResponseEntity.ok(trackService.selectTrackPlayDate(trackVO));
+    }
+
+
     @PostMapping("/save/date")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "재생한 트랙날짜 DB에 추가")
@@ -48,5 +59,6 @@ public class TrackController {
         trackService.insertTrackPlayDate(trackVO);
         return ResponseEntity.ok().build();
     }
+
 
 }
