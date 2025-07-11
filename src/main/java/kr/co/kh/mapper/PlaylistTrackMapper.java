@@ -10,5 +10,5 @@ import java.util.List;
 public interface PlaylistTrackMapper {
     List<PlaylistVO> selectPlaylistTrack(PlaylistTrackVO playlistTrackVO);
     void insertPlaylistTrack(PlaylistTrackVO playlistTrackVO);
-    void deletePlaylistTrack(String  TrackId);
+    void deletePlaylistTrack(PlaylistTrackVO playlistTrackVO);
 }

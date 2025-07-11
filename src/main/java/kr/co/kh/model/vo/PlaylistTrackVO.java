@@ -15,6 +15,7 @@ public class PlaylistTrackVO {
     private Long playlistId;
     private String trackId;
     private Long trackOrder;
+    private LocalDate playlistTrackCreateDate;
     private String trackName;
     private String artists;
     private Long trackDuration;

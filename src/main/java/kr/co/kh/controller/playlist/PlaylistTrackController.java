@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.vo.PlaylistTrackVO;
-import kr.co.kh.model.vo.PlaylistVO;
 import kr.co.kh.service.PlaylistTrackService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +46,14 @@ public class PlaylistTrackController {
     }
 
 
-    @DeleteMapping("/delete/{trackId}")
+    @DeleteMapping("/delete/playlist/{playlistId}/track/{trackId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 삭제")
-    public ResponseEntity<?> deletePlaylistTrack(@PathVariable String trackId){
-        playlistTrackService.deletePlaylistTrack(trackId);
+    public ResponseEntity<?> deletePlaylistTrack(@PathVariable String trackId, @PathVariable Long playlistId){
+        PlaylistTrackVO playlistTrackVO = new PlaylistTrackVO();
+        playlistTrackVO.setTrackId(trackId);
+        playlistTrackVO.setPlaylistId(playlistId);
+        playlistTrackService.deletePlaylistTrack(playlistTrackVO);
         return ResponseEntity.ok().build();
     }
 }

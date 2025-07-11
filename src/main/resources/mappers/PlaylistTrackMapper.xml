@@ -2,34 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.kh.mapper.PlaylistTrackMapper">
 
-<!--    <insert id="insertPlaylistTrack" parameterType="PlaylistTrackVO" statementType="CALLABLE" >-->
-<!--        {-->
-<!--            CALL INSERT_PLAYLIST_TRACK(-->
-<!--                #{playlistId, mode=IN, jdbcType=NUMERIC},-->
-<!--                #{trackId, mode=IN, jdbcType=VARCHAR},-->
-<!--                #{trackOrder, mode=IN, jdbcType=NUMERIC},-->
-<!--                #{resultMsg, mode=OUT, jdbcType=VARCHAR},-->
-<!--            )-->
-<!--        }-->
-<!--    </insert>-->
-    <insert id="insertPlaylistTrack" parameterType="PlaylistTrackVO" useGeneratedKeys="false">
-        INSERT INTO PLAYLIST_TRACK (
-            PLAYLIST_ID,
-            TRACK_ID,
-            TRACK_ORDER
-        )
-        VALUES (
-            #{playlistId},
-            #{trackId},
-            #{trackOrder}
-        )
+    <insert id="insertPlaylistTrack" parameterType="PlaylistTrackVO" statementType="CALLABLE" >
+        {
+            CALL INSERT_PLAYLIST_TRACK(
+                #{playlistId, mode=IN, jdbcType=NUMERIC},
+                #{trackId, mode=IN, jdbcType=VARCHAR},
+                #{trackOrder, mode=IN, jdbcType=NUMERIC},
+                #{resultMsg, mode=OUT, jdbcType=VARCHAR}
+            )
+        }
     </insert>
+<!--    <insert id="insertPlaylistTrack" parameterType="PlaylistTrackVO" useGeneratedKeys="false">-->
+<!--        INSERT INTO PLAYLIST_TRACK (-->
+<!--            PLAYLIST_ID,-->
+<!--            TRACK_ID,-->
+<!--            TRACK_ORDER-->
+<!--        )-->
+<!--        VALUES (-->
+<!--            #{playlistId},-->
+<!--            #{trackId},-->
+<!--            #{trackOrder}-->
+<!--        )-->
+<!--    </insert>-->
 
     <select id="selectPlaylistTrack" parameterType="PlaylistTrackVO" resultType="PlaylistTrackVO">
         SELECT
             pt.PLAYLIST_ID,
             pt.TRACK_ID,
             pt.TRACK_ORDER,
+            pt.PLAYLIST_TRACK_CREATE_DATE,
             t.TRACK_NAME,
             t.TRACK_ARTIST,
             t.TRACK_DURATION,
@@ -51,7 +52,8 @@
         {
             CALL DELETE_PLAYLIST_TRACK(
                 #{playlistId, mode=IN, jdbcType=NUMERIC},
-                #{trackId, mode=IN, jdbcType=VARCHAR}
+                #{trackId, mode=IN, jdbcType=VARCHAR},
+                #{resultMsg, mode=OUT, jdbcType=VARCHAR}
             )
         }
     </delete>

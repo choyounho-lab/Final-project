@@ -24,7 +24,7 @@ public class PlaylistTrackService {
         playlistTrackMapper.insertPlaylistTrack(playlistTrackVO);
     }
 
-    public void deletePlaylistTrack(String TrackId) {
-        playlistTrackMapper.deletePlaylistTrack(TrackId);
+    public void deletePlaylistTrack(PlaylistTrackVO playlistTrackVO) {
+        playlistTrackMapper.deletePlaylistTrack(playlistTrackVO);
     }
 }
