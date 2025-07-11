@@ -61,7 +61,7 @@ public class MailService {
 
 
                 sb.append("<div style=\"margin:100px;\">");
-                sb.append("<h1> Yeogiska 회원가입 인증번호 </h1>");
+                sb.append("<h1> Echocaine 회원가입 인증번호 </h1>");
                 sb.append("<div align=\"center\" style=\"border:1px solid black; padding:20px;\">");
                 sb.append("<h3> </h3>");
 

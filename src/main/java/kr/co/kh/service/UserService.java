@@ -37,6 +37,8 @@ public class UserService {
     private final RoleService roleService;
     private final UserDeviceService userDeviceService;
     private final RefreshTokenService refreshTokenService;
+    private final UserAuthorityService userAuthorityService;
+
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -107,11 +109,13 @@ public class UserService {
         newUser.setEmail(registerRequest.getEmail());
         newUser.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         newUser.setUsername(registerRequest.getUsername());
-        newUser.setActive(false);
+        newUser.setActive(true);
         newUser.setEmailVerified(true);
         newUser.setName(registerRequest.getName());
         //2025-07-07 조윤호
         newUser.setRoleNo(1L);
+        newUser.setBirthDate(registerRequest.getBirthDate());
+        newUser.setGender(registerRequest.getUserGender());
         return newUser;
     }
 
@@ -314,5 +318,26 @@ public class UserService {
         } else {
             throw new BadRequestException("잘못된 요청입니다.");
         }
+    }
+
+
+    //이름과 이메일로 비밀번호 찾기
+    public Optional<User> findByNameAndEmail(String name, String email) {
+        return userRepository.findByNameAndEmail(name, email);
+    }
+
+
+    // 이름과 생년월일로 아이디 찾기
+    public HashMap<String, Object> findByNameAndBirthDate(String name, String birthDate) {
+        HashMap<String, Object> requestMap = new HashMap<>();
+        requestMap.put("name", name);
+        requestMap.put("birthDate", birthDate);
+        HashMap<String, Object> result = userAuthorityService.findByNameAndBirthDate(requestMap);
+        log.info(result.toString());
+        return result;
+    }
+
+
+    public void resetPassword(HashMap<String, Object> paramMap) {
     }
 }

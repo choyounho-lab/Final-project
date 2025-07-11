@@ -1,30 +1,36 @@
 package kr.co.kh.controller.auth;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import kr.co.kh.exception.TokenRefreshException;
 import kr.co.kh.exception.UserLoginException;
 import kr.co.kh.exception.UserRegistrationException;
-import kr.co.kh.model.payload.request.EmailRequest;
-import kr.co.kh.model.payload.request.LoginRequest;
-import kr.co.kh.model.payload.request.RegistrationRequest;
-import kr.co.kh.model.payload.request.TokenRefreshRequest;
+import kr.co.kh.model.User;
+import kr.co.kh.model.payload.request.*;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.payload.response.ApiResponse;
 import kr.co.kh.model.payload.response.JwtAuthenticationResponse;
 import kr.co.kh.model.token.RefreshToken;
+import kr.co.kh.repository.UserRepository;
 import kr.co.kh.security.JwtTokenProvider;
 import kr.co.kh.service.AuthService;
 import kr.co.kh.service.MailService;
+import kr.co.kh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -34,6 +40,10 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtTokenProvider tokenProvider;
+
+    private final UserService userService;
+
+
 
     private final MailService mailService;
 
@@ -139,4 +149,83 @@ log.info(authentication.toString());
         return ResponseEntity.ok(new ApiResponse(true, "인증번호가 전송되었습니다. 인증코드: " + authCode));
     }
 
+
+
+
+    // AuthController.java
+    @GetMapping("/find-id")
+    public ResponseEntity<?> findId(@RequestParam String name, @RequestParam String birthDate) {
+        System.out.println("요청 들어옴 name: " + name + ", birthDate: " + birthDate); // 👈 이거 찍어봐
+
+
+        HashMap<String, Object> userOpt = userService.findByNameAndBirthDate(name, birthDate);
+        log.info(userOpt.toString());
+        if (userOpt != null) {
+            System.out.println("찾음! 이메일: " + userOpt.get("EMAIL")); // 👈 이것도 찍기
+            return ResponseEntity.ok(userOpt.get("EMAIL"));
+        } else {
+            System.out.println("못 찾음");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        }
+
+
+
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> handlePasswordReset(@RequestBody Map<String, Object> payload, HttpSession session) {
+        String step = (String) payload.get("step");
+        String name = (String) payload.get("name");
+        String email = (String) payload.get("email");
+
+        switch (step) {
+
+            case "send": {
+                Optional<User> user = userService.findByNameAndEmail(name, email);
+                if (user == null || user.isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 사용자가 없습니다.");
+                }
+                String code = authService.sendVerificationCode(email);
+                session.setAttribute("verifyCode:" + email, code);
+                return ResponseEntity.ok("인증번호 전송 완료");
+            }
+
+            case "verify": {
+                String inputCode = (String) payload.get("code");
+                String realCode = (String) session.getAttribute("verifyCode:" + email);
+                if (realCode == null || !realCode.equals(inputCode)) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증번호 불일치");
+                }
+                session.setAttribute("verified:" + email, true);
+                return ResponseEntity.ok("인증 성공");
+            }
+
+            case "change": {
+                String newPassword = (String) payload.get("newPassword");
+                Boolean verified = (Boolean) session.getAttribute("verified:" + email);
+                if (verified == null || !verified) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 인증이 필요합니다.");
+                }
+
+                HashMap<String, Object> paramMap = new HashMap<>();
+                paramMap.put("name", name);
+                paramMap.put("email", email);
+                EchoEncoder<String> passwordEncoder = new EchoEncoder<>();
+                paramMap.put("password", passwordEncoder.encode(newPassword));
+
+                userService.resetPassword(paramMap);
+
+                // 인증 정보 초기화
+                session.removeAttribute("verified:" + email);
+                session.removeAttribute("verifyCode:" + email);
+
+                return ResponseEntity.ok("비밀번호 변경 완료");
+            }
+
+            default:
+                return ResponseEntity.badRequest().body("올바르지 않은 요청 단계입니다.");
+        }
+
+
+    }
 }

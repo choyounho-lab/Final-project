@@ -9,11 +9,21 @@ CREATE OR REPLACE PROCEDURE INSERT_PLAYLIST(
 IS
 	v_cnt NUMBER;
 BEGIN
-	SELECT COUNT(*) INTO v_cnt FROM PLAYLIST
-		WHERE USER_ID = p_userId;
-	IF v_cnt > 10 THEN
-		RAISE_APPLICATION_ERROR(-20000, 'PLAYLIST_TITLE이 중복됩니다.');
-	END IF;
+	 -- 제목 중복 체크
+      SELECT COUNT(*) INTO v_cnt FROM PLAYLIST
+      WHERE USER_ID = p_userId AND PLAYLIST_TITLE = p_playlistTitle;
+
+      IF v_cnt > 0 THEN
+        RAISE_APPLICATION_ERROR(-20000, '이미 동일한 제목의 플레이리스트가 존재합니다.');
+      END IF;
+
+      -- 사용자당 10개 이하 제한 (선택적으로 포함)
+      SELECT COUNT(*) INTO v_cnt FROM PLAYLIST
+      WHERE USER_ID = p_userId;
+
+      IF v_cnt >= 10 THEN
+        RAISE_APPLICATION_ERROR(-20001, '사용자는 최대 10개의 플레이리스트만 생성할 수 있습니다.');
+      END IF;
 
 	INSERT INTO PLAYLIST(
 		USER_ID,

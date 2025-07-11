@@ -37,4 +37,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     //2025.07.03 조윤호
     @Query(value = "SELECT * FROM USERS WHERE email = :str OR username = :str", nativeQuery = true)
     Optional<User> findByUsernameOrEmail(String str);
+    //2025-07-10 비밀번호 찾기할때 이름과 이메일로
+    Optional<User> findByNameAndEmail(String name, String email);
+
+    // UserRepository.java
+    @Query(value = "SELECT u.* FROM USERS u WHERE u.NAME = :name AND u.BIRTH_DATE = :birthDate", nativeQuery = true)
+    Optional<User> findByNameAndBirthDate(@Param("name") String name, @Param("birthDate") String birthDate);
+
 }

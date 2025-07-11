@@ -38,11 +38,35 @@ public class User extends DateAudit {
     @NullOrNotBlank(message = "이름은 필수 항목입니다.")
     private String name;
 
+    //2025-07-09 윤호야 여기 손봐야한다(성공)
     @Column(name = "IS_ACTIVE", nullable = false)
     private Boolean active;
 
     @Column(name = "ROLE_NO")
     private Long roleNo;
+
+    //2025-07-09 조윤호 생년월일 성별 디비 정보 추가 작업 진행중
+    @Column(name = "BIRTH_DATE")
+    private String birthDate;
+
+    @Column(name = "USER_GENDER")
+    private String gender;
+
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "USER_AUTHORITY", joinColumns = {
@@ -66,6 +90,8 @@ public class User extends DateAudit {
         active = user.getActive();
         roles = user.getRoles();
         isEmailVerified = user.getEmailVerified();
+        birthDate = user.getBirthDate();
+        gender = user.getGender();
         //2025-07-07 조윤호
         roleNo = user.getRoleNo();
     }
