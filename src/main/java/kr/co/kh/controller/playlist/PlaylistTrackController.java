@@ -22,10 +22,14 @@ public class PlaylistTrackController {
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 목록")
-    public ResponseEntity<?> selectPlaylistTrack(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistTrackVO playlistTrackVO) {
+    public ResponseEntity<?> PlaylistTrackList(
+            @CurrentUser CustomUserDetails currentUser,
+            @RequestParam Long playlistId
+    ) {
+        PlaylistTrackVO playlistTrackVO = new PlaylistTrackVO();
+        playlistTrackVO.setPlaylistId(playlistId);
         log.info(playlistTrackVO.toString());
-
-        return ResponseEntity.ok(playlistTrackService.selectPlaylist(playlistTrackVO));
+        return ResponseEntity.ok(playlistTrackService.selectPlaylistTrack(playlistTrackVO));
     }
 
 
@@ -34,7 +38,19 @@ public class PlaylistTrackController {
     @ApiOperation(value = "개인 플레이리스트 트랙 추가")
     public ResponseEntity<?> addPlaylistTrack(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistTrackVO playlistTrackVO) {
         log.info(playlistTrackVO.toString());
-        playlistTrackService.insertPlaylist(playlistTrackVO);
+        playlistTrackService.insertPlaylistTrack(playlistTrackVO);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @DeleteMapping("/delete/playlist/{playlistId}/track/{trackId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "개인 플레이리스트 트랙 삭제")
+    public ResponseEntity<?> deletePlaylistTrack(@PathVariable String trackId, @PathVariable Long playlistId){
+        PlaylistTrackVO playlistTrackVO = new PlaylistTrackVO();
+        playlistTrackVO.setTrackId(trackId);
+        playlistTrackVO.setPlaylistId(playlistId);
+        playlistTrackService.deletePlaylistTrack(playlistTrackVO);
         return ResponseEntity.ok().build();
     }
 }

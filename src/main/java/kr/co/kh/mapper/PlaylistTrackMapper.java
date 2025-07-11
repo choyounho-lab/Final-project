@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface PlaylistTrackMapper {
-    List<PlaylistVO> selectPlaylistTrack(PlaylistTrackVO playlistTrackVO);
+    List<PlaylistTrackVO> selectPlaylistTrack(PlaylistTrackVO playlistTrackVO);
     void insertPlaylistTrack(PlaylistTrackVO playlistTrackVO);
     void deletePlaylistTrack(PlaylistTrackVO playlistTrackVO);
 }

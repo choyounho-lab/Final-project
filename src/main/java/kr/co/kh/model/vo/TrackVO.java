@@ -3,6 +3,8 @@ package kr.co.kh.model.vo;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Slf4j
@@ -10,11 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrackVO {
-    private Long trackId;
-    private Long albumId;
-    private String TrackTitle;
-    private Long TrackDuration;
-    private String TrackAudioUrl;
-    private String Lyrics;
-    private String TrackArtistName;
+    private String trackId;
+    private String trackName;
+    private String artists;
+    private Long trackDuration;
+    private LocalDate releaseDate;
+    private String trackImageUrl;
+    private String resultMsg;
+    private Long userId;
+    private LocalDate playDate;
 }

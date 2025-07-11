@@ -17,12 +17,14 @@ public class PlaylistTrackService {
 
     private final PlaylistTrackMapper playlistTrackMapper;
 
-    public List<PlaylistVO> selectPlaylist(PlaylistTrackVO playlistTrackVO){
+    public List<PlaylistTrackVO> selectPlaylistTrack(PlaylistTrackVO playlistTrackVO){
         return playlistTrackMapper.selectPlaylistTrack(playlistTrackVO);
     }
-    public void insertPlaylist(PlaylistTrackVO playlistTrackVO) {
+    public void insertPlaylistTrack(PlaylistTrackVO playlistTrackVO) {
         playlistTrackMapper.insertPlaylistTrack(playlistTrackVO);
     }
 
-    public void deletePlaylist(PlaylistTrackVO playlistTrackVO) {playlistTrackMapper.deletePlaylistTrack(playlistTrackVO);}
+    public void deletePlaylistTrack(PlaylistTrackVO playlistTrackVO) {
+        playlistTrackMapper.deletePlaylistTrack(playlistTrackVO);
+    }
 }
