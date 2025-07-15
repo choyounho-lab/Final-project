@@ -1,12 +1,14 @@
 package kr.co.kh.mapper;
 
 import kr.co.kh.model.User;
+import kr.co.kh.model.payload.request.EmailRequest;
 import kr.co.kh.model.payload.request.RegistrationRequest;
 import kr.co.kh.model.vo.UserAuthorityVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Mapper
 public interface UserAuthorityMapper {
@@ -20,4 +22,12 @@ public interface UserAuthorityMapper {
 
     User findByNameAndEmail(String name, String email);
     void resetPassword(Map<String, Object> paramMap);
+
+    HashMap<String, Object> selectAuthCodeByUserId (HashMap<String,Object> map);
+
+    void deleteAuthCodeByUserId(HashMap<String,Object> map);
+
+    void insertAuthCode(HashMap<String,Object> map);
+
+    Optional<User> selectUserByEmailAndName(EmailRequest emailRequest);
 }

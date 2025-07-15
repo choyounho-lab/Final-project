@@ -10,5 +10,6 @@ public class ResetPasswordRequest {
     private String name;
     private String email;
     private String newPassword;
+    private String confirmPassword; // ← 추가
 
 }

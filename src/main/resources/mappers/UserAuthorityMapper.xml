@@ -18,4 +18,33 @@
         WHERE NAME = #{name} AND BIRTH_DATE = #{birthDate}
     </select>
 
+    <update id="resetPassword" parameterType="kr.co.kh.model.User">
+        UPDATE USERS
+        SET PASSWORD = #{password}
+        WHERE NAME = #{name}
+        AND EMAIL = #{email}
+    </update>
+
+
+    <insert id="insertAuthCode" parameterType="HashMap">
+        INSERT INTO EMAIL_AUTH( USER_NAME, AUTH_CODE )
+        VALUES ( #{userName} , #{authCode})
+    </insert>
+
+    <select id="selectAuthCodeByUserId" parameterType="HashMap" resultType="HashMap">
+        SELECT *
+        FROM
+        EMAIL_AUTH
+        WHERE USER_NAME = #{userName}
+    </select>
+
+    <delete id="deleteAuthCodeByUserId" parameterType="HashMap" >
+        DELETE FROM EMAIL_AUTH WHERE USER_NAME = #{userName}
+    </delete>
+
+
+    <select id="selectUserByEmailAndName" resultType="kr.co.kh.model.User" parameterType="kr.co.kh.model.payload.request.EmailRequest">
+        SELECT * FROM USERS WHERE EMAIL = #{email} AND NAME = #{name}
+    </select>
+
 </mapper>

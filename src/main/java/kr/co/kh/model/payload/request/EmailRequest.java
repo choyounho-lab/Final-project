@@ -16,8 +16,11 @@ public class EmailRequest {
  private String mailType;
  private String userName;
  private String name;
- private  String passwordAuth;
+ private String passwordAuth;
  private String authCode;
+ private String email;
+ private String subject;
+ private String step;
 
  public String getEmail() {
      return this.mailTo;

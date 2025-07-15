@@ -3,6 +3,7 @@ package kr.co.kh.service;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.exception.BadRequestException;
 import kr.co.kh.exception.UserLogoutException;
+import kr.co.kh.mapper.UserAuthorityMapper;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.Role;
 import kr.co.kh.model.User;
@@ -321,10 +322,7 @@ public class UserService {
     }
 
 
-    //이름과 이메일로 비밀번호 찾기
-    public Optional<User> findByNameAndEmail(String name, String email) {
-        return userRepository.findByNameAndEmail(name, email);
-    }
+
 
 
     // 이름과 생년월일로 아이디 찾기
@@ -337,7 +335,13 @@ public class UserService {
         return result;
     }
 
+    //이름과 이메일인증으로 비번 재설정 하기
+    public Optional<User> findByNameAndEmail(String name, String email) {
+        return userRepository.findByNameAndEmail(name, email);
+    }
 
-    public void resetPassword(HashMap<String, Object> paramMap) {
+    public void resetPassword(Map<String, Object> paramMap) {
+        UserAuthorityMapper UserAuthorityMapper = null;
+        UserAuthorityMapper.resetPassword(paramMap);
     }
 }

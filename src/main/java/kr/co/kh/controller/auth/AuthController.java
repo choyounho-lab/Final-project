@@ -17,6 +17,7 @@ import kr.co.kh.repository.UserRepository;
 import kr.co.kh.security.JwtTokenProvider;
 import kr.co.kh.service.AuthService;
 import kr.co.kh.service.MailService;
+import kr.co.kh.service.UserAuthorityService;
 import kr.co.kh.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class AuthController {
 
     private final UserService userService;
 
-
+    private final UserAuthorityService userAuthorityService;
 
     private final MailService mailService;
 
@@ -140,26 +141,17 @@ log.info(authentication.toString());
     }
 
 
-
-    @GetMapping("/mail")
-    public ResponseEntity<?> mail(@ModelAttribute EmailRequest emailRequest) {
+    @PostMapping("/mail")
+    public ResponseEntity<?> mail(@RequestBody EmailRequest emailRequest) {
         log.info(emailRequest.toString());
-
         // 인증번호 포함한 메일 전송 후 인증코드 리턴
         String authCode = mailService.sendMimeMessage(emailRequest);
-
         return ResponseEntity.ok(new ApiResponse(true, "인증번호가 전송되었습니다. 인증코드: " + authCode));
     }
-
-
-
-
     // AuthController.java
     @GetMapping("/find-id")
     public ResponseEntity<?> findId(@RequestParam String name, @RequestParam String birthDate) {
         System.out.println("요청 들어옴 name: " + name + ", birthDate: " + birthDate); // 👈 이거 찍어봐
-
-
         HashMap<String, Object> userOpt = userService.findByNameAndBirthDate(name, birthDate);
         log.info(userOpt.toString());
         if (userOpt != null) {
@@ -169,65 +161,72 @@ log.info(authentication.toString());
             System.out.println("못 찾음");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
-
-
-
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> handlePasswordReset(@RequestBody Map<String, Object> payload, HttpSession session) {
-        String step = (String) payload.get("step");
-        String name = (String) payload.get("name");
-        String email = (String) payload.get("email");
+    public ResponseEntity<?> handlePasswordReset(@RequestBody EmailRequest request) {
 
-        switch (step) {
+        switch (request.getStep()) {
+         case "send":
+             mailService.sendMimeMessage(request);
+             break;
 
-            case "send": {
-                Optional<User> user = userService.findByNameAndEmail(name, email);
-                if (user == null || user.isEmpty()) {
-                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 사용자가 없습니다.");
-                }
-                String code = authService.sendVerificationCode(email);
-                session.setAttribute("verifyCode:" + email, code);
-                return ResponseEntity.ok("인증번호 전송 완료");
-            }
+         case "verify":
+             HashMap<String,Object> requestMap = new HashMap<>();
+             requestMap.put("userName" , request.getName());
+             requestMap.put("authCode", request.getAuthCode());
+             return ResponseEntity.ok(userAuthorityService.selectAuthCodeByUserId(requestMap));
 
-            case "verify": {
-                String inputCode = (String) payload.get("code");
-                String realCode = (String) session.getAttribute("verifyCode:" + email);
-                if (realCode == null || !realCode.equals(inputCode)) {
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인증번호 불일치");
-                }
-                session.setAttribute("verified:" + email, true);
-                return ResponseEntity.ok("인증 성공");
-            }
-
-            case "change": {
-                String newPassword = (String) payload.get("newPassword");
-                Boolean verified = (Boolean) session.getAttribute("verified:" + email);
-                if (verified == null || !verified) {
-                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 인증이 필요합니다.");
-                }
-
-                HashMap<String, Object> paramMap = new HashMap<>();
-                paramMap.put("name", name);
-                paramMap.put("email", email);
-                EchoEncoder<String> passwordEncoder = new EchoEncoder<>();
-                paramMap.put("password", passwordEncoder.encode(newPassword));
-
-                userService.resetPassword(paramMap);
-
-                // 인증 정보 초기화
-                session.removeAttribute("verified:" + email);
-                session.removeAttribute("verifyCode:" + email);
-
-                return ResponseEntity.ok("비밀번호 변경 완료");
-            }
-
-            default:
-                return ResponseEntity.badRequest().body("올바르지 않은 요청 단계입니다.");
-        }
+         case "change":
 
 
+
+
+
+             //첫번쨰 상황에서 보내기 상황의 버튼을 누르게 되면 메일서비스 안의 요청을 가져오레된다 두번째 상솽은 가져온 인증 번호가 유효한지 대조해보고
+         //맞다면 인증을 해준다
+         //세번쨰 상황은 디비정보가 맞고  이름이 동일하면 새로운 비밀번호 를 설정한다. 그러면 새로운 비밀번호가 생기면 그전 번호는 지워진다.
+     }
+//        switch (step) {
+//
+//            case "send": {
+//                Optional<User> user = userService.findByNameAndEmail(name, email);
+//                if (user == null || user.isEmpty()) {
+//                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("해당 사용자가 없습니다.");
+//                }
+//                String code = authService.sendVerificationCode(email);
+//
+//                return ResponseEntity.ok("인증번호 전송 완료");
+//            }
+//
+//            case "verify": {
+//                String inputCode = (String) payload.get("code");
+//
+//
+//                return ResponseEntity.ok("인증 성공");
+//            }
+//
+//            case "change": {
+//                String newPassword = (String) payload.get("newPassword");
+//
+//
+//                HashMap<String, Object> paramMap = new HashMap<>();
+//                paramMap.put("name", name);
+//                paramMap.put("email", email);
+//                EchoEncoder<String> passwordEncoder = new EchoEncoder<>();
+//                paramMap.put("password", passwordEncoder.encode(newPassword));
+//
+//                userService.resetPassword(paramMap);
+//
+//
+//
+//                return ResponseEntity.ok("비밀번호 변경 완료");
+//            }
+//
+//            default:
+//                return ResponseEntity.badRequest().body("올바르지 않은 요청 단계입니다.");
+//        }
+
+        return ResponseEntity.ok().build();
     }
 }
