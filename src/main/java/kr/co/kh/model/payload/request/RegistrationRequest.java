@@ -31,5 +31,5 @@ public class RegistrationRequest {
 
     private  String userGender;
 
-
+    
 }

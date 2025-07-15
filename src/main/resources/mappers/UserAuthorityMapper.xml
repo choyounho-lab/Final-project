@@ -9,7 +9,7 @@
 
     <insert id="insertUser" parameterType="kr.co.kh.model.User" useGeneratedKeys="true" keyColumn="USER_ID" keyProperty="id">
         INSERT INTO USERS (NAME, EMAIL, PASSWORD, USER_GENDER, BIRTH_DATE, CREATED_AT, IS_ACTIVE , is_EMAIL_VERIFIED , UPDATED_AT, ROLE_NO)
-        VALUES (#{name}, #{email}, #{password}, #{gender}, #{birthDate} , sysdate , 1  , 1 , sysdate , 1)
+        VALUES (#{name}, #{email}, #{password}, #{gender, jdbcType=VARCHAR}, #{birthDate, jdbcType=VARCHAR} , sysdate , 1  , 1 , sysdate , 1)
     </insert>
 
     <select id="findByNameAndBirthDate" parameterType="HashMap" resultType="HashMap">
