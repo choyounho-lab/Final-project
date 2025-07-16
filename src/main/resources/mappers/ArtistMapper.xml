@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kh.repository.ArtistRepository">
+
+    <resultMap id="artistResultMap" type="kr.co.kh.model.vo.ArtistVO">
+        <id property="artistId" column="ARTIST_ID"/>
+        <result property="entId" column="ENT_ID"/>
+        <result property="artistName" column="ARTIST_NAME"/>
+        <result property="artistBio" column="ARTIST_BIO"/>
+        <result property="debutDate" column="DEBUT_DATE"/>
+        <result property="profileImage" column="PROFILE_IMAGE"/>
+        <result property="artistExternalId" column="ARTIST_EXTERNAL_ID"/>
+    </resultMap>
+
+    <select id="selectArtistById" resultMap="artistResultMap">
+        SELECT
+        ARTIST_ID,
+        ENT_ID,
+        ARTIST_NAME,
+        ARTIST_BIO,
+        DEBUT_DATE,
+        PROFILE_IMAGE,
+        ARTIST_EXTERNAL_ID
+        FROM ARTIST
+        WHERE ARTIST_ID = #{artistId}
+    </select>
+
+    <select id="selectArtistByExternalId" resultMap="artistResultMap">
+        SELECT
+        ARTIST_ID,
+        ENT_ID,
+        ARTIST_NAME,
+        ARTIST_BIO,
+        DEBUT_DATE,
+        PROFILE_IMAGE,
+        ARTIST_EXTERNAL_ID
+        FROM ARTIST
+        WHERE ARTIST_EXTERNAL_ID = #{artistExternalId}
+    </select>
+
+    <insert id="insertArtist" parameterType="kr.co.kh.model.vo.ArtistVO">
+        INSERT INTO ARTIST (
+        ENT_ID,
+        ARTIST_NAME,
+        ARTIST_BIO,
+        DEBUT_DATE,
+        PROFILE_IMAGE,
+        ARTIST_EXTERNAL_ID
+        ) VALUES (
+        #{entId,jdbcType=NUMERIC},
+        #{artistName,jdbcType=VARCHAR},
+        #{artistBio,jdbcType=CLOB},
+        #{debutDate,jdbcType=TIMESTAMP},
+        #{profileImage,jdbcType=VARCHAR},
+        #{artistExternalId,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="selectAllArtists" resultMap="artistResultMap">
+        SELECT
+        ARTIST_ID,
+        ENT_ID,
+        ARTIST_NAME,
+        ARTIST_BIO,
+        DEBUT_DATE,
+        PROFILE_IMAGE,
+        ARTIST_EXTERNAL_ID
+        FROM ARTIST
+        ORDER BY ARTIST_NAME
+    </select>
+
+</mapper>

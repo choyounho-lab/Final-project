@@ -48,7 +48,15 @@
         }
     </insert>
 
-
+    <update id="updatePlaylist" statementType="CALLABLE" parameterType="PlaylistVO">
+        {
+            CALL UPDATE_PLAYLIST(
+                #{playlistId, mode=IN, jdbcType=NUMERIC},
+                #{playlistTitle, mode=IN, jdbcType=VARCHAR},
+                #{resultMsg, mode=OUT, jdbcType=VARCHAR}
+            )
+        }
+    </update>
 
     <delete id="deletePlaylist" statementType="CALLABLE" parameterType="PlaylistVO" >
         {

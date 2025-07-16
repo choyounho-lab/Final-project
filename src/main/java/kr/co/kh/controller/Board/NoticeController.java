@@ -1,25 +1,14 @@
-package kr.co.kh.controller.Notice;
+package kr.co.kh.controller.Board;
 
 
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import kr.co.kh.annotation.CurrentUser;
-import kr.co.kh.event.OnUserLogoutSuccessEvent;
-import kr.co.kh.model.CustomUserDetails;
-import kr.co.kh.model.payload.request.LogOutRequest;
-import kr.co.kh.model.payload.response.ApiResponse;
 import kr.co.kh.model.vo.SearchHelper;
 import kr.co.kh.service.NoticeService;
-import kr.co.kh.model.vo.NoticeVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/notice")

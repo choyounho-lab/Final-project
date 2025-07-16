@@ -11,4 +11,5 @@ public interface PlaylistMapper {
     List<PlaylistVO> selectPlaylist(PlaylistVO playlistVO);
     void insertPlaylist(PlaylistVO playlistVO);
     void deletePlaylist(PlaylistVO playlistVO);
+    void updatePlaylist(PlaylistVO playlistVO);
 }

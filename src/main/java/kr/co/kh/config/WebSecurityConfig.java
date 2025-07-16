@@ -32,6 +32,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity(debug = true)
 @EnableJpaRepositories(basePackages = "kr.co.kh.repository")
@@ -123,13 +124,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/api/playlist/**", "/**/api/playlistTrack/**").permitAll()
                 .antMatchers("/**/api/notice/**").permitAll()
                 .antMatchers("/**/api/event/**").permitAll()
+                .antMatchers("/**/api/board/**").permitAll()
                 .antMatchers("/auth/mail", "/api/auth/mail").permitAll()
                 .antMatchers("/auth/reset-password/**", "/api/auth/reset-password/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
 
 
     @Bean

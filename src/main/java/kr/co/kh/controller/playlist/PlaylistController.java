@@ -40,10 +40,22 @@ public class PlaylistController {
             @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true),
             @ApiImplicitParam(name = "playlistVO", value = "플레이리스트", dataType = "PlaylistVO", dataTypeClass = PlaylistVO.class, required = true)
     })
+
     public ResponseEntity<?> createPlaylist(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistVO playlistVO) {
         playlistVO.setUserId(currentUser.getId());
         log.info(playlistVO.toString());
         playlistService.insertPlaylist(playlistVO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/create")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "개인 플레이리스트 업데이트")
+    @ApiImplicitParam(name = "playlistVO", value = "플레이리스트", dataType = "PlaylistVO", dataTypeClass = PlaylistVO.class, required = true)
+    public ResponseEntity<?> updatePlaylist(@RequestBody PlaylistVO playlistVO) {
+
+        log.info(playlistVO.toString());
+        playlistService.updatePlaylist(playlistVO);
         return ResponseEntity.ok().build();
     }
 
