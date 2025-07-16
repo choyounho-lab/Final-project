@@ -4,6 +4,7 @@ import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.EventDetailResponse;
 import kr.co.kh.model.payload.request.BoardDeleteRequest;
 import kr.co.kh.model.payload.request.BoardRequest;
+import kr.co.kh.model.vo.CommentReportVO;
 import kr.co.kh.model.vo.CommentsVO;
 import kr.co.kh.model.vo.SearchHelper;
 
@@ -37,6 +38,19 @@ public interface BoardService {
 
     // 댓글 삭제
     void deleteComment(Long commentId);
+    CommentsVO getCommentById(Long commentId);
+
+    void updateComment(Long commentId, String newContent);
+
+    void commentReport(CommentReportVO commentReportVO);
 
 
+    void reportComment(CommentReportVO commentReportVO);
+
+    void saveCommentReport(CommentReportVO report);
+
+    boolean hasUserReportedComment(Long commentId, Long userId);  // 신고 여부 확인
+    boolean countReportsByCommentAndUser(Long commentId, Long userId);  // 신고 내역을 카운트하는 메서드
+
+    List<CommentsVO> getCommentsByTargetWithReportStatus(String targetType, String targetId, Long userId);
 }

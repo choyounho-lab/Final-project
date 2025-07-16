@@ -9,6 +9,7 @@ import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.payload.request.BoardDeleteRequest;
 import kr.co.kh.model.payload.request.BoardRequest;
 import kr.co.kh.model.payload.response.ApiResponse;
+import kr.co.kh.model.vo.CommentReportVO;
 import kr.co.kh.model.vo.CommentsVO;
 import kr.co.kh.model.vo.SearchHelper;
 import kr.co.kh.service.BoardService;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -177,25 +179,58 @@ public class BoardController {
         }
     }
 
-    // 댓글 목록 조회
-    @GetMapping("/comments/list")
-    @ApiOperation(value = "댓글 목록 조회", notes = "특정 대상에 달린 댓글 목록을 조회합니다.")
-    public ResponseEntity<?> getComments(
-            @ApiParam(value = "대상 유형 (예: ALBUM, NOTICE)", required = true) @RequestParam String targetType,
-            @ApiParam(value = "대상 ID", required = true) @RequestParam String targetId) {
-        try {
-            log.info("댓글 목록 조회 요청: targetType={}, targetId={}", targetType, targetId);
-            List<CommentsVO> comments = boardService.getCommentsByTarget(targetType, targetId);
-            return ResponseEntity.ok(comments);
-//            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            log.error("댓글 목록 조회 중 오류 발생", e);
-            return new ResponseEntity<>("댓글 목록을 불러오는 데 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    //댓글 수정
+    @PutMapping("/commentUpdate/{commentId}")
+    @ApiOperation(value = "댓글 수정", notes = "특정 댓글을 수정합니다.")
+    public ResponseEntity<?> updateComment(
+            @PathVariable Long commentId,
+            @RequestBody HashMap<String, Object> content) { // 단순히 String 타입으로 받음
+        log.info("댓글 수정 요청: commentId={}, newContent={}", commentId, content.toString());
+
+        // DB에 저장하는 부분에서 쌍따옴표가 들어가지 않도록 처리
+        boardService.updateComment(commentId, String.valueOf(content.get("content")));
+        return ResponseEntity.ok("댓글이 수정되었습니다.");
     }
 
+    // 댓글 목록 조회
+//    @GetMapping("/comments/list")
+//    @ApiOperation(value = "댓글 목록 조회", notes = "특정 대상에 달린 댓글 목록을 조회합니다.")
+//    public ResponseEntity<?> getComments(
+//            @ApiParam(value = "대상 유형 (예: ALBUM, NOTICE)", required = true) @RequestParam String targetType,
+//            @ApiParam(value = "대상 ID", required = true) @RequestParam String targetId) {
+//        try {
+//            log.info("댓글 목록 조회 요청: targetType={}, targetId={}", targetType, targetId);
+//            List<CommentsVO> comments = boardService.getCommentsByTarget(targetType, targetId);
+//            return ResponseEntity.ok(comments);
+////            return ResponseEntity.ok().build();
+//        } catch (Exception e) {
+//            log.error("댓글 목록 조회 중 오류 발생", e);
+//            return new ResponseEntity<>("댓글 목록을 불러오는 데 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+@GetMapping("/comments/list")
+@ApiOperation(value = "댓글 목록 조회", notes = "특정 대상에 달린 댓글 목록을 조회합니다.")
+public ResponseEntity<?> getComments(
+        @ApiParam(value = "대상 유형 (예: ALBUM, NOTICE)", required = true) @RequestParam String targetType,
+        @ApiParam(value = "대상 ID", required = true) @RequestParam String targetId,
+        @ApiParam(value = "로그인한 유저 ID", required = true) @RequestParam Long userId) {
+    try {
+        // 댓글 목록과 신고 여부를 서비스에서 처리
+        List<CommentsVO> comments = boardService.getCommentsByTargetWithReportStatus(targetType, targetId, userId);
+
+        return ResponseEntity.ok(comments);
+    } catch (Exception e) {
+        log.error("댓글 목록 조회 중 오류 발생", e);
+        return new ResponseEntity<>("댓글 목록을 불러오는 데 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+
+
+
     // 댓글 삭제
-    @DeleteMapping("/comment/{commentId}")
+    @DeleteMapping("/commentDelete/{commentId}")
     @ApiOperation(value = "댓글 삭제", notes = "특정 댓글을 삭제합니다.")
     public ResponseEntity<?> deleteComment(
             @ApiParam(value = "삭제할 댓글 ID", required = true) @PathVariable Long commentId) {
@@ -208,4 +243,43 @@ public class BoardController {
             return new ResponseEntity<>("댓글 삭제에 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * 댓글 신고
+     * @param commentId 신고할 댓글의 ID
+     * @param currentUser 현재 로그인한 유저 정보
+     * @param commentReportVO 신고 사유를 포함한 요청 객체
+     * @return ResponseEntity 처리 결과
+     */
+    @PostMapping("/commentReport/{commentId}")
+    @ApiOperation(value = "댓글 신고", notes = "댓글을 신고하고 신고 사유를 데이터베이스에 저장합니다.")
+    public ResponseEntity<?> reportComment(
+            @PathVariable Long commentId, // 신고하려는 댓글의 ID
+            @CurrentUser CustomUserDetails currentUser, // 현재 로그인한 유저 정보
+            @RequestBody CommentReportVO commentReportVO) { // 신고 사유를 포함한 요청 객체
+
+        // 로그인한 유저 ID와 신고 사유
+        Long userId = currentUser.getId();
+        String reportReason = commentReportVO.getReportReason();
+
+        // 신고 사유가 비어있는지 확인
+        if (reportReason == null || reportReason.trim().isEmpty()) {
+            return new ResponseEntity<>("신고 사유를 입력해 주세요.", HttpStatus.BAD_REQUEST);
+        }
+
+        // 해당 댓글을 신고한 유저가 있는지 확인
+        boolean alreadyReported = boardService.hasUserReportedComment(commentId, userId);
+        if (alreadyReported) {
+            return new ResponseEntity<>("이미 신고한 댓글입니다.", HttpStatus.FORBIDDEN);
+        }
+
+        // 신고 정보 저장
+        commentReportVO.setCommentId(commentId);  // 댓글 ID 설정
+        commentReportVO.setUserId(userId);  // 신고한 유저 ID 설정
+        boardService.saveCommentReport(commentReportVO);  // 신고 정보 저장
+
+        return new ResponseEntity<>("댓글이 신고되었습니다.", HttpStatus.CREATED);
+    }
 }
+
+

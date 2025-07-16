@@ -37,6 +37,9 @@ public class CommentsVO {
     @Column(name = "USER_ID", nullable = false)
     private Long userId;
 
+    @Column(name = "EMAIL", nullable = false)
+    private String email;
+
     /**
      * 대상 ID (예: 앨범 ID, 공지사항 ID 등)
      */
@@ -71,5 +74,10 @@ public class CommentsVO {
     @UpdateTimestamp
     @Column(name = "UPDATE_DATE")
     private LocalDateTime updateDate;
+
+    // 새로운 필드: 유저가 신고한 댓글인지 여부
+    //@Transient 어노테이션을 사용한 이유는 hasReportedByUser가 데이터베이스 컬럼이 아닌 뷰 로직에 필요한 값이기 때문
+    @Transient
+    private int hasReportedByUser; // 1: 신고한 경우, 0: 신고하지 않은 경우
 
 }

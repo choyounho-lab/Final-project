@@ -263,9 +263,11 @@
     <!-- 댓글 목록 조회 -->
     <select id="selectCommentsByTarget" resultType="kr.co.kh.model.vo.CommentsVO">
         SELECT *
-        FROM COMMENTS
+        FROM COMMENTS C
+        JOIN USERS U ON C.USER_ID =U.USER_ID
         WHERE TARGET_TYPE = #{targetType}
         AND TARGET_ID = #{targetId}
+        ORDER BY C.COMMENT_ID DESC
     </select>
 
     <!-- 댓글 추가 -->
@@ -273,6 +275,13 @@
         INSERT INTO COMMENTS (TARGET_TYPE, TARGET_ID, CONTENT, USER_ID, CREATE_DATE)
         VALUES (#{targetType}, #{targetId}, #{content}, #{userId}, SYSTIMESTAMP)
     </insert>
+
+    <!-- 댓글 수정 쿼리 -->
+    <update id="updateComment" parameterType="map">
+        UPDATE comments
+        SET content = #{newContent}
+        WHERE comment_id = #{commentId}
+    </update>
 
     <!-- 댓글 삭제 -->
     <delete id="deleteComment" parameterType="Long">
@@ -286,4 +295,35 @@
         WHERE TARGET_TYPE = #{targetType}
         AND TARGET_ID = #{targetId}
     </select>
+
+    <!--    댓글 신고-->
+    <insert id="commentReport" parameterType="kr.co.kh.model.vo.CommentReportVO">
+        INSERT INTO COMMENT_REPORT (COMMENT_ID, USER_ID, REPORT_REASON)
+        VALUES (#{commentId}, #{userId}, #{reportReason})
+    </insert>
+
+    <!-- 특정 대상에 달린 댓글 목록을 조회 -->
+    <select id="findCommentsByTarget" resultType="kr.co.kh.model.vo.CommentsVO">
+        SELECT *
+        FROM COMMENTS
+        WHERE TARGET_TYPE = #{targetType}
+        AND TARGET_ID = #{targetId}
+    </select>
+
+    <!-- 특정 댓글에 신고한 유저들의 ID 목록을 조회 -->
+    <select id="findReportedByUserIds" resultType="Long">
+        SELECT USER_ID
+        FROM COMMENT_REPORT
+        WHERE COMMENT_ID = #{commentId}
+    </select>
+
+    <!-- 특정 댓글에 대해 특정 유저가 신고했는지 여부를 확인하는 쿼리 -->
+    <select id="countReportsByCommentAndUser" resultType="int">
+        SELECT COUNT(*)
+        FROM COMMENT_REPORT
+        WHERE COMMENT_ID = #{commentId}
+        AND USER_ID = #{userId}
+    </select>
+
+
 </mapper>

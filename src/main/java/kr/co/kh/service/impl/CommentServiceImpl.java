@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    //
     private final CommentRepository commentRepository;
 
     @Override
@@ -32,4 +31,10 @@ public class CommentServiceImpl implements CommentService {
         // 댓글 삭제
         commentRepository.deleteById(commentId);
     }
+//    @Override
+//    public void commentReport(CommentReportVO commentReportVO) {
+//
+//
+//    }
+
 }
