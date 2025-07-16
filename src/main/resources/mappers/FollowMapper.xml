@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kh.repository.FollowRepository">
+
+    <insert id="insertFollow" parameterType="kr.co.kh.model.vo.FollowVO">
+        INSERT INTO ARTIST_FOLLOWS (USER_ID, ARTIST_ID)
+        VALUES (#{userId}, #{artistId})
+    </insert>
+
+    <delete id="deleteFollow">
+        DELETE FROM ARTIST_FOLLOWS
+        WHERE USER_ID = #{userId} AND ARTIST_ID = #{artistId}
+    </delete>
+
+    <select id="isAlreadyFollowing" resultType="boolean">
+        SELECT COUNT(*)
+        FROM ARTIST_FOLLOWS
+        WHERE USER_ID = #{userId} AND ARTIST_ID = #{artistId}
+    </select>
+
+    <select id="selectFollowedArtistIdsByUserId" resultType="Long">
+        SELECT ARTIST_ID
+        FROM ARTIST_FOLLOWS
+        WHERE USER_ID = #{userId}
+    </select>
+
+</mapper>

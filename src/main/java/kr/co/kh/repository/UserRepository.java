@@ -44,4 +44,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT u.* FROM USERS u WHERE u.NAME = :name AND u.BIRTH_DATE = :birthDate", nativeQuery = true)
     Optional<User> findByNameAndBirthDate(@Param("name") String name, @Param("birthDate") String birthDate);
 
+
 }

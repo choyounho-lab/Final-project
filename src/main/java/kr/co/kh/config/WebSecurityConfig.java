@@ -125,26 +125,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/api/notice/**").permitAll()
                 .antMatchers("/**/api/event/**").permitAll()
                 .antMatchers("/**/api/board/**").permitAll()
+                .antMatchers("/auth/mail", "/api/auth/mail").permitAll()
+                .antMatchers("/auth/reset-password/**", "/api/auth/reset-password/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
-    // CORS Configuration을 명시적으로 설정 -- 추가 메서드
-//    @Bean
-//    public CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8000"));
-//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-//        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-//        configuration.setAllowCredentials(true);
-//        configuration.setMaxAge(3600L);
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//
-//        return source;
-//    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
