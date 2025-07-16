@@ -22,6 +22,6 @@ public class PlaylistService {
     public void insertPlaylist(PlaylistVO playlistVO) {
         playlistMapper.insertPlaylist(playlistVO);
     }
-
+    public void updatePlaylist(PlaylistVO playlistVO) {playlistMapper.updatePlaylist(playlistVO);}
     public void deletePlaylist(PlaylistVO playlistVO) {playlistMapper.deletePlaylist(playlistVO);}
 }
