@@ -123,10 +123,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/api/playlist/**", "/**/api/playlistTrack/**").permitAll()
                 .antMatchers("/**/api/notice/**").permitAll()
                 .antMatchers("/**/api/event/**").permitAll()
+                .antMatchers("/auth/mail", "/api/auth/mail").permitAll()
+                .antMatchers("/auth/reset-password/**", "/api/auth/reset-password/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

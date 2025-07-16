@@ -5,6 +5,7 @@ import kr.co.kh.exception.TokenRefreshException;
 import kr.co.kh.model.*;
 import kr.co.kh.model.payload.request.LoginRequest;
 import kr.co.kh.model.payload.request.RegistrationRequest;
+import kr.co.kh.model.payload.request.ResetPasswordRequest;
 import kr.co.kh.model.payload.request.TokenRefreshRequest;
 import kr.co.kh.model.token.RefreshToken;
 import kr.co.kh.model.vo.UserAuthorityVO;
@@ -15,8 +16,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service;import kr.co.kh.model.payload.request.ResetPasswordRequest;
 
+
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Service
@@ -58,12 +61,20 @@ public class AuthService {
 
 
         User newUser = userService.createUser(newRegistrationRequest);
-
+log.info(newUser.toString());
         // 신규 사용자 저장
-        User registeredNewUser = userService.save(newUser);
-        log.info("===================================================");
-        log.info(registeredNewUser.toString());
-        log.info(newRegistrationRequest.toString());
+
+        /**
+         * UserAuthorityMapper.insertUser(파라미터)
+         * 파라미터
+         * User 클래스를 생성하고 newRegi....Request 에 값을 읽어서
+         * User에 setter로 넣어
+         * 그러면 회원 가입 양식에 입력한 데이터가 User에 들어간다.
+         */
+
+        // 아래 save 대신 userAuthoriyService에서 insertUser 메서드 호출
+        // User registeredNewUser = userService.save(newUser);
+        userAuthorityService.insertUser(newUser);
         /**
          * 정상적으로 저장되면 권한 테이블에 저장
          * ROLE_ID가 1이면 일반 사용자, 2면 관리자, 3이면 최고권한 관리자
@@ -71,17 +82,17 @@ public class AuthService {
          * 즉, 최고권한 관리자의 경우 USER_AUTHORITY 테이블에 3개의 행이 생겨야한다.
          * ROLE_ID가 1,2,3과 같이...
          */
-        if (registeredNewUser.getId() != null) {
+        if (newUser.getId() != null) {
             for (int i = newRegistrationRequest.getRoleNum(); i >= 1; i--) {
                 UserAuthorityVO userAuthorityVO = new UserAuthorityVO();
-                userAuthorityVO.setUserId(registeredNewUser.getId());
+                userAuthorityVO.setUserId(newUser.getId());
                 userAuthorityVO.setRoleId((long) i);
                 userAuthorityService.save(userAuthorityVO);
             }
 
         }
         log.info("===================================================");
-        return Optional.of(registeredNewUser);
+        return Optional.of(newUser);
     }
 
     /**
@@ -188,6 +199,26 @@ public class AuthService {
                 .map(UserDevice::getUser)
                 .map(User::getId).map(this::generateTokenFromUserId))
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "갱신 토큰이 데이터베이스에 없습니다. 다시 로그인 해 주세요."));
+    }
+
+
+    public boolean resetPassword(ResetPasswordRequest request) {
+        Optional<User> optionalUser = userService.findByNameAndEmail(request.getName(), request.getEmail());
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            String encodedPw = passwordEncoder.encode(request.getNewPassword());
+            user.setPassword(encodedPw);
+            userService.save(user);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public String sendVerificationCode(String email) {
+        return "";
     }
 
 }

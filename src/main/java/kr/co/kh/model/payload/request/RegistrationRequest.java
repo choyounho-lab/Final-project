@@ -26,4 +26,10 @@ public class RegistrationRequest {
     private int roleNum;
     //2025 07-07 조윤호
     private Long roleNo;
+
+    private String birthDate;
+
+    private  String userGender;
+
+    
 }

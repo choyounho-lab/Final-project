@@ -1,22 +1,28 @@
 package kr.co.kh.service;
 
+import kr.co.kh.model.User;
 import kr.co.kh.model.payload.request.EmailRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
+import java.util.HashMap;
+import java.util.Optional;
 
 
 @Service
 @Slf4j
-public class MailService {
 
+public class MailService {
+ private final UserAuthorityService userAuthorityService;
     private final JavaMailSender javaMailSender;
 
-    public MailService(JavaMailSender javaMailSender) {
+    public MailService(UserAuthorityService userAuthorityService, JavaMailSender javaMailSender) {
+        this.userAuthorityService = userAuthorityService;
         this.javaMailSender = javaMailSender;
     }
 
@@ -58,20 +64,43 @@ public class MailService {
                 // ✅ 인증번호 생성
                 authCode = generateAuthCode();
                 emailRequest.setAuthCode(authCode); // 필요한 경우 외부 전달용
+                log.info(emailRequest.toString());
+
+                // db에서 파라미터로 받은 이름 + 이메일로 where 처리후 데이터 찾는다
+                Optional<User> user = userAuthorityService.selectUserByEmailAndName(emailRequest);
+                // User user = 찾아라 메서드
+
+                if (user.isPresent()) {
+                    // db에 넣기
+                    // user.getUserName();
+                    // map.put("userName", user.getUserName());
 
 
-                sb.append("<div style=\"margin:100px;\">");
-                sb.append("<h1> Yeogiska 회원가입 인증번호 </h1>");
-                sb.append("<div align=\"center\" style=\"border:1px solid black; padding:20px;\">");
-                sb.append("<h3> </h3>");
+                    HashMap<String, Object> map = new HashMap<>();
+                    map.put("userName" , user.get().getName());
 
-                sb.append("<h1 style='color:blue;'>" + authCode + "</h1>"); // ✅ 인증번호 삽입
-                sb.append("</div>");
-                sb.append("</div>");
+                    map.put("authCode", authCode);
+                    log.info(map.toString());
+                    userAuthorityService.insertAuthCode(map);
 
-                log.info("발송된 인증번호: {}", authCode);
-                // 비번 찾기 >>> 비번 자동 변경 후 메일 발송
-                // 아이디를 db에서 찾는다 > 찾아 졌으면 비번을 랜덤하게 바꾸고 바꾼 비번을 메일로 날린다.
+
+                    sb.append("<div style=\"margin:100px;\">");
+                    sb.append("<h1> Echocaine 회원가입 인증번호 </h1>");
+                    sb.append("<div align=\"center\" style=\"border:1px solid black; padding:20px;\">");
+                    sb.append("<h3> </h3>");
+
+                    sb.append("<h1 style='color:blue;'>" + authCode + "</h1>"); // ✅ 인증번호 삽입
+                    sb.append("</div>");
+                    sb.append("</div>");
+
+                    log.info("발송된 인증번호: {}", authCode);
+                    // 비번 찾기 >>> 비번 자동 변경 후 메일 발송
+                    // 아이디를 db에서 찾는다 > 찾아 졌으면 비번을 랜덤하게 바꾸고 바꾼 비번을 메일로 날린다.
+
+                } else {
+                    throw new UsernameNotFoundException("사용자를 찾을수 없다");
+                }
+
 
             } else if (emailRequest.getMailType().equals("passwordAuth")) {
                 sb.append("<div style=\"margin:100px;\">");
