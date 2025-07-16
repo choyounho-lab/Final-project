@@ -33,6 +33,9 @@ public interface BoardMapper {
     List<NoticeVO> selectNotices(SearchHelper searchHelper);
 
     // CommentMapper
+    // 댓글 리스트 조회
+    List<CommentsVO> findCommentsByTarget(String targetType, String targetId);
+
     // 댓글 목록 조회
     List<CommentsVO> selectCommentsByTarget(@Param("targetType") String targetType, @Param("targetId") String targetId);
 
@@ -42,17 +45,12 @@ public interface BoardMapper {
     // 댓글 삭제
     void deleteComment(Long commentId);
 
-    // 댓글 수 조회 (선택사항, 예를 들어 특정 대상의 댓글 수가 필요할 경우)
-    int countCommentsByTarget(String targetType, Long targetId);
-
     //댓글 수정
     void updateComment(Map<String, Object> paramMap);
 
     //댓글 신고
     void commentReport(CommentReportVO commentReportVO);
 
-    // 특정 대상에 달린 댓글 목록을 조회
-    List<CommentsVO> findCommentsByTarget(String targetType, String targetId);
 
     // 특정 댓글에 신고한 유저들의 ID 목록을 조회
     List<Long> findReportedByUserIds(Long commentId);

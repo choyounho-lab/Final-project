@@ -33,9 +33,6 @@ public interface BoardService {
     // 댓글 추가
     CommentsVO addComment(CommentsVO commentsVO);
 
-    // 특정 대상에 대한 댓글 목록 조회
-    List<CommentsVO> getCommentsByTarget(String targetType, String targetId);
-
     // 댓글 삭제
     void deleteComment(Long commentId);
     CommentsVO getCommentById(Long commentId);
@@ -43,8 +40,6 @@ public interface BoardService {
     void updateComment(Long commentId, String newContent);
 
     void commentReport(CommentReportVO commentReportVO);
-
-
     void reportComment(CommentReportVO commentReportVO);
 
     void saveCommentReport(CommentReportVO report);

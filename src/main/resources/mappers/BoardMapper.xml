@@ -260,8 +260,8 @@
 
 
 <!--    댓글 관리 처리 쿼리문-->
-    <!-- 댓글 목록 조회 -->
-    <select id="selectCommentsByTarget" resultType="kr.co.kh.model.vo.CommentsVO">
+    <!-- 댓글 목록을 조회 -->
+    <select id="findCommentsByTarget" resultType="kr.co.kh.model.vo.CommentsVO">
         SELECT *
         FROM COMMENTS C
         JOIN USERS U ON C.USER_ID =U.USER_ID
@@ -288,27 +288,13 @@
         DELETE FROM COMMENTS WHERE COMMENT_ID = #{commentId}
     </delete>
 
-    <!-- 댓글 수 조회 -->
-    <select id="countCommentsByTarget" resultType="int">
-        SELECT COUNT(*)
-        FROM COMMENTS
-        WHERE TARGET_TYPE = #{targetType}
-        AND TARGET_ID = #{targetId}
-    </select>
-
     <!--    댓글 신고-->
     <insert id="commentReport" parameterType="kr.co.kh.model.vo.CommentReportVO">
         INSERT INTO COMMENT_REPORT (COMMENT_ID, USER_ID, REPORT_REASON)
         VALUES (#{commentId}, #{userId}, #{reportReason})
     </insert>
 
-    <!-- 특정 대상에 달린 댓글 목록을 조회 -->
-    <select id="findCommentsByTarget" resultType="kr.co.kh.model.vo.CommentsVO">
-        SELECT *
-        FROM COMMENTS
-        WHERE TARGET_TYPE = #{targetType}
-        AND TARGET_ID = #{targetId}
-    </select>
+
 
     <!-- 특정 댓글에 신고한 유저들의 ID 목록을 조회 -->
     <select id="findReportedByUserIds" resultType="Long">

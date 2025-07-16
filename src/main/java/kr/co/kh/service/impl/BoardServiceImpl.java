@@ -224,8 +224,6 @@ public class BoardServiceImpl implements BoardService {
     }
 
 
-
-
     //    ==============================================================================
 //    메인화면단 CommentService
 
@@ -236,11 +234,23 @@ public class BoardServiceImpl implements BoardService {
         boardMapper.insertComment(commentsVO);  // Mapper를 통해 댓글 추가
         return commentsVO;  // 저장된 댓글 객체를 반환
     }
-    // 댓글 목록 조회
+
     @Override
-    public List<CommentsVO> getCommentsByTarget(String targetType, String targetId) {
-        return boardMapper.selectCommentsByTarget(targetType, targetId);  // Mapper를 통해 댓글 목록 조회
+    public List<CommentsVO> getCommentsByTargetWithReportStatus(String targetType, String targetId, Long userId) {
+        // 댓글 목록을 DB에서 조회
+        List<CommentsVO> comments = boardMapper.findCommentsByTarget(targetType, targetId);
+
+        // 각 댓글에 대해 신고 여부를 설정
+        for (CommentsVO comment : comments) {
+            if (isReportedByUser(comment, userId)) {
+                comment.setHasReportedByUser(1);  // 신고한 경우
+            } else {
+                comment.setHasReportedByUser(0);  // 신고하지 않은 경우
+            }
+        }
+        return comments;
     }
+
 
     // 댓글 수정
     public void updateComment(Long commentId, String newContent) {
@@ -298,24 +308,6 @@ public class BoardServiceImpl implements BoardService {
     public void saveCommentReport(CommentReportVO report) {
         // COMMENT_REPORT 테이블에 신고 정보 저장
         commentReportRepository.save(report);  // COMMENT_REPORT 테이블에 레코드 삽입
-    }
-
-
-    @Override
-    public List<CommentsVO> getCommentsByTargetWithReportStatus(String targetType, String targetId, Long userId) {
-        // 댓글 목록을 DB에서 조회
-        List<CommentsVO> comments = boardMapper.findCommentsByTarget(targetType, targetId);
-
-        // 각 댓글에 대해 신고 여부를 설정
-        for (CommentsVO comment : comments) {
-            if (isReportedByUser(comment, userId)) {
-                comment.setHasReportedByUser(1);  // 신고한 경우
-            } else {
-                comment.setHasReportedByUser(0);  // 신고하지 않은 경우
-            }
-        }
-
-        return comments;
     }
 
     // 유저가 댓글을 신고했는지 여부를 체크하는 메서드

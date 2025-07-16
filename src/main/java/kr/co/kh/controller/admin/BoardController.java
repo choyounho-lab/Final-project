@@ -192,23 +192,6 @@ public class BoardController {
         return ResponseEntity.ok("댓글이 수정되었습니다.");
     }
 
-    // 댓글 목록 조회
-//    @GetMapping("/comments/list")
-//    @ApiOperation(value = "댓글 목록 조회", notes = "특정 대상에 달린 댓글 목록을 조회합니다.")
-//    public ResponseEntity<?> getComments(
-//            @ApiParam(value = "대상 유형 (예: ALBUM, NOTICE)", required = true) @RequestParam String targetType,
-//            @ApiParam(value = "대상 ID", required = true) @RequestParam String targetId) {
-//        try {
-//            log.info("댓글 목록 조회 요청: targetType={}, targetId={}", targetType, targetId);
-//            List<CommentsVO> comments = boardService.getCommentsByTarget(targetType, targetId);
-//            return ResponseEntity.ok(comments);
-////            return ResponseEntity.ok().build();
-//        } catch (Exception e) {
-//            log.error("댓글 목록 조회 중 오류 발생", e);
-//            return new ResponseEntity<>("댓글 목록을 불러오는 데 실패했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
 @GetMapping("/comments/list")
 @ApiOperation(value = "댓글 목록 조회", notes = "특정 대상에 달린 댓글 목록을 조회합니다.")
 public ResponseEntity<?> getComments(
@@ -219,6 +202,7 @@ public ResponseEntity<?> getComments(
         // 댓글 목록과 신고 여부를 서비스에서 처리
         List<CommentsVO> comments = boardService.getCommentsByTargetWithReportStatus(targetType, targetId, userId);
 
+        log.info("테스트함 : " + comments);
         return ResponseEntity.ok(comments);
     } catch (Exception e) {
         log.error("댓글 목록 조회 중 오류 발생", e);
