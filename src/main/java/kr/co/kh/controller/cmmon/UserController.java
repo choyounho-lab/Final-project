@@ -41,7 +41,7 @@ public class UserController {
     @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true)
     public ResponseEntity<?> getUserProfile(@CurrentUser CustomUserDetails currentUser) {
         log.info(currentUser.toString());
-        UserResponse userResponse = new UserResponse(currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles());
+        UserResponse userResponse = new UserResponse(currentUser.getId(), currentUser.getUsername(), currentUser.getEmail(), currentUser.getRoles());
         return ResponseEntity.ok(userResponse);
     }
 
