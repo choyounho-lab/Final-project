@@ -26,17 +26,23 @@
     </update>
 
 
-    <insert id="insertAuthCode" parameterType="HashMap">
-        INSERT INTO EMAIL_AUTH( USER_NAME, AUTH_CODE )
-        VALUES ( #{userName} , #{authCode})
-    </insert>
+        <insert id="insertAuthCode" parameterType="HashMap">
+            INSERT INTO EMAIL_AUTH( USER_NAME, AUTH_CODE )
+            VALUES ( #{userName} , #{authCode})
+        </insert>
 
-    <select id="selectAuthCodeByUserId" parameterType="HashMap" resultType="HashMap">
-        SELECT *
-        FROM
-        EMAIL_AUTH
+        <select id="selectAuthCodeByUserId" parameterType="HashMap" resultType="HashMap">
+            SELECT *
+            FROM
+            EMAIL_AUTH
+            WHERE USER_NAME = #{userName}
+        </select>
+
+    <update id="updateAuthCodeByUserId" parameterType="HashMap" >
+        UPDATE EMAIL_AUTH
+        SET AUTH_CODE = #{authCode}
         WHERE USER_NAME = #{userName}
-    </select>
+    </update>
 
     <delete id="deleteAuthCodeByUserId" parameterType="HashMap" >
         DELETE FROM EMAIL_AUTH WHERE USER_NAME = #{userName}

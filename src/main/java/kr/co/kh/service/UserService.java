@@ -8,6 +8,7 @@ import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.Role;
 import kr.co.kh.model.User;
 import kr.co.kh.model.UserDevice;
+import kr.co.kh.model.payload.request.EmailRequest;
 import kr.co.kh.model.payload.request.LogOutRequest;
 import kr.co.kh.model.payload.request.RegistrationRequest;
 import kr.co.kh.model.payload.request.UserRegisterRequest;
@@ -340,8 +341,15 @@ public class UserService {
         return userRepository.findByNameAndEmail(name, email);
     }
 
-    public void resetPassword(Map<String, Object> paramMap) {
-        UserAuthorityMapper UserAuthorityMapper = null;
-        UserAuthorityMapper.resetPassword(paramMap);
+
+    public Optional<User> resetPassword(EmailRequest request) {
+        log.info(request.toString());
+        return findByNameAndEmail(request.getName(), request.getEmail())
+                .map(user -> {
+                    String encodedPw = passwordEncoder.encode(request.getNewPassword());
+                    user.setPassword(encodedPw);
+                    userRepository.save(user);
+                    return user;
+                });
     }
 }
