@@ -21,8 +21,7 @@ public class EmailRequest {
  private String email;
  private String subject;
  private String step;
+ private String newPassword; // 🔐 추가
 
- public String getEmail() {
-     return this.mailTo;
- }
+
 }

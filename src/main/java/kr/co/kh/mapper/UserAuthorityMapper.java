@@ -21,7 +21,7 @@ public interface UserAuthorityMapper {
 
 
     User findByNameAndEmail(String name, String email);
-    void resetPassword(Map<String, Object> paramMap);
+   void resetPassword(Map<String, Object> paramMap);
 
     HashMap<String, Object> selectAuthCodeByUserId (HashMap<String,Object> map);
 
@@ -30,4 +30,8 @@ public interface UserAuthorityMapper {
     void insertAuthCode(HashMap<String,Object> map);
 
     Optional<User> selectUserByEmailAndName(EmailRequest emailRequest);
+
+    void updateAuthCodeByUserId(HashMap<String, Object> map);
+
+
 }

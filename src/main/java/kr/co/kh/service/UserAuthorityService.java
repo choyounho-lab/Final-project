@@ -61,4 +61,10 @@ public class UserAuthorityService {
     public Optional<User> selectUserByEmailAndName(EmailRequest emailRequest) {
         return userAuthorityMapper.selectUserByEmailAndName(emailRequest);
     }
+
+    public void updateAuthCodeByUserId(HashMap<String,Object> map){
+        userAuthorityMapper.updateAuthCodeByUserId(map);
+    }
+
+
 }

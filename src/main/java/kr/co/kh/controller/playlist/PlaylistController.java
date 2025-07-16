@@ -48,6 +48,17 @@ public class PlaylistController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/create")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "개인 플레이리스트 업데이트")
+    @ApiImplicitParam(name = "playlistVO", value = "플레이리스트", dataType = "PlaylistVO", dataTypeClass = PlaylistVO.class, required = true)
+    public ResponseEntity<?> updatePlaylist(@RequestBody PlaylistVO playlistVO) {
+
+        log.info(playlistVO.toString());
+        playlistService.updatePlaylist(playlistVO);
+        return ResponseEntity.ok().build();
+    }
+
 
 
     @DeleteMapping("/delete/{playlistId}")

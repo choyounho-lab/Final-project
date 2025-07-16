@@ -186,4 +186,5 @@ public class User extends DateAudit {
         isEmailVerified = emailVerified;
     }
 
+
 }

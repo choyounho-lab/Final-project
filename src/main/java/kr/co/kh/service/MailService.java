@@ -78,10 +78,17 @@ public class MailService {
 
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("userName" , user.get().getName());
-
                     map.put("authCode", authCode);
                     log.info(map.toString());
-                    userAuthorityService.insertAuthCode(map);
+                    //이메일 인증번호를 보냈을떄 USER_NAME이 중복이되면 UPDATE , 중복이 안되면 INSERT
+
+                    boolean a = userAuthorityService.selectAuthCodeByUserId(map).isEmpty();
+                    if(a){
+                        userAuthorityService.insertAuthCode(map);
+                    }else{
+                        userAuthorityService.updateAuthCodeByUserId(map);
+                    }
+
 
 
                     sb.append("<div style=\"margin:100px;\">");

@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -166,6 +167,8 @@ log.info(authentication.toString());
     @PostMapping("/reset-password")
     public ResponseEntity<?> handlePasswordReset(@RequestBody EmailRequest request) {
 
+        log.info(request.toString());
+
         switch (request.getStep()) {
          case "send":
              mailService.sendMimeMessage(request);
@@ -177,13 +180,17 @@ log.info(authentication.toString());
              requestMap.put("authCode", request.getAuthCode());
              return ResponseEntity.ok(userAuthorityService.selectAuthCodeByUserId(requestMap));
 
-         case "change":
+
+
+            case "change":
+                Optional<User> userOpt = userService.resetPassword(request);
+                log.info(userOpt.get().toString());
+                 return ResponseEntity.ok("비밀번호가 재설정되었습니다");
 
 
 
 
-
-             //첫번쨰 상황에서 보내기 상황의 버튼을 누르게 되면 메일서비스 안의 요청을 가져오레된다 두번째 상솽은 가져온 인증 번호가 유효한지 대조해보고
+                //첫번쨰 상황에서 보내기 상황의 버튼을 누르게 되면 메일서비스 안의 요청을 가져오레된다 두번째 상솽은 가져온 인증 번호가 유효한지 대조해보고
          //맞다면 인증을 해준다
          //세번쨰 상황은 디비정보가 맞고  이름이 동일하면 새로운 비밀번호 를 설정한다. 그러면 새로운 비밀번호가 생기면 그전 번호는 지워진다.
      }
