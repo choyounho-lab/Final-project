@@ -62,7 +62,7 @@ public class AlbumLikeService {
     }
 
     public boolean isNiceAlbum(Long userId, Long albumId) {
-        return albumLikeRepository.isAlbumLiked(userId, albumId);
+        return albumLikeRepository.isAlbumLiked(albumId, userId);
     }
 
     public boolean isLikeAlbumExternal(Long userId, String albumExternalId) {
@@ -70,7 +70,7 @@ public class AlbumLikeService {
         if (album == null) {
             return false;
         }
-        return albumLikeRepository.isAlbumLiked(userId, album.getAlbumId());
+        return albumLikeRepository.isAlbumLiked(album.getAlbumId(), userId);
     }
 
     @Transactional
@@ -79,7 +79,7 @@ public class AlbumLikeService {
         if (album == null){
             throw new IllegalArgumentException("해당 앨범이 존재하지 않습니다");
         }
-        albumLikeRepository.deleteAlbumLike(userId,album.getAlbumId());
+        albumLikeRepository.deleteAlbumLike(userId, album.getAlbumId());
         log.info("유저 ID {}가 앨범 External ID {} 를 좋아요 취소 했습니다", userId, albumExternalId);
     }
 }
