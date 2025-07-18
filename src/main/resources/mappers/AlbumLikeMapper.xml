@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.kh.repository.AlbumLikeRepository">
+
+    <!-- 좋아요 추가 -->
+    <insert id="insertAlbumLike" parameterType="kr.co.kh.model.vo.AlbumLikeVO">
+        INSERT INTO ECHO.ALBUM_LIKE (ALBUM_ID, USER_ID)
+        VALUES (#{albumId}, #{userId})
+    </insert>
+
+    <!-- 좋아요 삭제 -->
+    <delete id="deleteAlbumLike">
+        DELETE FROM ECHO.ALBUM_LIKE
+        WHERE ALBUM_ID = #{albumId} AND USER_ID = #{userId}
+    </delete>
+
+    <!-- 좋아요 유무 확인 -->
+    <select id="isAlbumLiked" resultType="boolean">
+        SELECT COUNT(*)
+        FROM ECHO.ALBUM_LIKE
+        WHERE ALBUM_ID = #{albumId} AND USER_ID = #{userId}
+    </select>
+</mapper>
