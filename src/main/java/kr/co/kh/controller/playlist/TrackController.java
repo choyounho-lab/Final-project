@@ -31,7 +31,6 @@ public class TrackController {
     }
 
     @PostMapping("/save")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "재생한 트랙 DB에 추가")
     public ResponseEntity<?> insertTrack(@RequestBody TrackVO trackVO){
         trackService.insertTrack(trackVO);
@@ -50,12 +49,15 @@ public class TrackController {
 
 
     @PostMapping("/save/date")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "재생한 트랙날짜 DB에 추가")
     public ResponseEntity<?> insertTrackPlayDate(
             @CurrentUser CustomUserDetails currentUser,
             @RequestBody TrackVO trackVO) {
-        trackVO.setUserId(currentUser.getId());
+        if (currentUser != null) {
+            trackVO.setUserId(currentUser.getId());
+        } else {
+            trackVO.setUserId(0L);
+        }
         trackService.insertTrackPlayDate(trackVO);
         return ResponseEntity.ok().build();
     }
