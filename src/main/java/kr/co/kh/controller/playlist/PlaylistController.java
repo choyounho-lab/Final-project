@@ -40,7 +40,6 @@ public class PlaylistController {
             @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true),
             @ApiImplicitParam(name = "playlistVO", value = "플레이리스트", dataType = "PlaylistVO", dataTypeClass = PlaylistVO.class, required = true)
     })
-
     public ResponseEntity<?> createPlaylist(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistVO playlistVO) {
         playlistVO.setUserId(currentUser.getId());
         log.info(playlistVO.toString());
@@ -58,8 +57,6 @@ public class PlaylistController {
         playlistService.updatePlaylist(playlistVO);
         return ResponseEntity.ok().build();
     }
-
-
 
     @DeleteMapping("/delete/{playlistId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
