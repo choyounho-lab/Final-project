@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kh.repository.AlbumRepository">
+
+    <resultMap id="albumResultMap" type="kr.co.kh.model.vo.AlbumVO">
+        <id property="albumId" column="ALBUM_ID"/>
+        <result property="spotifyAlbumId" column="SPOTIFY_ALBUM_ID"/>
+        <result property="albumTitle" column="ALBUM_TITLE"/>
+        <result property="albumType" column="ALBUM_TYPE"/>
+        <result property="albumReleaseDate" column="ALBUM_RELEASE_DATE"/>
+        <result property="albumTotalTracks" column="ALBUM_TOTAL_TRACKS"/>
+        <result property="albumCoverImage" column="ALBUM_COVER_IMAGE"/>
+    </resultMap>
+
+    <insert id="insertAlbum" parameterType="kr.co.kh.model.vo.AlbumVO">
+        INSERT INTO ALBUM (
+        SPOTIFY_ALBUM_ID,
+        ALBUM_TITLE,
+        ALBUM_TYPE,
+        ALBUM_RELEASE_DATE,
+        ALBUM_TOTAL_TRACKS,
+        ALBUM_COVER_IMAGE
+        ) VALUES (
+        #{spotifyAlbumId,jdbcType=VARCHAR},
+        #{albumTitle,jdbcType=VARCHAR},
+        #{albumType,jdbcType=VARCHAR},
+        #{albumReleaseDate,jdbcType=DATE},
+        #{albumTotalTracks,jdbcType=NUMERIC},
+        #{albumCoverImage,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="selectAlbumById" resultMap="albumResultMap" parameterType="java.lang.Long">
+        SELECT
+        ALBUM_ID,
+        SPOTIFY_ALBUM_ID,
+        ALBUM_TITLE,
+        ALBUM_TYPE,
+        ALBUM_RELEASE_DATE,
+        ALBUM_TOTAL_TRACKS,
+        ALBUM_COVER_IMAGE
+        FROM ALBUM
+        WHERE ALBUM_ID = #{albumId}
+    </select>
+
+    <select id="selectAlbumBySpotifyId" resultMap="albumResultMap" parameterType="java.lang.String">
+        SELECT
+        ALBUM_ID,
+        SPOTIFY_ALBUM_ID,
+        ALBUM_TITLE,
+        ALBUM_TYPE,
+        ALBUM_RELEASE_DATE,
+        ALBUM_TOTAL_TRACKS,
+        ALBUM_COVER_IMAGE
+        FROM ALBUM
+        WHERE SPOTIFY_ALBUM_ID = #{spotifyAlbumId}
+    </select>
+
+    <select id="selectAllAlbums" resultMap="albumResultMap">
+        SELECT
+        ALBUM_ID,
+        SPOTIFY_ALBUM_ID,
+        ALBUM_TITLE,
+        ALBUM_TYPE,
+        ALBUM_RELEASE_DATE,
+        ALBUM_TOTAL_TRACKS,
+        ALBUM_COVER_IMAGE
+        FROM ALBUM
+        ORDER BY ALBUM_TITLE ASC -- 앨범 제목을 기준으로 오름차순 정렬
+    </select>
+
+    <update id="updateAlbum" parameterType="kr.co.kh.model.vo.AlbumVO">
+        UPDATE ALBUM
+        SET
+        ALBUM_TITLE = #{albumTitle,jdbcType=VARCHAR},
+        ALBUM_TYPE = #{albumType,jdbcType=VARCHAR},
+        ALBUM_RELEASE_DATE = #{albumReleaseDate,jdbcType=DATE},
+        ALBUM_TOTAL_TRACKS = #{albumTotalTracks,jdbcType=NUMERIC},
+        ALBUM_COVER_IMAGE = #{albumCoverImage,jdbcType=VARCHAR}
+        WHERE ALBUM_ID = #{albumId}
+    </update>
+
+    <delete id="deleteAlbum" parameterType="java.lang.Long">
+        DELETE FROM ALBUM
+        WHERE ALBUM_ID = #{albumId}
+    </delete>
+
+</mapper>

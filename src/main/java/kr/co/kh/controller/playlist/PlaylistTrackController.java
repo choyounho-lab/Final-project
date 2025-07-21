@@ -29,6 +29,7 @@ public class PlaylistTrackController {
         PlaylistTrackVO playlistTrackVO = new PlaylistTrackVO();
         playlistTrackVO.setPlaylistId(playlistId);
         log.info(playlistTrackVO.toString());
+        log.info(playlistTrackService.selectPlaylistTrack(playlistTrackVO).toString());
         return ResponseEntity.ok(playlistTrackService.selectPlaylistTrack(playlistTrackVO));
     }
 
