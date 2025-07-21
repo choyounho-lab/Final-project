@@ -58,6 +58,7 @@
             </if>
 
         </where>
+        ORDER BY  pt.PLAYLIST_TRACK_CREATE_DATE
     </select>
 
     <delete id="deletePlaylistTrack" parameterType="PlaylistTrackVO" statementType="CALLABLE">
