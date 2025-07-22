@@ -33,5 +33,6 @@ public interface UserAuthorityMapper {
 
     void updateAuthCodeByUserId(HashMap<String, Object> map);
 
+    void updatePassword(HashMap<String,Object> map);
 
 }

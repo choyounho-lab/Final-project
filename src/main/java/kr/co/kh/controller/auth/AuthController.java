@@ -4,6 +4,7 @@ import ch.qos.logback.core.encoder.EchoEncoder;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.exception.TokenRefreshException;
 import kr.co.kh.exception.UserLoginException;
 import kr.co.kh.exception.UserRegistrationException;
@@ -236,4 +237,19 @@ log.info(authentication.toString());
 
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/newpassword")
+    public ResponseEntity<?> newPassWord (@CurrentUser CustomUserDetails user , @RequestBody HashMap<String,Object> requestMap){
+        log.info((String) requestMap.get("password"));
+        log.info(user.getId().toString());
+        log.info(user.getEmail());
+        log.info(user.getPassword());
+        log.info((String) requestMap.get("newpassword"));
+        userAuthorityService.updatePassword(requestMap , user);
+        return ResponseEntity.ok().build();
+
+
+
+    }
+
 }

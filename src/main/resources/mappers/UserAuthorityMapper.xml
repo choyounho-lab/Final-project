@@ -53,4 +53,11 @@
         SELECT * FROM USERS WHERE EMAIL = #{email} AND NAME = #{name}
     </select>
 
+    <update id="updatePassword" parameterType="HashMap">
+        UPDATE USERS
+        SET PASSWORD = #{password}
+        WHERE USER_ID = #{id}
+    </update>
+
+
 </mapper>
