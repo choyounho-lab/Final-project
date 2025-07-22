@@ -1,9 +1,12 @@
 package kr.co.kh.controller.playlist;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.vo.PlaylistTrackVO;
+import kr.co.kh.model.vo.PlaylistVO;
 import kr.co.kh.service.PlaylistTrackService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,10 @@ public class PlaylistTrackController {
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 목록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true),
+            @ApiImplicitParam(name = "playlistId", value = "플레이리스트 아이디", dataType = "Long", required = true)
+    })
     public ResponseEntity<?> PlaylistTrackList(
             @CurrentUser CustomUserDetails currentUser,
             @RequestParam Long playlistId
@@ -33,10 +40,13 @@ public class PlaylistTrackController {
         return ResponseEntity.ok(playlistTrackService.selectPlaylistTrack(playlistTrackVO));
     }
 
-
     @PostMapping("/save")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 추가")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true),
+            @ApiImplicitParam(name = "playlistTrackVO", value = "플레이리스트 트랙", dataType = "PlaylistTrackVO", dataTypeClass = PlaylistTrackVO.class, required = true)
+    })
     public ResponseEntity<?> addPlaylistTrack(@CurrentUser CustomUserDetails currentUser, @RequestBody PlaylistTrackVO playlistTrackVO) {
         log.info(playlistTrackVO.toString());
         playlistTrackService.insertPlaylistTrack(playlistTrackVO);
@@ -47,6 +57,10 @@ public class PlaylistTrackController {
     @DeleteMapping("/delete/playlist/{playlistId}/track/{trackId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "trackId", value = "트랙 아이디", dataType = "String", required = true),
+            @ApiImplicitParam(name = "playlistId", value = "플레이리스트 아이디", dataType = "Long", required = true)
+    })
     public ResponseEntity<?> deletePlaylistTrack(@PathVariable String trackId, @PathVariable Long playlistId){
         PlaylistTrackVO playlistTrackVO = new PlaylistTrackVO();
         playlistTrackVO.setTrackId(trackId);
