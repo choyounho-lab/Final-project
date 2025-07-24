@@ -53,6 +53,7 @@
             CALL UPDATE_PLAYLIST(
                 #{playlistId, mode=IN, jdbcType=NUMERIC},
                 #{playlistTitle, mode=IN, jdbcType=VARCHAR},
+                #{playlistIsPublic, mode=IN, jdbcType=NUMERIC},
                 #{resultMsg, mode=OUT, jdbcType=VARCHAR}
             )
         }

@@ -64,3 +64,24 @@ BEGIN
 			ROLLBACK;
 END;
 
+-- 플레이리스트 수정 Procedure
+CREATE OR REPLACE PROCEDURE ECHO.UPDATE_PLAYLIST(
+	playlistId IN PLAYLIST.PLAYLIST_ID%TYPE,
+	playlistIsPublic IN PLAYLIST.PLAYLIST_IS_PUBLIC%TYPE,
+	playlistTitle IN PLAYLIST.PLAYLIST_TITLE%TYPE,
+	resultMsg OUT VARCHAR2
+)
+IS
+	v_exists NUMBER:= 0;
+BEGIN
+	SELECT COUNT(*) INTO v_exists FROM PLAYLIST WHERE PLAYLIST_ID = playlistId;
+	IF v_exists = 0 THEN
+		resultMsg := '데이터가 없습니다.';
+		RETURN;
+	END IF;
+	UPDATE PLAYLIST SET PLAYLIST_TITLE = playlistTitle, PLAYLIST_IS_PUBLIC = playlistIsPublic WHERE PLAYLIST_ID = playlistId;
+	resultMsg := 'SUCCESS';
+	EXCEPTION
+		WHEN OTHERS THEN
+			resultMsg := 'ERROR: ' || SQLERRM;
+END;
