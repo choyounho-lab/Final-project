@@ -109,6 +109,9 @@ jasypt:
 upload:
   path: C:\\WAS_DATA\\upload
 
+kakao:
+  admin-key: 852f45890dafe892f9852d5578036abc
+
 logging:
   file:
     name: C:\\WAS_DATA\\application_log\\log.txt

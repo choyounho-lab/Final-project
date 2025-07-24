@@ -250,5 +250,14 @@ log.info(authentication.toString());
 
 
     }
+    @PostMapping("/SUB")
+    public ResponseEntity<?> upSub (@CurrentUser CustomUserDetails user){
+        HashMap<String, Object> requestMap = new HashMap<>();
+         requestMap.put("id", user.getId());
+        userAuthorityService.updateSub(requestMap);
+        log.info(user.toString());
+
+        return ResponseEntity.ok().build();
+    }
 
 }

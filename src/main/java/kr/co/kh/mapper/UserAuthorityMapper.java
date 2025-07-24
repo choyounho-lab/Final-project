@@ -4,6 +4,7 @@ import kr.co.kh.model.User;
 import kr.co.kh.model.payload.request.EmailRequest;
 import kr.co.kh.model.payload.request.RegistrationRequest;
 import kr.co.kh.model.vo.UserAuthorityVO;
+import lombok.Lombok;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -34,5 +35,9 @@ public interface UserAuthorityMapper {
     void updateAuthCodeByUserId(HashMap<String, Object> map);
 
     void updatePassword(HashMap<String,Object> map);
+
+    void updateSub(HashMap<String,Object> map);
+
+    Long selectSub(HashMap<String, Object> map);
 
 }

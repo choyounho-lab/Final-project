@@ -5,7 +5,6 @@ import kr.co.kh.mapper.UserAuthorityMapper;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.User;
 import kr.co.kh.model.payload.request.EmailRequest;
-import kr.co.kh.model.payload.request.RegistrationRequest;
 import kr.co.kh.model.vo.UserAuthorityVO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -124,7 +123,23 @@ public class UserAuthorityService {
 
 
 
+    }
+
+    public void updateSub(HashMap<String, Object> user) {
+
+
+
+        Long a = userAuthorityMapper.selectSub(user);
+        if(a == 1) {
+            user.put("isSub" , 0);
+            userAuthorityMapper.updateSub(user);
+        } else {
+            user.put("isSub", 1);
+            userAuthorityMapper.updateSub(user);
+
+        }
 
     }
+
 
 }

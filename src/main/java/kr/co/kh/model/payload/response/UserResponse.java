@@ -22,8 +22,9 @@ public class UserResponse {
     private String name;
     private String birthdate;
     private Long roleNo;
+    private boolean isSub;
 
-    public UserResponse(Long id, String username, String email, Set<Role> roles, String name, String birthdate ,Long roleNo ) {
+    public UserResponse(Long id, String username, String email, Set<Role> roles, String name, String birthdate ,Long roleNo ,boolean isSub) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -31,6 +32,7 @@ public class UserResponse {
         this.name = name;
         this.birthdate = birthdate;
         this.roleNo= roleNo;
+        this.isSub = isSub;
 
     }
 

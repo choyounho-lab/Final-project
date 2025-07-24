@@ -52,6 +52,18 @@ public class User extends DateAudit {
     @Column(name = "USER_GENDER")
     private String gender;
 
+    //구독 여부
+    @Column(name = "IS_SUB", nullable = false)
+    private Boolean SUB;
+
+    public Boolean getSUB() {
+        return SUB;
+    }
+
+    public void setSUB(Boolean SUB) {
+        this.SUB = SUB;
+    }
+
     public String getBirthDate() {
         return birthDate;
     }
@@ -94,6 +106,8 @@ public class User extends DateAudit {
         gender = user.getGender();
         //2025-07-07 조윤호
         roleNo = user.getRoleNo();
+        //2025-07-23 구독 유뮤
+        SUB = user.getSUB();
     }
     //2025-07-07 조윤호
     public Long getRoleNo() {
@@ -187,4 +201,7 @@ public class User extends DateAudit {
     }
 
 
+    public void setPaid(boolean b) {
+
+    }
 }
