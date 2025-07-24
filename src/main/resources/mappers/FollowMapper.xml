@@ -24,4 +24,20 @@
         WHERE USER_ID = #{userId}
     </select>
 
+    <select id="selectWeeklyPopularArtists" resultType="kr.co.kh.model.vo.ArtistVO" parameterType="map">
+        SELECT a.artist_id,
+        a.artist_name,
+        a.ARTIST_EXTERNAL_ID ,
+        a.profile_image,
+        COUNT(f.user_id) AS follow_count
+        FROM artist a
+        JOIN ARTIST_FOLLOWS f ON a.artist_id = f.artist_id
+        WHERE f.follow_date BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate}, 'YYYY-MM-DD')
+        GROUP BY a.artist_id, a.artist_name, a.profile_image,  a.ARTIST_EXTERNAL_ID
+        ORDER BY follow_count DESC
+        OFFSET #{offset} ROWS FETCH NEXT #{fetch} ROWS ONLY
+    </select>
+
+
+
 </mapper>

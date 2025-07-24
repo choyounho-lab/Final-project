@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -81,5 +83,10 @@ public class FollowService {
         }
         followRepository.deleteFollow(userId, artist.getArtistId());
         log.info("유저 ID {}가 아티스트 External ID {}를 언팔로우했습니다.", userId, artistExternalId);
+    }
+
+    public List<ArtistVO> getWeeklyPopularArtists(String startDate, String endDate, int offset, int fetch) {
+        log.info("주간 인기 아티스트 조회 요청: {} ~ {}, offset: {}, fetch: {}", startDate, endDate, offset, fetch);
+        return followRepository.selectWeeklyPopularArtists(startDate, endDate, offset, fetch);
     }
 }

@@ -50,4 +50,11 @@ public interface AlbumRepository {
      * @return 삭제된 레코드의 수 (성공 시 1).
      */
     int deleteAlbum(Long albumId);
+
+    /**
+     * 최근 7일간 좋아요가 많은 인기 앨범을 조회합니다.
+     * @param limit 조회할 앨범 수 제한
+     * @return 인기 앨범 리스트
+     */
+    List<AlbumVO> selectWeeklyPopularAlbums(int limit);
 }
