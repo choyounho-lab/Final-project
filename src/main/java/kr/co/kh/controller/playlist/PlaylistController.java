@@ -68,4 +68,15 @@ public class PlaylistController {
         playlistService.deletePlaylist(playlistVO);
         return ResponseEntity.ok().build();
     }
+    @DeleteMapping("/delete/track/{playlistId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "플레이리스트에 존재하는 트랙 전부 삭제")
+    @ApiImplicitParam(name = "playlistId", value = "플레이리스트 아이디", dataType = "Long", required = true)
+    public ResponseEntity<?> deletePlaylistTrackByPlaylistId(@PathVariable Long playlistId){
+        PlaylistVO playlistVO = new PlaylistVO();
+        playlistVO.setPlaylistId(playlistId);
+        log.info(playlistId.toString());
+        playlistService.deletePlaylistTrackByPlaylistId(playlistVO);
+        return ResponseEntity.ok().build();
+    }
 }

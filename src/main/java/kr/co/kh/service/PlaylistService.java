@@ -1,6 +1,7 @@
 package kr.co.kh.service;
 
 import kr.co.kh.mapper.PlaylistMapper;
+import kr.co.kh.model.vo.PlaylistTrackVO;
 import kr.co.kh.model.vo.PlaylistVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,4 +25,8 @@ public class PlaylistService {
     }
     public void updatePlaylist(PlaylistVO playlistVO) {playlistMapper.updatePlaylist(playlistVO);}
     public void deletePlaylist(PlaylistVO playlistVO) {playlistMapper.deletePlaylist(playlistVO);}
+    public void deletePlaylistTrackByPlaylistId(PlaylistVO playlistVO) {
+        playlistMapper.deletePlaylistTrackByPlaylistId(playlistVO);
+    }
+
 }

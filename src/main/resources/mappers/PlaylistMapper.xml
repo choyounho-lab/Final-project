@@ -67,4 +67,7 @@
             )
         }
     </delete>
+    <delete id="deletePlaylistTrackByPlaylistId" parameterType="PlaylistVO">
+        DELETE FROM PLAYLIST_TRACK WHERE PLAYLIST_ID = #{playlistId}
+    </delete>
 </mapper>
