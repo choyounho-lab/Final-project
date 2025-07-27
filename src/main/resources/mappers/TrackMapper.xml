@@ -3,14 +3,15 @@
 <mapper namespace="kr.co.kh.mapper.TrackMapper">
 
 
-    <select id="selectTrack" resultType="TrackVO" parameterType="TrackVO">
+    <select id="selectTrack" resultType="TrackVO" parameterType="String">
         SELECT
             TRACK_ID,
             TRACK_NAME,
             TRACK_ARTIST,
             TRACK_DURATION,
             RELEASE_DATE,
-            TRACK_IMAGE_URL
+            TRACK_IMAGE_URL,
+            YOUTUBE_VIDEO_ID
         FROM TRACK
             <where>
                 <if test="trackId != null and trackId != ''">
@@ -54,5 +55,11 @@
             #{trackId}
         )
     </insert>
+
+    <update id="updateTrackYoutubeVideoId" parameterType="TrackVO">
+        UPDATE TRACK
+        SET YOUTUBE_VIDEO_ID = #{youtubeVideoId}
+        WHERE TRACK_ID = #{trackId}
+    </update>
 
 </mapper>

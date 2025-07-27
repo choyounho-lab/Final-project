@@ -21,6 +21,12 @@ public class PlaylistController {
 
     private final PlaylistService playlistService;
 
+    /**
+     * 플레이리스트 목록 출력
+     * @param currentUser
+     * @param playlistId
+     * @return
+     */
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 목록")
@@ -33,6 +39,12 @@ public class PlaylistController {
         return ResponseEntity.ok(playlistService.selectPlaylist(playlistVO));
     }
 
+    /**
+     * 플레이리스트 생성
+     * @param currentUser
+     * @param playlistVO
+     * @return
+     */
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 생성")
@@ -47,6 +59,11 @@ public class PlaylistController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 플레이리스트 제목 및 공유여부 수정
+     * @param playlistVO
+     * @return
+     */
     @PutMapping("/create")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 업데이트")
@@ -58,6 +75,11 @@ public class PlaylistController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 플레이리스트 삭제
+     * @param playlistId
+     * @return
+     */
     @DeleteMapping("/delete/{playlistId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 삭제")
@@ -68,6 +90,12 @@ public class PlaylistController {
         playlistService.deletePlaylist(playlistVO);
         return ResponseEntity.ok().build();
     }
+
+    /**
+     * 플레이리스트 삭제 시 플레이리스트에 저장된 트랙 전부 삭제 용도
+     * @param playlistId
+     * @return
+     */
     @DeleteMapping("/delete/track/{playlistId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "플레이리스트에 존재하는 트랙 전부 삭제")

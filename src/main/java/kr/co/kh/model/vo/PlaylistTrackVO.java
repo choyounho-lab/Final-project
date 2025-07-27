@@ -24,4 +24,5 @@ public class PlaylistTrackVO {
     private Timestamp releaseDate;
     private String trackImageUrl;
     private String resultMsg;
+    private String youtubeVideoId;
 }

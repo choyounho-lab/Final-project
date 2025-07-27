@@ -7,8 +7,9 @@ import java.util.List;
 
 @Mapper
 public interface TrackMapper {
-    List<TrackVO> selectTrack(TrackVO trackVO);
+    List<TrackVO> selectTrack(String trackId);
     void insertTrack(TrackVO trackVO);
     List<TrackVO> selectTrackPlayDate(TrackVO trackVO);
     void insertTrackPlayDate(TrackVO trackVO);
+    void updateTrackYoutubeVideoId(TrackVO trackVO);
 }

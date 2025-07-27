@@ -22,6 +22,12 @@ public class PlaylistTrackController {
 
     private final PlaylistTrackService playlistTrackService;
 
+    /**
+     * 플레이리스트에 등록된 트랙 목록 출력
+     * @param currentUser
+     * @param playlistId
+     * @return
+     */
     @GetMapping("/list")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 목록")
@@ -40,6 +46,12 @@ public class PlaylistTrackController {
         return ResponseEntity.ok(playlistTrackService.selectPlaylistTrack(playlistTrackVO));
     }
 
+    /**
+     * 플레이리스트에 트랙 추가
+     * @param currentUser
+     * @param playlistTrackVO
+     * @return
+     */
     @PostMapping("/save")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 추가")
@@ -53,7 +65,12 @@ public class PlaylistTrackController {
         return ResponseEntity.ok().build();
     }
 
-
+    /**
+     * 플레이리스트에서 트랙 삭제
+     * @param trackId
+     * @param playlistId
+     * @return
+     */
     @DeleteMapping("/delete/playlist/{playlistId}/track/{trackId}")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "개인 플레이리스트 트랙 삭제")

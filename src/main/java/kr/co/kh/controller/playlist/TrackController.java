@@ -24,15 +24,25 @@ public class TrackController {
 
     private final TrackService trackService;
 
+    /**
+     * 검색
+     * @param trackId
+     * @return
+     */
     @GetMapping("list")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "트랙 목록")
     @ApiImplicitParam(name = "trackVO", value = "트랙", dataType = "TrackVO", dataTypeClass = TrackVO.class, required = true)
-    public ResponseEntity<?> selectTrack(@RequestBody TrackVO trackVO){
-        log.info(trackService.selectTrack(trackVO).toString());
-        return ResponseEntity.ok(trackService.selectTrack(trackVO));
+    public ResponseEntity<?> selectTrack(@RequestParam String trackId){
+        log.info(trackService.selectTrack(trackId).toString());
+        return ResponseEntity.ok(trackService.selectTrack(trackId));
     }
 
+    /**
+     * DB에 곡 정보가 없을 경우 재생 시 DB에 곡 정보 저장
+     * @param trackVO
+     * @return
+     */
     @PostMapping("/save")
     @ApiOperation(value = "재생한 트랙 DB에 추가")
     @ApiImplicitParam(name = "trackVO", value = "트랙", dataType = "TrackVO", dataTypeClass = TrackVO.class, required = true)
@@ -42,7 +52,11 @@ public class TrackController {
     }
 
 
-
+    /**
+     * 곡 정보와 재생했던 시각 목록 같이 출력
+     * @param trackVO
+     * @return
+     */
     @GetMapping("/list/date")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "트랙 날짜 목록")
@@ -52,7 +66,12 @@ public class TrackController {
         return ResponseEntity.ok(trackService.selectTrackPlayDate(trackVO));
     }
 
-
+    /**
+     * 곡 재생한 시각 DB에 저장
+     * @param currentUser
+     * @param trackVO
+     * @return
+     */
     @PostMapping("/save/date")
     @ApiOperation(value = "재생한 트랙날짜 DB에 추가")
     @ApiImplicitParams({
@@ -71,5 +90,13 @@ public class TrackController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/saveYoutubeVideoId")
+    @ApiOperation(value = "유튜브 비디오 아이디 저장")
+    @ApiImplicitParam(name = "trackVO", value = "트랙", dataType = "TrackVO", dataTypeClass = TrackVO.class, required = true)
+    public ResponseEntity<?> saveYoutubeVideoId(@RequestBody TrackVO trackVO) {
+        log.info(trackVO.toString());
+        trackService.updateTrackYoutubeVideoId(trackVO);
+        return ResponseEntity.ok().build();
+    }
 
 }

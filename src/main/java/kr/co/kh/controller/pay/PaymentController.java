@@ -1,6 +1,7 @@
 // controller/PaymentController.java
 package kr.co.kh.controller.pay;
 
+import io.swagger.annotations.ApiOperation;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.User;
@@ -40,6 +41,7 @@ public class PaymentController {
     }
 
     @PostMapping("/approve")
+    @ApiOperation(value = "")
     public ResponseEntity<?> approvePayment(@RequestBody ApproveRequest request, @CurrentUser CustomUserDetails user) {
         String pgToken = request.getPgToken();
 
@@ -91,6 +93,7 @@ public class PaymentController {
     // PaymentController.java 안에 ↓ 이 메서드 추가
 
     @PostMapping("/ready")
+    @ApiOperation(value = "")
     public ResponseEntity<?> readyToPay(@RequestBody ReadyRequest request , @CurrentUser CustomUserDetails user) {
         // Request header
         HttpHeaders headers = new HttpHeaders();

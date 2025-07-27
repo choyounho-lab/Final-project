@@ -15,8 +15,8 @@ public class TrackService {
 
     private final TrackMapper trackMapper;
 
-    public List<TrackVO> selectTrack(TrackVO trackVO) {
-        return trackMapper.selectTrack(trackVO);
+    public List<TrackVO> selectTrack(String trackId) {
+        return trackMapper.selectTrack(trackId);
     };
 
     public void insertTrack(TrackVO trackVO) {
@@ -29,5 +29,9 @@ public class TrackService {
 
     public void insertTrackPlayDate(TrackVO trackVO) {
         trackMapper.insertTrackPlayDate(trackVO);
+    }
+
+    public void updateTrackYoutubeVideoId(TrackVO trackVO) {
+        trackMapper.updateTrackYoutubeVideoId(trackVO);
     }
 }
