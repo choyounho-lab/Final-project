@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -197,7 +198,23 @@ public class BoardServiceImpl implements BoardService {
         return response;
     }
 
+    // 이벤트 신청
+    @Override
+    public boolean applyForEvent(Long userId, Long eventId) {
+        try {
+            boardMapper.insertApplicant(userId, eventId, LocalDateTime.now());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
+    //이벤트 중복 처리
+    @Override
+    public boolean hasUserAlreadyApplied(Long userId, Long eventId) {
+        return boardMapper.countUserApplication(userId, eventId) > 0;
+    }
 //    ==============================================================================
 //    메인화면단 NoticeService
 
@@ -268,18 +285,18 @@ public class BoardServiceImpl implements BoardService {
     public void deleteComment(Long commentId) {
         boardMapper.deleteComment(commentId);  // Mapper를 통해 댓글 삭제
     }
-    @Override
-    public CommentsVO getCommentById(Long commentId) {
-        Optional<CommentsVO> comment = commentRepository.findById(commentId);
-        // 댓글이 존재하면 반환하고, 없으면 null을 반환합니다.
-        return comment.orElse(null);
-    }
+//    @Override
+//    public CommentsVO getCommentById(Long commentId) {
+//        Optional<CommentsVO> comment = commentRepository.findById(commentId);
+//        // 댓글이 존재하면 반환하고, 없으면 null을 반환합니다.
+//        return comment.orElse(null);
+//    }
 
 
-    @Override
-    public void commentReport(CommentReportVO commentReportVO) {
-        boardMapper.commentReport(commentReportVO);
-    }
+//    @Override
+//    public void commentReport(CommentReportVO commentReportVO) {
+//        boardMapper.commentReport(commentReportVO);
+//    }
 
     /**
      * 댓글 신고 여부 확인
@@ -318,11 +335,11 @@ public class BoardServiceImpl implements BoardService {
     }
 
     // 댓글 신고 내역 카운트 메서드 구현
-    @Override
-    public boolean countReportsByCommentAndUser(Long commentId, Long userId) {
-        // 신고 내역을 카운트하는 메서드 호출
-        int count = boardMapper.countReportsByCommentAndUser(commentId, userId);
-        return count > 0;  // 신고 내역이 있으면 true, 없으면 false 반환
-    }
+//    @Override
+//    public boolean countReportsByCommentAndUser(Long commentId, Long userId) {
+//        // 신고 내역을 카운트하는 메서드 호출
+//        int count = boardMapper.countReportsByCommentAndUser(commentId, userId);
+//        return count > 0;  // 신고 내역이 있으면 true, 없으면 false 반환
+//    }
 
 }

@@ -28,24 +28,28 @@ public interface BoardService {
     // NoticeService
     HashMap<String, Object> selectNotices(SearchHelper searchHelper);
 
-
     // CommentService
     // 댓글 추가
     CommentsVO addComment(CommentsVO commentsVO);
 
     // 댓글 삭제
     void deleteComment(Long commentId);
-    CommentsVO getCommentById(Long commentId);
 
+    // 댓글 수정
     void updateComment(Long commentId, String newContent);
 
-    void commentReport(CommentReportVO commentReportVO);
-    void reportComment(CommentReportVO commentReportVO);
-
+    //댓글 신고
     void saveCommentReport(CommentReportVO report);
 
-    boolean hasUserReportedComment(Long commentId, Long userId);  // 신고 여부 확인
-    boolean countReportsByCommentAndUser(Long commentId, Long userId);  // 신고 내역을 카운트하는 메서드
+    // 신고 여부 확인
+    boolean hasUserReportedComment(Long commentId, Long userId);
 
+    // 댓글 신고
     List<CommentsVO> getCommentsByTargetWithReportStatus(String targetType, String targetId, Long userId);
+
+    //이벤트 신청자
+    boolean applyForEvent(Long userId, Long eventId);
+
+    // 이벤트 신청 중복 방지
+    boolean hasUserAlreadyApplied(Long userId, Long eventId);
 }

@@ -5,6 +5,7 @@ import kr.co.kh.model.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,6 +59,13 @@ public interface BoardMapper {
     // 특정 댓글에 대해 특정 유저가 신고했는지 여부를 확인하는 메서드
     int countReportsByCommentAndUser(Long commentId, Long userId);
 
+    //이벤트 신청
+    void insertApplicant(
+            @Param("userId") Long userId,
+            @Param("eventId") Long eventId,
+            @Param("applicationDate") LocalDateTime applicationDate
+    );
 
-
+    // 중복 처리 방지
+    int countUserApplication(@Param("userId") Long userId, @Param("eventId") Long eventId);
 }

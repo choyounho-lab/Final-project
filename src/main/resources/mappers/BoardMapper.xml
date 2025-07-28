@@ -218,6 +218,24 @@
         WHERE AE.EVENT_ID = #{eventId}
     </select>
 
+    <insert id="insertApplicant" parameterType="map">
+        INSERT INTO EVENT_APPLICANTS (
+        EVENT_ID,
+        USER_ID,
+        APPLICATION_DATE
+        ) VALUES (
+        #{eventId},
+        #{userId},
+        #{applicationDate}
+        )
+    </insert>
+
+    <select id="countUserApplication" resultType="int">
+        SELECT COUNT(*)
+        FROM EVENT_APPLICANTS
+        WHERE USER_ID = #{userId} AND EVENT_ID = #{eventId}
+    </select>
+
     <!--    공지사항 처리 쿼리문 -->
     <!-- 공지사항 목록 -->
     <select id="selectNotices" parameterType="SearchHelper" resultType="kr.co.kh.model.vo.NoticeVO"> SELECT

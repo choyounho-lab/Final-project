@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
+import kr.co.kh.model.EventApplicationRequest;
 import kr.co.kh.model.payload.request.BoardDeleteRequest;
 import kr.co.kh.model.payload.request.BoardRequest;
 import kr.co.kh.model.payload.response.ApiResponse;
@@ -122,23 +123,28 @@ public class BoardController {
 
 
     @PostMapping("/apply")
-    public ResponseEntity<String> applyForEvent()
-//            @RequestBody EventApplicationRequest request
-    {
+    public ResponseEntity<String> applyForEvent(@RequestBody EventApplicationRequest request) {
         // 요청 바디에서 userId와 eventId를 받음
-//        Long userId = request.getUserId();
-
+        Long userId = request.getUserId();
+        Long eventId = request.getEventId(); // <- 이거 추가 필요
+        log.info("유저아이디 : " + userId);
+        log.info("이벤트아이디 : " + eventId);
         // 이벤트 신청 처리 로직 (예: DB에 신청 정보 저장)
-//        boolean isSuccess = eventService.applyForEvent(userId, eventId);
+        boolean isSuccess = boardService.applyForEvent(userId, eventId);
 
-//        if (isSuccess) {
-//            return ResponseEntity.ok("신청 성공");
-//        } else {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("신청 실패");
-//        }
-        return null;
+        if (isSuccess) {
+            return ResponseEntity.ok("신청 성공");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("신청 실패");
+        }
     }
 
+    // 이벤트 중복 처리 방지
+    @GetMapping("/check-application")
+    public ResponseEntity<Boolean> checkIfApplied(@RequestParam Long userId, @RequestParam Long eventId) {
+        boolean isApplied = boardService.hasUserAlreadyApplied(userId, eventId);
+        return ResponseEntity.ok(isApplied);
+    }
 
     //    ==============================================================================
     //    메인화면단 NoticeController
