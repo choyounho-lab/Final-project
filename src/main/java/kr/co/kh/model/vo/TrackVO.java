@@ -21,4 +21,5 @@ public class TrackVO {
     private String resultMsg;
     private Long userId;
     private LocalDate playDate;
+    private String youtubeVideoId;
 }

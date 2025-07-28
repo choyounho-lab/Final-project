@@ -85,4 +85,14 @@
         WHERE ALBUM_ID = #{albumId}
     </delete>
 
+    <select id="selectWeeklyPopularAlbums" parameterType="int" resultType="kr.co.kh.model.vo.AlbumVO">
+        SELECT a.*
+        FROM ALBUM a
+        JOIN ALBUM_LIKE al ON a.ALBUM_ID = al.ALBUM_ID
+        WHERE al.CREATED_AT >= SYSDATE - 7
+        GROUP BY a.ALBUM_ID, a.SPOTIFY_ALBUM_ID, a.ALBUM_TITLE, a.ALBUM_TYPE, a.ALBUM_RELEASE_DATE, a.ALBUM_TOTAL_TRACKS, a.ALBUM_COVER_IMAGE
+        ORDER BY COUNT(al.LIKE_ID) DESC
+        FETCH FIRST #{limit} ROWS ONLY
+    </select>
+
 </mapper>

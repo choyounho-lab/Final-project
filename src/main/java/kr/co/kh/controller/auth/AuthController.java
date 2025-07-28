@@ -4,6 +4,7 @@ import ch.qos.logback.core.encoder.EchoEncoder;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.exception.TokenRefreshException;
 import kr.co.kh.exception.UserLoginException;
 import kr.co.kh.exception.UserRegistrationException;
@@ -23,6 +24,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -189,7 +191,7 @@ log.info(authentication.toString());
 
 
 
-                //첫번쨰 상황에서 보내기 상황의 버튼을 누르게 되면 메일서비스 안의 요청을 가져오레된다 두번째 상솽은 가져온 인증 번호가 유효한지 대조해보고
+         //첫번쨰 상황에서 보내기 상황의 버튼을 누르게 되면 메일서비스 안의 요청을 가져오게된다. 두번째 상황은 가져온 인증 번호가 유효한지 대조해보고
          //맞다면 인증을 해준다
          //세번쨰 상황은 디비정보가 맞고  이름이 동일하면 새로운 비밀번호 를 설정한다. 그러면 새로운 비밀번호가 생기면 그전 번호는 지워진다.
      }
@@ -235,4 +237,31 @@ log.info(authentication.toString());
 
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/newpassword")
+    public ResponseEntity<?> newPassWord (@CurrentUser CustomUserDetails user , @RequestBody HashMap<String,Object> requestMap){
+        log.info((String) requestMap.get("password"));
+        log.info(user.getId().toString());
+        log.info(user.getEmail());
+        log.info(user.getPassword());
+        log.info((String) requestMap.get("newpassword"));
+        userAuthorityService.updatePassword(requestMap , user);
+        return ResponseEntity.ok().build();
+
+
+
+    }
+
+    @PostMapping("/SUB")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
+    @ApiOperation(value = "구독")
+    @ApiImplicitParam(name = "currentUser", value = "사용자 정보", dataType = "CustomUserDetails", dataTypeClass = CustomUserDetails.class, required = true)
+    public ResponseEntity<?> upSub (@CurrentUser CustomUserDetails user){
+        HashMap<String, Object> requestMap = new HashMap<>();
+         requestMap.put("id", user.getId());
+        userAuthorityService.updateSub(requestMap);
+        log.info(user.toString());
+        return ResponseEntity.ok().build();
+    }
+
 }

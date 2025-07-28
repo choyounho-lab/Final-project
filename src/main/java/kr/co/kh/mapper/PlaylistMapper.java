@@ -1,5 +1,6 @@
 package kr.co.kh.mapper;
 
+import kr.co.kh.model.vo.PlaylistTrackVO;
 import kr.co.kh.model.vo.PlaylistVO;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,4 +13,5 @@ public interface PlaylistMapper {
     void insertPlaylist(PlaylistVO playlistVO);
     void deletePlaylist(PlaylistVO playlistVO);
     void updatePlaylist(PlaylistVO playlistVO);
+    void deletePlaylistTrackByPlaylistId(PlaylistVO playlistVO);
 }

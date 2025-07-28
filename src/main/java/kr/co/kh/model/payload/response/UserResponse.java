@@ -21,17 +21,18 @@ public class UserResponse {
     private boolean active;
     private String name;
     private String birthdate;
-    private Long roleno;
+    private Long roleNo;
+    private boolean isSub;
 
-    public UserResponse(Long id, String username, String email, Set<Role> roles, String name, String birthdate ,Long roleno, boolean active) {
+    public UserResponse(Long id, String username, String email, Set<Role> roles, String name, String birthdate ,Long roleNo ,boolean isSub) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.roles = roles;
         this.name = name;
         this.birthdate = birthdate;
-        this.roleno= roleno;
-        this.active =active;
+        this.roleNo= roleNo;
+        this.isSub = isSub;
 
     }
 

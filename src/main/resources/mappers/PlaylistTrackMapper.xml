@@ -46,7 +46,8 @@
             t.TRACK_ARTIST,
             t.TRACK_DURATION,
             t.RELEASE_DATE,
-            t.TRACK_IMAGE_URL
+            t.TRACK_IMAGE_URL,
+            t.YOUTUBE_VIDEO_ID
         FROM PLAYLIST_TRACK pt
         JOIN TRACK t ON pt.TRACK_ID = t.TRACK_ID
         <where>

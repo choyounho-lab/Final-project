@@ -53,6 +53,7 @@
             CALL UPDATE_PLAYLIST(
                 #{playlistId, mode=IN, jdbcType=NUMERIC},
                 #{playlistTitle, mode=IN, jdbcType=VARCHAR},
+                #{playlistIsPublic, mode=IN, jdbcType=NUMERIC},
                 #{resultMsg, mode=OUT, jdbcType=VARCHAR}
             )
         }
@@ -65,5 +66,8 @@
                 #{resultMsg, mode=OUT, jdbcType=VARCHAR}
             )
         }
+    </delete>
+    <delete id="deletePlaylistTrackByPlaylistId" parameterType="PlaylistVO">
+        DELETE FROM PLAYLIST_TRACK WHERE PLAYLIST_ID = #{playlistId}
     </delete>
 </mapper>

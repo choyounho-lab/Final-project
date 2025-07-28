@@ -53,4 +53,23 @@
         SELECT * FROM USERS WHERE EMAIL = #{email} AND NAME = #{name}
     </select>
 
+    <update id="updatePassword" parameterType="HashMap">
+        UPDATE USERS
+        SET PASSWORD = #{password}
+        WHERE USER_ID = #{id}
+    </update>
+
+    <update id="updateSub" parameterType="HashMap"  >
+        UPDATE USERS
+        SET IS_SUB = #{isSub}
+        WHERE USER_ID = #{id}
+    </update>
+
+
+    <select id="selectSub" parameterType = "HashMap" resultType="Long">
+        SELECT IS_SUB
+        FROM
+        USERS
+        WHERE USER_ID = #{id}
+    </select>
 </mapper>

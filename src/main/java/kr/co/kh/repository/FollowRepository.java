@@ -1,5 +1,6 @@
 package kr.co.kh.repository;
 
+import kr.co.kh.model.vo.ArtistVO;
 import kr.co.kh.model.vo.FollowVO; // FollowVO 임포트
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,4 +37,19 @@ public interface FollowRepository {
      * @return 팔로우하는 아티스트 ID 목록
      */
     List<Long> selectFollowedArtistIdsByUserId(Long userId);
+
+    /**
+     * 주어진 기간 동안 팔로우 수가 많은 아티스트 목록을 페이징하여 조회합니다.
+     * @param startDate 조회 시작일 (예: "2025-07-01")
+     * @param endDate 조회 종료일 (예: "2025-07-07")
+     * @param offset 페이징 시작 위치
+     * @param fetch 가져올 데이터 수
+     * @return 인기 아티스트 목록
+     */
+    List<ArtistVO> selectWeeklyPopularArtists(
+            @Param("startDate") String startDate,
+            @Param("endDate") String endDate,
+            @Param("offset") int offset,
+            @Param("fetch") int fetch
+    );
 }
