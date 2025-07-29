@@ -127,7 +127,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/api/event/**").permitAll()
                 .antMatchers("/**/api/board/**").permitAll()
                 .antMatchers("/auth/mail", "/api/auth/mail").permitAll()
-                .antMatchers("/auth/reset-password/**", "/api/auth/reset-password/**", "/api/kakaopay/**").permitAll()
+                .antMatchers( "/api/comments/**").permitAll()
+                .antMatchers("/auth/reset-password/**", "/api/auth/reset-password/**", "/api/kakaopay/**", "/api/albums/popular-week", "/api/album-like/album/status/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

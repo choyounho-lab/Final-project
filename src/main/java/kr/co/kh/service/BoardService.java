@@ -47,6 +47,9 @@ public interface BoardService {
     // 댓글 신고
     List<CommentsVO> getCommentsByTargetWithReportStatus(String targetType, String targetId, Long userId);
 
+    // 비로그인 상태의 댓글 리스트
+    List<CommentsVO> getCommentsByTarget(String targetType, String targetId);
+
     //이벤트 신청자
     boolean applyForEvent(Long userId, Long eventId);
 

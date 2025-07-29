@@ -279,12 +279,21 @@
 
 <!--    댓글 관리 처리 쿼리문-->
     <!-- 댓글 목록을 조회 -->
+<!--    <select id="findCommentsByTarget" resultType="kr.co.kh.model.vo.CommentsVO">-->
+<!--        SELECT *-->
+<!--        FROM COMMENTS C-->
+<!--        JOIN USERS U ON C.USER_ID =U.USER_ID-->
+<!--        WHERE TARGET_TYPE = #{targetType}-->
+<!--        AND TARGET_ID = #{targetId}-->
+<!--        ORDER BY C.COMMENT_ID DESC-->
+<!--    </select>-->
     <select id="findCommentsByTarget" resultType="kr.co.kh.model.vo.CommentsVO">
-        SELECT *
+        SELECT
+                *
         FROM COMMENTS C
-        JOIN USERS U ON C.USER_ID =U.USER_ID
-        WHERE TARGET_TYPE = #{targetType}
-        AND TARGET_ID = #{targetId}
+        JOIN USERS U ON C.USER_ID = U.USER_ID
+        WHERE C.TARGET_TYPE = 'ALBUM'
+        AND C.TARGET_ID = '14JkAa6IiFaOh5s0nMyMU9'
         ORDER BY C.COMMENT_ID DESC
     </select>
 
