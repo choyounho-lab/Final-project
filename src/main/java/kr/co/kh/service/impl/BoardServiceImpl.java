@@ -267,7 +267,12 @@ public class BoardServiceImpl implements BoardService {
         }
         return comments;
     }
-
+    
+    // 비로그인 댓글 리스트
+    @Override
+    public List<CommentsVO> getCommentsByTarget(String targetType, String targetId) {
+        return boardMapper.findCommentsByTarget(targetType, targetId);
+    }
 
     // 댓글 수정
     public void updateComment(Long commentId, String newContent) {
