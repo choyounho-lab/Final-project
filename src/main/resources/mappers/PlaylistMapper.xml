@@ -70,4 +70,14 @@
     <delete id="deletePlaylistTrackByPlaylistId" parameterType="PlaylistVO">
         DELETE FROM PLAYLIST_TRACK WHERE PLAYLIST_ID = #{playlistId}
     </delete>
+
+
+    <!--최신 플리 불러오는 쿼리-->
+    <select id="selectPublicPlaylists" resultType="PlaylistVO">
+        SELECT PLAYLIST_ID, USER_ID, PLAYLIST_TITLE, PLAYLIST_IS_PUBLIC
+        FROM PLAYLIST
+        WHERE PLAYLIST_IS_PUBLIC = 1
+        ORDER BY PLAYLIST_CREATE_DATE DESC
+    </select>
+
 </mapper>

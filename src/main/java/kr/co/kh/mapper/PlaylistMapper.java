@@ -14,4 +14,6 @@ public interface PlaylistMapper {
     void deletePlaylist(PlaylistVO playlistVO);
     void updatePlaylist(PlaylistVO playlistVO);
     void deletePlaylistTrackByPlaylistId(PlaylistVO playlistVO);
+    // 신규 플레이리스트 조회 인터페이서 매퍼
+    List<PlaylistVO> selectPublicPlaylists();
 }
