@@ -28,5 +28,9 @@ public class PlaylistService {
     public void deletePlaylistTrackByPlaylistId(PlaylistVO playlistVO) {
         playlistMapper.deletePlaylistTrackByPlaylistId(playlistVO);
     }
+    // 신규 플레이리스트 조회 서비스
+    public List<PlaylistVO> selectPublicPlaylists() {
+        return playlistMapper.selectPublicPlaylists();
+    }
 
 }
