@@ -1,10 +1,8 @@
 package kr.co.kh.controller.album;
 
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
-import kr.co.kh.model.vo.AlbumLikeVO;
 import kr.co.kh.model.vo.AlbumVO;
 import kr.co.kh.service.AlbumLikeService;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +49,7 @@ public class AlbumLikeController {
             log.info("유저 ID {}가 앨범 External ID {} 를 언팔로우 요청", currentUser.getId(), albumExternalId);
             albumLikeService.unNiceAlbumByExternalId(currentUser.getId(), albumExternalId);
             return ResponseEntity.ok().body("앨범 좋아요 취소 성공");
+
         } catch (Exception e) {
             log.error("앨범 좋아요 취소중 오류 발생: {}", e.getMessage(), e);
             return ResponseEntity.internalServerError().body("앨범 좋아요 취소중 서버 오류발생");

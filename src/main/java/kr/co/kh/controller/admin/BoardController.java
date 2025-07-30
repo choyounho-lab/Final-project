@@ -21,7 +21,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/board")
@@ -177,8 +179,27 @@ public class BoardController {
             }
         }
 
+    // 댓글 수정
+    @PutMapping("/commentUpdate/{commentId}")
+    public ResponseEntity<String> updateComment(
+            @PathVariable Long commentId,
+            @RequestBody Map<String, String> requestBody
+    ) {
+        String content = requestBody.get("content");
 
+        if (content == null || content.trim().isEmpty()) {
+            return ResponseEntity.badRequest().body("내용이 비어 있습니다.");
+        }
 
+        try {
+            boardService.updateComment(commentId, content);
+            return ResponseEntity.ok("댓글이 성공적으로 수정되었습니다.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("댓글을 찾을 수 없습니다.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 수정 중 오류 발생.");
+        }
+    }
 
     // 댓글 삭제
     @DeleteMapping("/commentDelete/{commentId}")
