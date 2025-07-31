@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/playlist")
 @Slf4j
@@ -45,14 +47,24 @@ public class PlaylistController {
 
     @GetMapping("/publicList")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
-    @ApiOperation(value = "개인 플레이리스트 목록")
+    @ApiOperation(value = "공개 플레이리스트 단건 조회")
     @ApiImplicitParam(name = "playlistId", value = "플레이리스트 아이디", dataType = "Long", required = true)
-    public ResponseEntity<?> selectPublicPlaylist(@RequestParam(required = false) Long playlistId){
+    public ResponseEntity<?> selectPublicPlaylist(@RequestParam Long playlistId){
         PlaylistVO playlistVO = new PlaylistVO();
         playlistVO.setPlaylistId(playlistId);
-        log.info(playlistVO.toString());
-        log.info(playlistService.selectPlaylist(playlistVO).toString());
-        return ResponseEntity.ok(playlistService.selectPlaylist(playlistVO));
+
+        List<PlaylistVO> playlists = playlistService.selectPlaylist(playlistVO);
+
+        if (playlists == null || playlists.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        PlaylistVO found = playlists.get(0);
+        if (found.getPlaylistIsPublic() != 1) {
+            return ResponseEntity.status(403).body("비공개 플레이리스트입니다.");
+        }
+
+        return ResponseEntity.ok(found);
     }
 
     /**

@@ -33,4 +33,23 @@ public class PlaylistService {
         return playlistMapper.selectPublicPlaylists();
     }
 
+    public PlaylistVO getPlaylistDetail(PlaylistVO playlistVO) {
+        List<PlaylistVO> resultList = playlistMapper.selectPlaylist(playlistVO);
+
+        if (resultList == null || resultList.isEmpty()) {
+            throw new RuntimeException("플레이리스트를 찾을 수 없습니다.");
+        }
+
+        PlaylistVO result = resultList.get(0);
+
+        // 비공개일 경우, 본인만 접근 가능
+        if (result.getPlaylistIsPublic() == 0) {
+            if (playlistVO.getUserId() == null || !playlistVO.getUserId().equals(result.getUserId())) {
+                throw new SecurityException("비공개 플레이리스트는 접근할 수 없습니다.");
+            }
+        }
+
+        return result;
+    }
+
 }
