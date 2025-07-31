@@ -293,7 +293,7 @@
         FROM COMMENTS C
         JOIN USERS U ON C.USER_ID = U.USER_ID
         WHERE C.TARGET_TYPE = 'ALBUM'
-        AND C.TARGET_ID = '14JkAa6IiFaOh5s0nMyMU9'
+        AND C.TARGET_ID = #{targetId}
         ORDER BY C.COMMENT_ID DESC
     </select>
 

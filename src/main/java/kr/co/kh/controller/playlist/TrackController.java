@@ -30,7 +30,6 @@ public class TrackController {
      * @return
      */
     @GetMapping("list")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SYSTEM')")
     @ApiOperation(value = "트랙 목록")
     @ApiImplicitParam(name = "trackVO", value = "트랙", dataType = "TrackVO", dataTypeClass = TrackVO.class, required = true)
     public ResponseEntity<?> selectTrack(@RequestParam String trackId){
