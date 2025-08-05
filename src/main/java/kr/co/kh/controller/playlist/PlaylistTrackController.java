@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiOperation;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.vo.PlaylistTrackVO;
-import kr.co.kh.model.vo.PlaylistVO;
 import kr.co.kh.service.PlaylistTrackService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

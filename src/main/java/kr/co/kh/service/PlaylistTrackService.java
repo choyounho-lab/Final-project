@@ -3,7 +3,6 @@ package kr.co.kh.service;
 
 import kr.co.kh.mapper.PlaylistTrackMapper;
 import kr.co.kh.model.vo.PlaylistTrackVO;
-import kr.co.kh.model.vo.PlaylistVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
