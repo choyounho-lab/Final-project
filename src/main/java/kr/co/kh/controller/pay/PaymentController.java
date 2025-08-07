@@ -1,30 +1,23 @@
-// controller/PaymentController.java
+
 package kr.co.kh.controller.pay;
 
 import io.swagger.annotations.ApiOperation;
 import kr.co.kh.annotation.CurrentUser;
 import kr.co.kh.model.CustomUserDetails;
-import kr.co.kh.model.User;
+
 import kr.co.kh.model.payload.response.ReadyResponse;
 import kr.co.kh.model.vo.ApproveRequest;
 import kr.co.kh.model.vo.ReadyRequest;
 import kr.co.kh.repository.UserRepository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.Optional;
+
 
 
 @RestController

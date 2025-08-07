@@ -1,6 +1,5 @@
 package kr.co.kh.controller.auth;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -14,7 +13,6 @@ import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.payload.response.ApiResponse;
 import kr.co.kh.model.payload.response.JwtAuthenticationResponse;
 import kr.co.kh.model.token.RefreshToken;
-import kr.co.kh.repository.UserRepository;
 import kr.co.kh.security.JwtTokenProvider;
 import kr.co.kh.service.AuthService;
 import kr.co.kh.service.MailService;
@@ -29,11 +27,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
