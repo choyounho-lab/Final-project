@@ -6,6 +6,7 @@ import kr.co.kh.model.CustomUserDetails;
 import kr.co.kh.model.vo.AlbumVO;
 import kr.co.kh.service.AlbumLikeService;
 import lombok.RequiredArgsConstructor;
+import kr.co.kh.model.vo.AlbumLikeVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

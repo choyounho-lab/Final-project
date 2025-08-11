@@ -23,6 +23,7 @@ public class WeeklyPopularAlbumController {
         log.info("도달");
         List<AlbumVO> test = new ArrayList<>();
         log.info("test111{}",weeklyPopularAlbumService.getPopularAlbums(limit).toString());
+
         return weeklyPopularAlbumService.getPopularAlbums(limit);
     }
 }

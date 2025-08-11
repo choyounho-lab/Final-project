@@ -18,7 +18,7 @@ public class WeeklyPopularAlbumService {
     /**
      * 최근 7일간 좋아요가 많은 인기 앨범을 조회합니다.
      * @param limit 조회할 앨범 수 제한
-     * @return 인기 앨범 리스트
+     * @return 인기 앨범 리스트``
      */
     public List<AlbumVO> getPopularAlbums(int limit) {
         return albumRepository.selectWeeklyPopularAlbums(limit);
