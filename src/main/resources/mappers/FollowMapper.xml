@@ -39,7 +39,7 @@
         GROUP BY
         a.artist_id, a.artist_name, a.profile_image
         ORDER BY
-        weekly_follower_count DESC;
+        weekly_follower_count DESC
     </select>
 
 
